@@ -1,0 +1,4 @@
+Volumes:
+extradois-10042020 250
+datavol-10042020 400
+dockervol-10042020 350

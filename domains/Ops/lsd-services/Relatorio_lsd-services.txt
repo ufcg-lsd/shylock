@@ -1,0 +1,7 @@
+Volumes:
+docker-volume 80
+owncloud-data 500
+gitlab-registry 200
+gitlab-data 300
+gitlab-os 160
+racktables_bd 5

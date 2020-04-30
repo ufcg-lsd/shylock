@@ -1,0 +1,4 @@
+Volumes:
+minion2 10
+minion1 10
+master 10

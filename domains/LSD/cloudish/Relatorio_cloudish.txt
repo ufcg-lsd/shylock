@@ -1,0 +1,5 @@
+Volumes:
+test-storage-1 10
+ceph-storage2 20
+ceph-storage1 20
+ceph-storage3 20

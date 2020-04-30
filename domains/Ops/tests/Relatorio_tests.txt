@@ -1,0 +1,7 @@
+Volumes:
+osd-6 10
+osd-5 10
+osd-4 10
+osd-3 10
+osd-2 10
+osd-1 10

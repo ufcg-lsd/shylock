@@ -1,0 +1,3 @@
+Volumes:
+docker-registry-bkp 100
+docker-registry 50

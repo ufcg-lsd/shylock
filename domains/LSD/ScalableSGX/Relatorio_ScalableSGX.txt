@@ -1,0 +1,3 @@
+Volumes:
+osd2 40
+osd1 50

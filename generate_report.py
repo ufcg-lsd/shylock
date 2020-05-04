@@ -92,7 +92,10 @@ for domain_name in data:
 			temporary_report.write("%s %sGb\n" % (volume["Name"], volume["Size"])) 
 					
 			#temporary_report.write(project["Volume"])
-		
+		temporary_report.write("\nInstancias\n") 
+		temporary_report.write("\nName \t Flavor \t Time\n")
+
+
 		for instance in project["Instances"].values():
 			print(instance["ID"],)
 			
@@ -100,7 +103,7 @@ for domain_name in data:
 			time_use = days_hours_minutes(time_use)
 			print(time_use)
 
-			temporary_report.write("%s %s %s" % (instance["Name"], instance["Flavor"], time_use ) )
+			temporary_report.write("%s \t%s \t%s\n" % (instance["Name"], instance["Flavor"], time_use ))
 
 					
 		temporary_report.close()

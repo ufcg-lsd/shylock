@@ -1,3 +1,8 @@
 Volumes:
  80Gb
-estudantes lsd.t1.medium 2 Days, 6 Hours and 36 secondsprog1 lsd.t1.medium 28 Days, 0 Hours and 19 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+estudantes 	lsd.t1.medium 	2 Days, 6 Hours and 36 Seconds
+prog1 	lsd.t1.medium 	28 Days, 0 Hours and 19 Seconds

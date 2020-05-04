@@ -1,2 +1,9 @@
 Volumes:
-test-scp lsd.t1.nano 24 Days, 4 Hours and 11 secondstest-scp lsd.t1.nano 3 Days, 13 Hours and 26 secondsdca-webjobs lsd.t1.nano 0 Days, 0 Hours and 22 secondsdca-ci lsd.t1.nano 0 Days, 0 Hours and 28 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+test-scp 	lsd.t1.nano 	24 Days, 4 Hours and 11 Seconds
+test-scp 	lsd.t1.nano 	3 Days, 13 Hours and 26 Seconds
+dca-webjobs 	lsd.t1.nano 	0 Days, 0 Hours and 22 Seconds
+dca-ci 	lsd.t1.nano 	0 Days, 0 Hours and 28 Seconds

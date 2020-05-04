@@ -2,3 +2,7 @@ Volumes:
 minion2 10Gb
 minion1 10Gb
 master 10Gb
+
+Instancias
+
+Name 	 Flavor 	 Time

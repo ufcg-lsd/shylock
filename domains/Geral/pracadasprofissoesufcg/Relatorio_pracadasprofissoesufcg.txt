@@ -1,2 +1,8 @@
 Volumes:
-praca lsd.t1.tiny_praca 10 Days, 1 Hours and 5 secondspraca lsd.t1.tiny_praca 10 Days, 1 Hours and 39 secondspraca lsd.t1.tiny_praca 3 Days, 20 Hours and 24 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+praca 	lsd.t1.tiny_praca 	10 Days, 1 Hours and 5 Seconds
+praca 	lsd.t1.tiny_praca 	10 Days, 1 Hours and 39 Seconds
+praca 	lsd.t1.tiny_praca 	3 Days, 20 Hours and 24 Seconds

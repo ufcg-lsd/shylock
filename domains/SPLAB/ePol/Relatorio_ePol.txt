@@ -1,3 +1,8 @@
 Volumes:
 epol-backup-volume 500Gb
-teste lsd.t1.small 1 Days, 21 Hours and 40 secondsepol-backup lsd.t1.medium 17 Days, 18 Hours and 51 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+teste 	lsd.t1.small 	1 Days, 21 Hours and 40 Seconds
+epol-backup 	lsd.t1.medium 	17 Days, 18 Hours and 51 Seconds

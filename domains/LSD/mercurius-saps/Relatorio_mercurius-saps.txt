@@ -1,2 +1,19 @@
 Volumes:
-saps-worker-l3-3 lsd.t2.xlarge_2 30 Days, 0 Hours and 0 secondssaps-worker-l3-2 lsd.t2.xlarge_2 30 Days, 0 Hours and 0 secondsworker-test lsd.t1.medium -13 Days, 1 Hours and 23 secondsarrebol-test lsd.t1.small 14 Days, 23 Hours and 6 secondssaps-worker-l3-1 lsd.t2.xlarge_2 30 Days, 0 Hours and 0 secondsarrebol-test lsd.t1.small 0 Days, 5 Hours and 44 secondssaps-archiver lsd.t1.medium 30 Days, 0 Hours and 0 secondssaps-arrebol-biggest lsd.t2.large 30 Days, 0 Hours and 0 secondsget-digest-test lsd.t1.nano 0 Days, 0 Hours and 48 secondssaps-frontpage lsd.t1.nano 30 Days, 0 Hours and 0 secondssaps-scheduler lsd.t1.medium 30 Days, 0 Hours and 0 secondsdashboard-test lsd.t1.tiny 0 Days, 0 Hours and 0 secondsscheduler-test lsd.t1.small 0 Days, 0 Hours and 0 secondssaps-catalog-dashboard-dispatcher lsd.t1.medium 30 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+saps-worker-l3-3 	lsd.t2.xlarge_2 	30 Days, 0 Hours and 0 Seconds
+saps-worker-l3-2 	lsd.t2.xlarge_2 	30 Days, 0 Hours and 0 Seconds
+worker-test 	lsd.t1.medium 	-13 Days, 1 Hours and 23 Seconds
+arrebol-test 	lsd.t1.small 	14 Days, 23 Hours and 6 Seconds
+saps-worker-l3-1 	lsd.t2.xlarge_2 	30 Days, 0 Hours and 0 Seconds
+arrebol-test 	lsd.t1.small 	0 Days, 5 Hours and 44 Seconds
+saps-archiver 	lsd.t1.medium 	30 Days, 0 Hours and 0 Seconds
+saps-arrebol-biggest 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+get-digest-test 	lsd.t1.nano 	0 Days, 0 Hours and 48 Seconds
+saps-frontpage 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+saps-scheduler 	lsd.t1.medium 	30 Days, 0 Hours and 0 Seconds
+dashboard-test 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+scheduler-test 	lsd.t1.small 	0 Days, 0 Hours and 0 Seconds
+saps-catalog-dashboard-dispatcher 	lsd.t1.medium 	30 Days, 0 Hours and 0 Seconds

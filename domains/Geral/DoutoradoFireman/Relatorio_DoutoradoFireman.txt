@@ -1,2 +1,15 @@
 Volumes:
-dfq-run-6 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-work2 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-work lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-4 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-1 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-5 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-2 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-3 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-8 lsd.t2.large 0 Days, 0 Hours and 0 secondsdfq-run-7 lsd.t2.large 0 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+dfq-run-6 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-work2 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-work 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-4 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-1 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-5 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-2 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-3 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-8 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds
+dfq-run-7 	lsd.t2.large 	0 Days, 0 Hours and 0 Seconds

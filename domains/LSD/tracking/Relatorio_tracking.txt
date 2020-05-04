@@ -1,2 +1,7 @@
 Volumes:
-ipfs lsd.t1.small 0 Days, 0 Hours and 0 secondsipfs-large lsd.t2.large 30 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+ipfs 	lsd.t1.small 	0 Days, 0 Hours and 0 Seconds
+ipfs-large 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds

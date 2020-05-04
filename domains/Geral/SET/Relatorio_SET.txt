@@ -1,4 +1,17 @@
 Volumes:
  450Gb
  300Gb
-beta lsd.t2.large 30 Days, 0 Hours and 0 secondskafka-server03 lsd.t2.large 30 Days, 0 Hours and 0 secondssilvana lsd.t2.large 30 Days, 0 Hours and 0 secondsgitlab-ci-runner lsd.t2.large 8 Days, 7 Hours and 7 secondstemp-bd lsd.t2.large 0 Days, 0 Hours and 31 secondskafka-server01 lsd.t2.large 30 Days, 0 Hours and 0 secondsalpha lsd.t2.xlarge 30 Days, 0 Hours and 0 secondsset-lsd lsd.t2.xlarge 30 Days, 0 Hours and 0 secondskafka-server02 lsd.t2.large 30 Days, 0 Hours and 0 secondstemp lsd.t2.large 15 Days, 19 Hours and 42 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+beta 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+kafka-server03 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+silvana 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+gitlab-ci-runner 	lsd.t2.large 	8 Days, 7 Hours and 7 Seconds
+temp-bd 	lsd.t2.large 	0 Days, 0 Hours and 31 Seconds
+kafka-server01 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+alpha 	lsd.t2.xlarge 	30 Days, 0 Hours and 0 Seconds
+set-lsd 	lsd.t2.xlarge 	30 Days, 0 Hours and 0 Seconds
+kafka-server02 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+temp 	lsd.t2.large 	15 Days, 19 Hours and 42 Seconds

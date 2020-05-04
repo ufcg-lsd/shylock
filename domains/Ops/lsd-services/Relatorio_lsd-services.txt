@@ -5,4 +5,26 @@ gitlab-registry 200Gb
 gitlab-data 300Gb
 gitlab-os 160Gb
 racktables_bd 5Gb
-otrs-srv-prod ops.s1.wiki 13 Days, 4 Hours and 47 secondsotrs-srv ops.s1.wiki 0 Days, 0 Hours and 0 secondsoneview3-prod ops.s1.oneview3-prod 30 Days, 0 Hours and 0 secondsracktables ops.s1.medium 30 Days, 0 Hours and 0 secondspaste-lsd ops.s1.small 30 Days, 0 Hours and 0 secondsetherpad ops.s1.medium 30 Days, 0 Hours and 0 secondstest-gitlab ops.s1.gitlab 0 Days, 2 Hours and 17 secondsvault ops.s1.small 30 Days, 0 Hours and 0 secondswindows8.1-Andrey ops.s1.medium 30 Days, 0 Hours and 0 secondsweb-srv-02 ops.s1.wiki -10 Days, 17 Hours and 47 secondsweb-srv-sites ops.s1.medium 30 Days, 0 Hours and 0 secondssrv-giga-rebuild-01 ops.s1.medium 30 Days, 0 Hours and 0 secondsunifi-controller ops.s1.small 30 Days, 0 Hours and 0 secondsgitlab ops.s1.gitlab 30 Days, 0 Hours and 0 secondstest-gitlab ops.s1.gitlab 0 Days, 1 Hours and 41 secondsweb-srv-04 ops.s1.wiki -10 Days, 17 Hours and 39 secondsmattermost ops.s1.large 30 Days, 0 Hours and 0 secondswiki-suporte ops.s1.wiki 30 Days, 0 Hours and 0 secondsowncloud ops.s1.medium 30 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+otrs-srv-prod 	ops.s1.wiki 	13 Days, 4 Hours and 47 Seconds
+otrs-srv 	ops.s1.wiki 	0 Days, 0 Hours and 0 Seconds
+oneview3-prod 	ops.s1.oneview3-prod 	30 Days, 0 Hours and 0 Seconds
+racktables 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds
+paste-lsd 	ops.s1.small 	30 Days, 0 Hours and 0 Seconds
+etherpad 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds
+test-gitlab 	ops.s1.gitlab 	0 Days, 2 Hours and 17 Seconds
+vault 	ops.s1.small 	30 Days, 0 Hours and 0 Seconds
+windows8.1-Andrey 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds
+web-srv-02 	ops.s1.wiki 	-10 Days, 17 Hours and 47 Seconds
+web-srv-sites 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds
+srv-giga-rebuild-01 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds
+unifi-controller 	ops.s1.small 	30 Days, 0 Hours and 0 Seconds
+gitlab 	ops.s1.gitlab 	30 Days, 0 Hours and 0 Seconds
+test-gitlab 	ops.s1.gitlab 	0 Days, 1 Hours and 41 Seconds
+web-srv-04 	ops.s1.wiki 	-10 Days, 17 Hours and 39 Seconds
+mattermost 	ops.s1.large 	30 Days, 0 Hours and 0 Seconds
+wiki-suporte 	ops.s1.wiki 	30 Days, 0 Hours and 0 Seconds
+owncloud 	ops.s1.medium 	30 Days, 0 Hours and 0 Seconds

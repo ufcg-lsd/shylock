@@ -2,4 +2,8 @@ Volumes:
 extradois-10042020 250Gb
 datavol-10042020 400Gb
 dockervol-10042020 350Gb
-analyticsmp2 lsd.t2.xlarge 20 Days, 7 Hours and 56 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+analyticsmp2 	lsd.t2.xlarge 	20 Days, 7 Hours and 56 Seconds

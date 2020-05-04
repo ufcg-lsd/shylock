@@ -1,2 +1,11 @@
 Volumes:
-w2 lsd.t1.nano 30 Days, 0 Hours and 0 secondsw1 lsd.t1.nano 30 Days, 0 Hours and 0 secondsw3 lsd.t1.nano 30 Days, 0 Hours and 0 secondsdeployment-machine lsd.t1.medium 30 Days, 0 Hours and 0 secondsmember2 (xmpp test machine) lsd.t1.nano 30 Days, 0 Hours and 0 secondsmember1 (xmpp test machine) lsd.t1.nano 30 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+w2 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+w1 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+w3 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+deployment-machine 	lsd.t1.medium 	30 Days, 0 Hours and 0 Seconds
+member2 (xmpp test machine) 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+member1 (xmpp test machine) 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds

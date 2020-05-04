@@ -1,2 +1,7 @@
 Volumes:
-userimage-ae8eb35e-fc00-11e9-a7f5-caa7cccc8452 sgx-fogbow.epc8.medium 30 Days, 0 Hours and 0 secondsuserimage-c0905acc-fc04-11e9-8dd5-fa163e5bdd4c sgx-fogbow.epc8.medium 30 Days, 0 Hours and 0 seconds
+
+Instancias
+
+Name 	 Flavor 	 Time
+userimage-ae8eb35e-fc00-11e9-a7f5-caa7cccc8452 	sgx-fogbow.epc8.medium 	30 Days, 0 Hours and 0 Seconds
+userimage-c0905acc-fc04-11e9-8dd5-fa163e5bdd4c 	sgx-fogbow.epc8.medium 	30 Days, 0 Hours and 0 Seconds

@@ -1,7 +1,8 @@
 Volumes:
-docker-volume 80
-owncloud-data 500
-gitlab-registry 200
-gitlab-data 300
-gitlab-os 160
-racktables_bd 5
+docker-volume 80Gb
+owncloud-data 500Gb
+gitlab-registry 200Gb
+gitlab-data 300Gb
+gitlab-os 160Gb
+racktables_bd 5Gb
+otrs-srv-prod ops.s1.wiki 13 Days, 4 Hours and 47 secondsotrs-srv ops.s1.wiki 0 Days, 0 Hours and 0 secondsoneview3-prod ops.s1.oneview3-prod 30 Days, 0 Hours and 0 secondsracktables ops.s1.medium 30 Days, 0 Hours and 0 secondspaste-lsd ops.s1.small 30 Days, 0 Hours and 0 secondsetherpad ops.s1.medium 30 Days, 0 Hours and 0 secondstest-gitlab ops.s1.gitlab 0 Days, 2 Hours and 17 secondsvault ops.s1.small 30 Days, 0 Hours and 0 secondswindows8.1-Andrey ops.s1.medium 30 Days, 0 Hours and 0 secondsweb-srv-02 ops.s1.wiki -10 Days, 17 Hours and 47 secondsweb-srv-sites ops.s1.medium 30 Days, 0 Hours and 0 secondssrv-giga-rebuild-01 ops.s1.medium 30 Days, 0 Hours and 0 secondsunifi-controller ops.s1.small 30 Days, 0 Hours and 0 secondsgitlab ops.s1.gitlab 30 Days, 0 Hours and 0 secondstest-gitlab ops.s1.gitlab 0 Days, 1 Hours and 41 secondsweb-srv-04 ops.s1.wiki -10 Days, 17 Hours and 39 secondsmattermost ops.s1.large 30 Days, 0 Hours and 0 secondswiki-suporte ops.s1.wiki 30 Days, 0 Hours and 0 secondsowncloud ops.s1.medium 30 Days, 0 Hours and 0 seconds

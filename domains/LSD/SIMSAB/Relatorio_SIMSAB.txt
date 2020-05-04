@@ -1,2 +1,3 @@
 Volumes:
-cluster-lelouch-lljrblrbwrsw-kube_minions-bjcyj6fvxz2a-0-s63onj2fd7j2-docker_volume-wsj4vexv63f7 20
+cluster-lelouch-lljrblrbwrsw-kube_minions-bjcyj6fvxz2a-0-s63onj2fd7j2-docker_volume-wsj4vexv63f7 20Gb
+gateway lsd.t1.small 30 Days, 0 Hours and 0 seconds

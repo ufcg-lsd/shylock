@@ -1,3 +1,4 @@
 Volumes:
-docker-registry-bkp 100
-docker-registry 50
+docker-registry-bkp 100Gb
+docker-registry 50Gb
+tpm-demo lsd.t1.medium 21 Days, 1 Hours and 33 secondsztpo-lsd-registry lsd.t1.nano 0 Days, 1 Hours and 24 secondsdocker-registry lsd.t1.nano 0 Days, 0 Hours and 55 secondsvm-anderson lsd.t1.small 17 Days, 3 Hours and 32 secondsdocker-registry lsd.t1.nano 0 Days, 8 Hours and 9 secondsdemo-controller-leo lsd.t1.small 30 Days, 0 Hours and 0 secondskafka-test lsd.t1.medium 7 Days, 0 Hours and 4 secondsdemo-controller lsd.t1.small 30 Days, 0 Hours and 0 secondsdocker-registry lsd.t1.nano 24 Days, 1 Hours and 59 seconds

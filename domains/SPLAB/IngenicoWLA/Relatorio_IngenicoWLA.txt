@@ -1,2 +1,3 @@
 Volumes:
- 250
+ 250Gb
+IngenicoServer lsd.t2.xlarge 30 Days, 0 Hours and 0 seconds

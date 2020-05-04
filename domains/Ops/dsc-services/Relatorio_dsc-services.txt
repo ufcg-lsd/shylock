@@ -1,1 +1,2 @@
 Volumes:
+inscrição-copin lsd.t1.medium 30 Days, 0 Hours and 0 secondsweb-pos lsd.t1.small 30 Days, 0 Hours and 0 secondsreservas-hattori lsd.t1.small 30 Days, 0 Hours and 0 secondsdisciplina-fabio lsd.t1.medium_fabio 30 Days, 0 Hours and 0 secondsdsc-alumni lsd.t1.nano 30 Days, 0 Hours and 0 secondsdisciplinabd lsd.t2.large 30 Days, 0 Hours and 0 seconds

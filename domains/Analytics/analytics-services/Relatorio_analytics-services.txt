@@ -1,1 +1,2 @@
 Volumes:
+analytics-server lsd.t2.large 19 Days, 21 Hours and 19 secondsopencpu-cursos-ufcg lsd.t2.large 20 Days, 2 Hours and 18 secondsmysql-cursos-ufcg lsd.t1.medium 20 Days, 2 Hours and 58 secondsanalytics-server lsd.t2.large 0 Days, 4 Hours and 39 seconds

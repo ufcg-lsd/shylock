@@ -1,4 +1,4 @@
 Volumes:
-minion2 10
-minion1 10
-master 10
+minion2 10Gb
+minion1 10Gb
+master 10Gb

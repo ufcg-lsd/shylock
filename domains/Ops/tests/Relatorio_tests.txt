@@ -1,7 +1,8 @@
 Volumes:
-osd-6 10
-osd-5 10
-osd-4 10
-osd-3 10
-osd-2 10
-osd-1 10
+osd-6 10Gb
+osd-5 10Gb
+osd-4 10Gb
+osd-3 10Gb
+osd-2 10Gb
+osd-1 10Gb
+ceph-storage-1 ops.s1.small 0 Days, 0 Hours and 49 secondskube-node-2 ops.s1.medium 0 Days, 0 Hours and 0 secondsnew-mon-3 ops.s1.small 6 Days, 20 Hours and 39 secondsceph-mon-1 lsd.t1.medium 1 Days, 1 Hours and 38 secondsceph-mon-1 ops.s1.medium 0 Days, 0 Hours and 55 secondsceph-storage-2 ops.s1.small 12 Days, 17 Hours and 33 secondsteste-upgrade ops.s1.large 30 Days, 0 Hours and 0 secondsceph-storage-3 lsd.t1.small 1 Days, 1 Hours and 58 secondsceph-mon-2 lsd.t1.medium 1 Days, 1 Hours and 32 secondsteste-netdata ops.s1.tiny 9 Days, 9 Hours and 45 secondsmattermost-upgrade ops.s1.large 0 Days, 0 Hours and 35 secondsteste-latin ops.s1.large 0 Days, 0 Hours and 0 secondskube-node-3 ops.s1.medium 0 Days, 0 Hours and 0 secondsceph-storage-3 ops.s1.small 0 Days, 0 Hours and 47 secondsnew-mon-2 ops.s1.small 6 Days, 20 Hours and 33 secondsceph-mon-3 ops.s1.medium 12 Days, 17 Hours and 49 secondsceph-storage-3 ops.s1.small 12 Days, 17 Hours and 35 secondsnew-mon-1 ops.s1.small 6 Days, 20 Hours and 34 secondsceph-mon-2 ops.s1.medium 0 Days, 0 Hours and 57 secondsceph-mon-1 ops.s1.medium 12 Days, 17 Hours and 1 secondsceph-storage-1 ops.s1.small 12 Days, 17 Hours and 38 secondskube-node-1 ops.s1.medium 0 Days, 0 Hours and 0 secondsteste-after-migra lsd.t1.nano 0 Days, 0 Hours and 58 secondsceph-storage-1 lsd.t1.small 1 Days, 1 Hours and 58 secondsceph-storage-2 lsd.t1.small 1 Days, 1 Hours and 56 secondsceph-storage-2 ops.s1.small 0 Days, 0 Hours and 45 secondssrvdhcp ops.s1.medium 30 Days, 0 Hours and 0 secondskube-master ops.s1.medium 0 Days, 0 Hours and 0 secondsceph-mon-3 ops.s1.medium 0 Days, 0 Hours and 52 secondsceph-mon-3 lsd.t1.medium 1 Days, 1 Hours and 33 secondsceph-mon-2 ops.s1.medium 12 Days, 17 Hours and 55 seconds

@@ -1,3 +1,4 @@
 Volumes:
-DadosLEDA 100
- 100
+DadosLEDA 100Gb
+ 100Gb
+servidor-auxiliar lsd.t2.large 30 Days, 0 Hours and 0 secondsservidor-artefatos lsd.t1.medium 30 Days, 0 Hours and 0 secondsservidor-leda lsd.t2.xlarge 30 Days, 0 Hours and 0 seconds

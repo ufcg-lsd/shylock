@@ -1,1 +1,2 @@
 Volumes:
+master lsd.t1.medium 30 Days, 0 Hours and 0 secondsslave-2 lsd.t1.medium 30 Days, 0 Hours and 0 secondsslave-1 lsd.t1.medium 30 Days, 0 Hours and 0 seconds

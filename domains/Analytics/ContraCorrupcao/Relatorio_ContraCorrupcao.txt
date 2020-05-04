@@ -1,4 +1,5 @@
 Volumes:
-extradois-10042020 250
-datavol-10042020 400
-dockervol-10042020 350
+extradois-10042020 250Gb
+datavol-10042020 400Gb
+dockervol-10042020 350Gb
+analyticsmp2 lsd.t2.xlarge 20 Days, 7 Hours and 56 seconds

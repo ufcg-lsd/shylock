@@ -1,1 +1,2 @@
 Volumes:
+Teste_EVE lsd.t2.large 21 Days, 6 Hours and 51 secondsperf2 lsd.t1.nano 30 Days, 0 Hours and 0 secondsperf1 lsd.t1.nano 30 Days, 0 Hours and 0 secondsperf3 lsd.t1.tiny 30 Days, 0 Hours and 0 seconds

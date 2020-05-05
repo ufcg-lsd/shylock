@@ -86,13 +86,14 @@ for domain_name in data:
 		#print(project["Volume"])
 		
 		temporary_report = open("domains/%s/%s/Relatorio_%s.txt" % (domain_name, project["Name"], project["Name"]),  "w")
+		
 		temporary_report.write("Volumes:\n")
-	
+		temporary_report.write("\nName \tSize\n")
+
 		for volume in project["Volume"]:
-			temporary_report.write("%s %sGb\n" % (volume["Name"], volume["Size"])) 
+			temporary_report.write("%s %sGB\n" % (volume["Name"], volume["Size"])) 
 					
-			#temporary_report.write(project["Volume"])
-		temporary_report.write("\nInstancias\n") 
+		temporary_report.write("\nInstancias:\n") 
 		temporary_report.write("\nName \t Flavor \t Time\n")
 
 
@@ -105,5 +106,10 @@ for domain_name in data:
 
 			temporary_report.write("%s \t%s \t%s\n" % (instance["Name"], instance["Flavor"], time_use ))
 
-					
+		temporary_report.write("\nFlavors:\n") 
+		temporary_report.write("\nName \tVCPUs \tRAM \tDisk\n")
+
+		for flavor in project["Flavors"]:
+			temporary_report.write("%s \t%s \t%s \t%sGB\n" % (flavor["Name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
+
 		temporary_report.close()

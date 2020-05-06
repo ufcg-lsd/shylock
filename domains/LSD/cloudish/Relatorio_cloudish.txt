@@ -1,40 +1,51 @@
 Volumes:
-test-storage-1 10Gb
-ceph-storage2 20Gb
-ceph-storage1 20Gb
-ceph-storage3 20Gb
 
-Instancias
+Name 	Size
+test-storage-1 10GB
+ceph-storage2 20GB
+ceph-storage1 20GB
+ceph-storage3 20GB
+
+Instancias:
 
 Name 	 Flavor 	 Time
-ceph-client-17 	lsd.t1.tiny 	10 Days, 11 Hours and 13 Seconds
-ceph-master-node 	lsd.t1.tiny 	11 Days, 9 Hours and 51 Seconds
-test-ceph-deploy 	lsd.t1.tiny 	8 Days, 11 Hours and 30 Seconds
-ceph-storage-3 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-ceph-storage-1 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+kubeworker5-cloud4 	lsd.t1.medium_cloudish 	27 Days, 4 Hours and 44 Seconds
 ceph-deploy 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-ceph-storage-node-3 	lsd.t1.tiny 	11 Days, 9 Hours and 52 Seconds
-kubeworker2-cloud4 	lsd.t1.medium_cloudish 	29 Days, 0 Hours and 41 Seconds
-test-manel-bench 	lsd.t1.small 	2 Days, 5 Hours and 44 Seconds
-ceph-monitor-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-kubeworker3-cloud4 	lsd.t1.medium_cloudish 	27 Days, 5 Hours and 47 Seconds
-test-ceph-mm 	lsd.t1.tiny 	0 Days, 0 Hours and 32 Seconds
-kubemaster-cloud4-v2 	lsd.t2.large 	0 Days, 2 Hours and 38 Seconds
-ceph-client-18 	lsd.t1.tiny 	10 Days, 11 Hours and 20 Seconds
-ceph-deploy 	lsd.t1.small 	0 Days, 0 Hours and 9 Seconds
-kubeworker4-cloud4 	lsd.t1.medium_cloudish 	27 Days, 5 Hours and 54 Seconds
+test-ceph-deploy 	lsd.t1.tiny 	8 Days, 11 Hours and 30 Seconds
 ceph-mds-1 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-kubemaster-cloud4 	lsd.t2.large 	29 Days, 10 Hours and 3 Seconds
+test-ceph-osd 	lsd.t1.tiny 	8 Days, 12 Hours and 23 Seconds
+ceph-storage-node-3 	lsd.t1.tiny 	11 Days, 9 Hours and 52 Seconds
+ceph-client-18 	lsd.t1.tiny 	10 Days, 11 Hours and 20 Seconds
+ceph-storage-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
 ceph-storage-node-2 	lsd.t1.tiny 	11 Days, 9 Hours and 58 Seconds
 ceph-deploy-node 	lsd.t1.small 	14 Days, 4 Hours and 38 Seconds
-ceph-storage-node-1 	lsd.t1.tiny 	11 Days, 9 Hours and 52 Seconds
-sim-relaxed-opt-2 	lsd.t2.xxlarge 	-3 Days, 6 Hours and 24 Seconds
+ceph-storage-3 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+ceph-master-node 	lsd.t1.tiny 	11 Days, 9 Hours and 51 Seconds
+kubeworker4-cloud4 	lsd.t1.medium_cloudish 	27 Days, 5 Hours and 54 Seconds
+kubemaster-cloud4 	lsd.t2.large 	29 Days, 10 Hours and 3 Seconds
+test-manel-bench 	lsd.t1.small 	2 Days, 5 Hours and 44 Seconds
+ceph-client 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+kubeworker2-cloud4 	lsd.t1.medium_cloudish 	29 Days, 0 Hours and 41 Seconds
+kubeworker3-cloud4 	lsd.t1.medium_cloudish 	27 Days, 5 Hours and 47 Seconds
+ceph-mds-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+test-ceph-mm 	lsd.t1.tiny 	0 Days, 0 Hours and 32 Seconds
 ceph-monitor-1 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-kubeworker5-cloud4 	lsd.t1.medium_cloudish 	27 Days, 4 Hours and 44 Seconds
+sim-relaxed-opt-2 	lsd.t2.xxlarge 	2 Days, 18 Hours and 26 Seconds
+ceph-monitor-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+ceph-storage-1 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+ceph-client-17 	lsd.t1.tiny 	10 Days, 11 Hours and 13 Seconds
+ceph-deploy 	lsd.t1.small 	0 Days, 0 Hours and 9 Seconds
+kubemaster-cloud4-v2 	lsd.t2.large 	0 Days, 2 Hours and 38 Seconds
+ceph-storage-node-1 	lsd.t1.tiny 	11 Days, 9 Hours and 52 Seconds
+kubeworker1-cloud4 	lsd.t1.medium_cloudish 	29 Days, 2 Hours and 25 Seconds
 ceph-monitor-3 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
 test-ceph-mm 	lsd.t1.tiny 	8 Days, 12 Hours and 14 Seconds
-kubeworker1-cloud4 	lsd.t1.medium_cloudish 	29 Days, 2 Hours and 25 Seconds
-ceph-storage-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-ceph-client 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
-test-ceph-osd 	lsd.t1.tiny 	8 Days, 12 Hours and 23 Seconds
-ceph-mds-2 	lsd.t1.tiny 	0 Days, 0 Hours and 0 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.medium_cloudish 	4 	4096 	60GB
+lsd.t1.small 	2 	2048 	60GB
+lsd.t2.large 	4 	8192 	100GB
+lsd.t2.xxlarge 	8 	32768 	100GB
+lsd.t1.tiny 	1 	2048 	40GB

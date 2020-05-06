@@ -1,17 +1,26 @@
 Volumes:
 
-Instancias
+Name 	Size
+
+Instancias:
 
 Name 	 Flavor 	 Time
-Opennebula - MiniOne 	lsd.t2.large 	10 Days, 23 Hours and 57 Seconds
-Opennebula - Default  - Master 	lsd.t1.medium 	4 Days, 18 Hours and 22 Seconds
-Opennebula - Minione 	lsd.t2.xlarge 	0 Days, 3 Hours and 31 Seconds
-Opennebula - MiniOne 5.6 	lsd.t2.large 	0 Days, 1 Hours and 12 Seconds
-Opennebula - Front 	lsd.t1.medium 	16 Days, 9 Hours and 15 Seconds
-Opennebula - Node 	lsd.t1.medium 	16 Days, 9 Hours and 34 Seconds
 Opennebula - MiniOne 	lsd.t2.large 	0 Days, 21 Hours and 53 Seconds
+Opennebula - MiniOne 5.6 	lsd.t2.large 	0 Days, 1 Hours and 12 Seconds
+Opennebula - Node 	lsd.t1.medium 	16 Days, 9 Hours and 34 Seconds
+Opennebula - Default  - Master 	lsd.t1.medium 	4 Days, 18 Hours and 22 Seconds
+Opennebula - MiniOne 	lsd.t2.large 	10 Days, 23 Hours and 57 Seconds
 Opennebula - Minione Two 	lsd.t2.large 	17 Days, 11 Hours and 55 Seconds
-Opennebula - MiniOne 	lsd.t2.large 	0 Days, 0 Hours and 28 Seconds
-Opennebula -  MiniOne 	lsd.t2.large 	0 Days, 19 Hours and 27 Seconds
 Opennebula - Manual - Sunstone 	lsd.t2.large 	5 Days, 22 Hours and 24 Seconds
 Opennebula - MiniOne - 5.6 	lsd.t2.large 	0 Days, 0 Hours and 57 Seconds
+Opennebula - Front 	lsd.t1.medium 	16 Days, 9 Hours and 15 Seconds
+Opennebula -  MiniOne 	lsd.t2.large 	0 Days, 19 Hours and 27 Seconds
+Opennebula - MiniOne 	lsd.t2.large 	0 Days, 0 Hours and 28 Seconds
+Opennebula - Minione 	lsd.t2.xlarge 	0 Days, 3 Hours and 31 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t2.large 	4 	8192 	100GB
+lsd.t2.xlarge 	8 	16384 	100GB
+lsd.t1.medium 	2 	4096 	80GB

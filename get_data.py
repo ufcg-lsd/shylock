@@ -22,19 +22,19 @@ for domain in go("openstack domain list -f value -c Name").split("\n"):
 		
 		project["Volume"] =  volume
 		project["Instances"] = {}
-		projects["Flavors"] = {}
+		project["Flavors"] = {}
 		
 		for instance in json.loads(go("openstack server list --project-domain %s --project %s -f json" % (domain, project["Name"]))):
 			project["Instances"][instance["ID"]] =  instance
 			project["Instances"][instance["ID"]]["Log"]  = go("nova instance-action-list %s" % instance["ID"])
-			project["Flavors"][instance["Flavor"]] = json.loads(go("openstack show flavor %s -f json" % instance["Flavor"]))
+			project["Flavors"][instance["Flavor"]] = json.loads(go("openstack flavor show %s -f json" % instance["Flavor"]))
 			#print("nova instance-action-list %s" % instance["ID"])
 		
 		for deleted_instance in json.loads(go("openstack server list --project-domain %s --project %s --changes-since %s --deleted -f json" % (domain, project["Name"], date))):
 			print(deleted_instance)
 			project["Instances"][deleted_instance["ID"]] = deleted_instance
 			project["Instances"][deleted_instance["ID"]]["Log"] = go("nova instance-action-list %s" % deleted_instance["ID"])
-			project["Flavors"][deleted_instance["Flavor"]] = json.loads(go("openstack show flavor %s -f json" % deleted_instance["Flavor"]))
+			project["Flavors"][deleted_instance["Flavor"]] = json.loads(go("openstack flavor show %s -f json" % deleted_instance["Flavor"]))
 
 		domains[domain][project["Name"]] = project
 				

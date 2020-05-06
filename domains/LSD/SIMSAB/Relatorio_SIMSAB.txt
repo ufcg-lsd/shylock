@@ -1,7 +1,14 @@
 Volumes:
-cluster-lelouch-lljrblrbwrsw-kube_minions-bjcyj6fvxz2a-0-s63onj2fd7j2-docker_volume-wsj4vexv63f7 20Gb
 
-Instancias
+Name 	Size
+cluster-lelouch-lljrblrbwrsw-kube_minions-bjcyj6fvxz2a-0-s63onj2fd7j2-docker_volume-wsj4vexv63f7 20GB
+
+Instancias:
 
 Name 	 Flavor 	 Time
 gateway 	lsd.t1.small 	30 Days, 0 Hours and 0 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.small 	2 	2048 	60GB

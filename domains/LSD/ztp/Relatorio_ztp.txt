@@ -1,16 +1,25 @@
 Volumes:
-docker-registry-bkp 100Gb
-docker-registry 50Gb
 
-Instancias
+Name 	Size
+docker-registry-bkp 100GB
+docker-registry 50GB
+
+Instancias:
 
 Name 	 Flavor 	 Time
-tpm-demo 	lsd.t1.medium 	21 Days, 1 Hours and 33 Seconds
-ztpo-lsd-registry 	lsd.t1.nano 	0 Days, 1 Hours and 24 Seconds
-docker-registry 	lsd.t1.nano 	0 Days, 0 Hours and 55 Seconds
-vm-anderson 	lsd.t1.small 	17 Days, 3 Hours and 32 Seconds
-docker-registry 	lsd.t1.nano 	0 Days, 8 Hours and 9 Seconds
-demo-controller-leo 	lsd.t1.small 	30 Days, 0 Hours and 0 Seconds
-kafka-test 	lsd.t1.medium 	7 Days, 0 Hours and 4 Seconds
-demo-controller 	lsd.t1.small 	30 Days, 0 Hours and 0 Seconds
 docker-registry 	lsd.t1.nano 	24 Days, 1 Hours and 59 Seconds
+docker-registry 	lsd.t1.nano 	0 Days, 0 Hours and 55 Seconds
+demo-controller 	lsd.t1.small 	30 Days, 0 Hours and 0 Seconds
+demo-controller-leo 	lsd.t1.small 	30 Days, 0 Hours and 0 Seconds
+ztpo-lsd-registry 	lsd.t1.nano 	0 Days, 1 Hours and 24 Seconds
+docker-registry 	lsd.t1.nano 	0 Days, 8 Hours and 9 Seconds
+tpm-demo 	lsd.t1.medium 	21 Days, 1 Hours and 33 Seconds
+vm-anderson 	lsd.t1.small 	17 Days, 3 Hours and 32 Seconds
+kafka-test 	lsd.t1.medium 	7 Days, 0 Hours and 4 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.nano 	1 	1024 	40GB
+lsd.t1.small 	2 	2048 	60GB
+lsd.t1.medium 	2 	4096 	80GB

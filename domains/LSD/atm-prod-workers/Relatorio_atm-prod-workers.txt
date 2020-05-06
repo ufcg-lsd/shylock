@@ -1,7 +1,14 @@
 Volumes:
 
-Instancias
+Name 	Size
+
+Instancias:
 
 Name 	 Flavor 	 Time
-userimage-ae8eb35e-fc00-11e9-a7f5-caa7cccc8452 	sgx-fogbow.epc8.medium 	30 Days, 0 Hours and 0 Seconds
 userimage-c0905acc-fc04-11e9-8dd5-fa163e5bdd4c 	sgx-fogbow.epc8.medium 	30 Days, 0 Hours and 0 Seconds
+userimage-ae8eb35e-fc00-11e9-a7f5-caa7cccc8452 	sgx-fogbow.epc8.medium 	30 Days, 0 Hours and 0 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+sgx-fogbow.epc8.medium 	2 	4096 	80GB

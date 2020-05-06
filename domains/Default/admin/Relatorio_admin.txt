@@ -1,79 +1,113 @@
 Volumes:
-Billing-volume-test 1Gb
 
-Instancias
+Name 	Size
+Billing-volume-test 1GB
+
+Instancias:
 
 Name 	 Flavor 	 Time
-teste-6 	maintenance2 	2 Days, 2 Hours and 47 Seconds
-teste-compute22-1 	maintenance 	1 Days, 15 Hours and 11 Seconds
-teste-compute24-1 	maintenance 	1 Days, 14 Hours and 14 Seconds
-teste-compute22-2 	maintenance 	0 Days, 0 Hours and 46 Seconds
-teste-compute25-2 	maintenance 	1 Days, 14 Hours and 43 Seconds
-teste-10 	maintenance2 	2 Days, 2 Hours and 42 Seconds
-teste-3 	maintenance2 	2 Days, 2 Hours and 56 Seconds
-teste-compute25-3 	maintenance 	1 Days, 14 Hours and 34 Seconds
-teste-compute22-2 	maintenance 	1 Days, 15 Hours and 6 Seconds
-teste-compute23-6 	maintenance 	1 Days, 14 Hours and 59 Seconds
 teste-compute25-7 	maintenance 	1 Days, 14 Hours and 26 Seconds
-teste-compute23-9 	maintenance 	1 Days, 14 Hours and 54 Seconds
-Billing-test-2 	rally.t1.medium 	0 Days, 23 Hours and 35 Seconds
-teste-compute24-9 	maintenance 	1 Days, 14 Hours and 57 Seconds
-teste-compute23-7 	maintenance 	1 Days, 14 Hours and 57 Seconds
-teste-compute24-10 	maintenance 	1 Days, 14 Hours and 59 Seconds
-teste-compute23-8 	maintenance 	1 Days, 14 Hours and 56 Seconds
-teste-compute24-7 	maintenance 	1 Days, 14 Hours and 2 Seconds
-teste-compute24-6 	maintenance 	1 Days, 14 Hours and 58 Seconds
-teste-7 	maintenance2 	2 Days, 2 Hours and 49 Seconds
-teste-compute23-1 	maintenance 	1 Days, 14 Hours and 59 Seconds
-teste-compute22-10 	maintenance 	0 Days, 0 Hours and 44 Seconds
-teste-compute22-20 	maintenance 	0 Days, 0 Hours and 3 Seconds
-teste-compute22-17 	maintenance 	0 Days, 0 Hours and 7 Seconds
-teste-compute22-14 	maintenance 	0 Days, 0 Hours and 15 Seconds
-teste-compute22-4 	maintenance 	0 Days, 0 Hours and 55 Seconds
-teste-5 	maintenance2 	2 Days, 2 Hours and 58 Seconds
-teste-9 	maintenance2 	2 Days, 2 Hours and 48 Seconds
 teste-compute22-16 	maintenance 	0 Days, 0 Hours and 10 Seconds
-teste-4 	maintenance2 	2 Days, 2 Hours and 57 Seconds
-teste-compute24-4 	maintenance 	1 Days, 14 Hours and 2 Seconds
-teste-8 	maintenance2 	2 Days, 2 Hours and 42 Seconds
-teste-compute24-5 	maintenance 	1 Days, 14 Hours and 4 Seconds
-teste-compute25-8 	maintenance 	1 Days, 14 Hours and 28 Seconds
-teste-compute24-2 	maintenance 	1 Days, 14 Hours and 12 Seconds
-teste-compute23-3 	maintenance 	1 Days, 14 Hours and 3 Seconds
-teste-compute22-5 	maintenance 	0 Days, 0 Hours and 53 Seconds
-teste-compute25-5 	maintenance 	1 Days, 14 Hours and 26 Seconds
-teste-compute23-5 	maintenance 	1 Days, 14 Hours and 58 Seconds
+teste-compute22-14 	maintenance 	0 Days, 0 Hours and 15 Seconds
+teste-sgxcompute6--3 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-sgxcompute6--4 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
 teste-compute23-4 	maintenance 	1 Days, 14 Hours and 2 Seconds
-teste-compute22-7 	maintenance 	1 Days, 15 Hours and 52 Seconds
-teste-compute22-9 	maintenance 	0 Days, 0 Hours and 43 Seconds
-teste-compute22-1 	maintenance 	0 Days, 0 Hours and 56 Seconds
-teste-compute22-12 	maintenance 	0 Days, 0 Hours and 21 Seconds
-teste-compute22-3 	maintenance 	1 Days, 15 Hours and 4 Seconds
-Billing-test 	rally.t1.medium 	2 Days, 20 Hours and 56 Seconds
-teste-compute22-13 	maintenance 	0 Days, 0 Hours and 19 Seconds
-teste-compute22-15 	maintenance 	0 Days, 0 Hours and 10 Seconds
-teste-compute25-1 	maintenance 	1 Days, 14 Hours and 40 Seconds
-teste-compute24-3 	maintenance 	1 Days, 14 Hours and 8 Seconds
-teste-compute22-8 	maintenance 	0 Days, 0 Hours and 43 Seconds
-teste-2 	maintenance2 	2 Days, 2 Hours and 1 Seconds
-teste-compute25-9 	maintenance 	1 Days, 14 Hours and 26 Seconds
-teste-compute23-2 	maintenance 	1 Days, 14 Hours and 4 Seconds
+teste-compute22-4 	maintenance 	0 Days, 0 Hours and 55 Seconds
 teste-compute22-7 	maintenance 	0 Days, 0 Hours and 50 Seconds
-teste-compute25-4 	maintenance 	1 Days, 14 Hours and 41 Seconds
-teste-compute24 	maintenance 	0 Days, 0 Hours and 33 Seconds
-teste-compute22-8 	maintenance 	1 Days, 15 Hours and 53 Seconds
-teste-compute22-6 	maintenance 	0 Days, 0 Hours and 55 Seconds
-teste-compute22-18 	maintenance 	0 Days, 0 Hours and 2 Seconds
-teste-compute22-5 	maintenance 	1 Days, 15 Hours and 56 Seconds
-teste-compute22-11 	maintenance 	0 Days, 0 Hours and 25 Seconds
+teste-compute23-6 	maintenance 	1 Days, 14 Hours and 59 Seconds
 teste-compute22-9 	maintenance 	1 Days, 15 Hours and 50 Seconds
-teste-compute22-10 	maintenance 	1 Days, 15 Hours and 51 Seconds
-teste-1 	maintenance2 	2 Days, 2 Hours and 0 Seconds
+teste-compute24-9 	maintenance 	1 Days, 14 Hours and 57 Seconds
+teste-compute22-5 	maintenance 	0 Days, 0 Hours and 53 Seconds
+teste-compute-sgx-2 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-sgxcompute7-1 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
 teste-compute22-6 	maintenance 	1 Days, 15 Hours and 56 Seconds
-teste-compute25-6 	maintenance 	1 Days, 14 Hours and 37 Seconds
-teste-compute22-4 	maintenance 	1 Days, 15 Hours and 58 Seconds
-teste-compute23-10 	maintenance 	1 Days, 14 Hours and 53 Seconds
+teste-compute24-1 	maintenance 	1 Days, 14 Hours and 14 Seconds
+teste-3 	maintenance2 	2 Days, 2 Hours and 56 Seconds
+teste-sgxcompute6--1 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-compute-sgx-9 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+test-c5-compute5-sgx-1 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-9 	maintenance 	0 Days, 0 Hours and 43 Seconds
+teste-compute22-15 	maintenance 	0 Days, 0 Hours and 10 Seconds
+teste-compute24-5 	maintenance 	1 Days, 14 Hours and 4 Seconds
+teste-compute25-3 	maintenance 	1 Days, 14 Hours and 34 Seconds
+teste-compute22-8 	maintenance 	0 Days, 0 Hours and 43 Seconds
+teste-compute23-3 	maintenance 	1 Days, 14 Hours and 3 Seconds
+teste-compute23-1 	maintenance 	1 Days, 14 Hours and 59 Seconds
+teste-compute22-5 	maintenance 	1 Days, 15 Hours and 56 Seconds
+teste-compute22-12 	maintenance 	0 Days, 0 Hours and 21 Seconds
+Billing-test-2 	rally.t1.medium 	0 Days, 23 Hours and 35 Seconds
+teste-compute-sgx-5 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-7 	maintenance 	1 Days, 15 Hours and 52 Seconds
+teste-sgxcompute7-5 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
 teste-compute24-8 	maintenance 	1 Days, 14 Hours and 2 Seconds
-teste-compute22-19 	maintenance 	0 Days, 0 Hours and 1 Seconds
+teste-compute22-13 	maintenance 	0 Days, 0 Hours and 19 Seconds
+teste-compute-sgx-7 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-10 	maintenance2 	2 Days, 2 Hours and 42 Seconds
+teste-compute24-2 	maintenance 	1 Days, 14 Hours and 12 Seconds
+teste-compute25-4 	maintenance 	1 Days, 14 Hours and 41 Seconds
+teste-compute25-2 	maintenance 	1 Days, 14 Hours and 43 Seconds
+teste-compute22-1 	maintenance 	1 Days, 15 Hours and 11 Seconds
+teste-compute-sgx-4 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-sgxcompute7-3 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-compute23-7 	maintenance 	1 Days, 14 Hours and 57 Seconds
+teste-1 	maintenance2 	2 Days, 2 Hours and 0 Seconds
+teste-compute25-8 	maintenance 	1 Days, 14 Hours and 28 Seconds
+teste-compute24-10 	maintenance 	1 Days, 14 Hours and 59 Seconds
+teste-compute-sgx-3 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
 teste-compute22-3 	maintenance 	0 Days, 0 Hours and 57 Seconds
+teste-compute23-10 	maintenance 	1 Days, 14 Hours and 53 Seconds
+teste-compute24-3 	maintenance 	1 Days, 14 Hours and 8 Seconds
+teste-compute22-6 	maintenance 	0 Days, 0 Hours and 55 Seconds
+teste-compute-sgx-8 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-4 	maintenance 	1 Days, 15 Hours and 58 Seconds
+Billing-test 	rally.t1.medium 	2 Days, 20 Hours and 56 Seconds
+teste-compute22-17 	maintenance 	0 Days, 0 Hours and 7 Seconds
+teste-7 	maintenance2 	2 Days, 2 Hours and 49 Seconds
+teste-compute23-8 	maintenance 	1 Days, 14 Hours and 56 Seconds
+teste-compute22-10 	maintenance 	0 Days, 0 Hours and 44 Seconds
+tes-c5sgxcompute5-1 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-6 	maintenance2 	2 Days, 2 Hours and 47 Seconds
+teste-8 	maintenance2 	2 Days, 2 Hours and 42 Seconds
+teste-compute-sgx-10 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-2 	maintenance 	0 Days, 0 Hours and 46 Seconds
+teste-compute22-11 	maintenance 	0 Days, 0 Hours and 25 Seconds
+teste-5 	maintenance2 	2 Days, 2 Hours and 58 Seconds
+teste-compute22-19 	maintenance 	0 Days, 0 Hours and 1 Seconds
+teste-compute25-6 	maintenance 	1 Days, 14 Hours and 37 Seconds
+teste-compute22-2 	maintenance 	1 Days, 15 Hours and 6 Seconds
+teste-compute-sgx-6 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute24-7 	maintenance 	1 Days, 14 Hours and 2 Seconds
+teste-compute22-18 	maintenance 	0 Days, 0 Hours and 2 Seconds
+teste-compute24-4 	maintenance 	1 Days, 14 Hours and 2 Seconds
+teste-compute25-9 	maintenance 	1 Days, 14 Hours and 26 Seconds
+teste-compute-sgx-1 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute24 	maintenance 	0 Days, 0 Hours and 33 Seconds
+teste-compute5-sgx-1 	teste-sgx.epc8.tiny 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-8 	maintenance 	1 Days, 15 Hours and 53 Seconds
+teste-compute25-5 	maintenance 	1 Days, 14 Hours and 26 Seconds
+teste-compute22-1 	maintenance 	0 Days, 0 Hours and 56 Seconds
+teste-sgxcompute7-4 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-20 	maintenance 	0 Days, 0 Hours and 3 Seconds
+teste-compute22-3 	maintenance 	1 Days, 15 Hours and 4 Seconds
+teste-2 	maintenance2 	2 Days, 2 Hours and 1 Seconds
+teste-compute23-2 	maintenance 	1 Days, 14 Hours and 4 Seconds
+teste-sgxcompute7-2 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-sgxcompute6--2 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-9 	maintenance2 	2 Days, 2 Hours and 48 Seconds
 teste-compute25-10 	maintenance 	1 Days, 14 Hours and 23 Seconds
+teste-sgxcompute6--5 	maintenance-sgx 	0 Days, 0 Hours and 0 Seconds
+teste-compute22-10 	maintenance 	1 Days, 15 Hours and 51 Seconds
+teste-compute24-6 	maintenance 	1 Days, 14 Hours and 58 Seconds
+teste-4 	maintenance2 	2 Days, 2 Hours and 57 Seconds
+teste-compute23-9 	maintenance 	1 Days, 14 Hours and 54 Seconds
+teste-compute25-1 	maintenance 	1 Days, 14 Hours and 40 Seconds
+teste-compute23-5 	maintenance 	1 Days, 14 Hours and 58 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+rally.t1.medium 	2 	2048 	5GB
+maintenance2 	4 	4096 	40GB
+maintenance 	2 	2048 	10GB
+teste-sgx.epc8.tiny 	1 	1024 	20GB
+maintenance-sgx 	1 	2048 	20GB

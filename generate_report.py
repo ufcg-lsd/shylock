@@ -40,7 +40,7 @@ def total_time(log_list):
 		
 	on = False
 	init = False
-
+	
 	for line in log_list:
 		if datetime.fromisoformat( line[4]) >= date2:
 			break
@@ -48,14 +48,14 @@ def total_time(log_list):
 		if not init:
 			if last >= date1:
 				if on:
-					total += (date1 - last)
+					total += (last - date1)
 				
 				init = True
 		
 		else:
 			if on:
 				total += (datetime.fromisoformat(line[4]) - last)
-			
+				
 		if line[0] in to_on_states:
 			on = True
 
@@ -66,9 +66,10 @@ def total_time(log_list):
 	
 	if (not init) and on:
 		total += (date2 - date1)
+	
 	elif on:
 		total += (date2 - last)
-
+	
 	return total
 		
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
@@ -98,7 +99,7 @@ for domain_name in data:
 
 
 		for instance in project["Instances"].values():
-			print(instance["ID"],)
+			print(instance["ID"])
 			
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
@@ -109,7 +110,7 @@ for domain_name in data:
 		temporary_report.write("\nFlavors:\n") 
 		temporary_report.write("\nName \tVCPUs \tRAM \tDisk\n")
 
-		for flavor in project["Flavors"]:
-			temporary_report.write("%s \t%s \t%s \t%sGB\n" % (flavor["Name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
+		for flavor in project["Flavors"].values():
+			temporary_report.write("%s \t%s \t%s \t%sGB\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
 
 		temporary_report.close()

@@ -1,18 +1,28 @@
 Volumes:
 
-Instancias
+Name 	Size
+
+Instancias:
 
 Name 	 Flavor 	 Time
-atm-test-site2 	lsd.t2.large 	-8 Days, 8 Hours and 48 Seconds
-atm-test-site1 	lsd.t1.medium 	-13 Days, 23 Hours and 8 Seconds
-internal-atm-prod 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
-services-commune 	lsd.t1.medium 	-30 Days, 2 Hours and 27 Seconds
-cloud-broker 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
-dmz-atm-prod 	lsd.t1.tiny 	30 Days, 0 Hours and 0 Seconds
-cloudburst 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
-xmpp-atm-test-site3 	lsd.t1.tiny 	-20 Days, 7 Hours and 52 Seconds
-vlanId-service 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+xmpp-atm-test-site1 	lsd.t1.tiny 	22 Days, 8 Hours and 5 Seconds
 xmpp-services-commune 	lsd.t1.tiny 	30 Days, 0 Hours and 0 Seconds
-xmpp-atm-test-site2 	lsd.t1.tiny 	-2 Days, 19 Hours and 2 Seconds
-xmpp-atm-test-site1 	lsd.t1.tiny 	-20 Days, 7 Hours and 21 Seconds
-atm-test-site3 	lsd.t2.large 	-20 Days, 7 Hours and 53 Seconds
+services-commune 	lsd.t1.medium 	29 Days, 23 Hours and 21 Seconds
+internal-atm-prod 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+xmpp-atm-test-site2 	lsd.t1.tiny 	27 Days, 23 Hours and 48 Seconds
+atm-test-site1 	lsd.t1.medium 	29 Days, 23 Hours and 54 Seconds
+cloudburst 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+atm-test-site2 	lsd.t2.large 	25 Days, 13 Hours and 34 Seconds
+cloud-broker 	lsd.t2.large 	30 Days, 0 Hours and 0 Seconds
+atm-test-site3 	lsd.t2.large 	22 Days, 8 Hours and 35 Seconds
+xmpp-atm-test-site3 	lsd.t1.tiny 	22 Days, 8 Hours and 30 Seconds
+vlanId-service 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
+dmz-atm-prod 	lsd.t1.tiny 	30 Days, 0 Hours and 0 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.nano 	1 	1024 	40GB
+lsd.t1.tiny 	1 	2048 	40GB
+lsd.t2.large 	4 	8192 	100GB
+lsd.t1.medium 	2 	4096 	80GB

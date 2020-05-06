@@ -1,8 +1,14 @@
 Volumes:
-minion2 10Gb
-minion1 10Gb
-master 10Gb
 
-Instancias
+Name 	Size
+minion2 10GB
+minion1 10GB
+master 10GB
+
+Instancias:
 
 Name 	 Flavor 	 Time
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk

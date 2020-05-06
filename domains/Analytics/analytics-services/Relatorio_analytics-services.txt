@@ -1,9 +1,17 @@
 Volumes:
 
-Instancias
+Name 	Size
+
+Instancias:
 
 Name 	 Flavor 	 Time
-analytics-server 	lsd.t2.large 	19 Days, 21 Hours and 19 Seconds
-opencpu-cursos-ufcg 	lsd.t2.large 	20 Days, 2 Hours and 18 Seconds
-mysql-cursos-ufcg 	lsd.t1.medium 	20 Days, 2 Hours and 58 Seconds
 analytics-server 	lsd.t2.large 	0 Days, 4 Hours and 39 Seconds
+opencpu-cursos-ufcg 	lsd.t2.large 	20 Days, 2 Hours and 18 Seconds
+analytics-server 	lsd.t2.large 	19 Days, 21 Hours and 19 Seconds
+mysql-cursos-ufcg 	lsd.t1.medium 	20 Days, 2 Hours and 58 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.medium 	2 	4096 	80GB
+lsd.t2.large 	4 	8192 	100GB

@@ -1,9 +1,18 @@
 Volumes:
 
-Instancias
+Name 	Size
+
+Instancias:
 
 Name 	 Flavor 	 Time
-Teste_EVE 	lsd.t2.large 	21 Days, 6 Hours and 51 Seconds
 perf2 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
 perf1 	lsd.t1.nano 	30 Days, 0 Hours and 0 Seconds
 perf3 	lsd.t1.tiny 	30 Days, 0 Hours and 0 Seconds
+Teste_EVE 	lsd.t2.large 	21 Days, 6 Hours and 51 Seconds
+
+Flavors:
+
+Name 	VCPUs 	RAM 	Disk
+lsd.t1.nano 	1 	1024 	40GB
+lsd.t1.tiny 	1 	2048 	40GB
+lsd.t2.large 	4 	8192 	100GB

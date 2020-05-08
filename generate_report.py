@@ -21,7 +21,7 @@ def days_hours_minutes(total):
 	days = total.days
 	minutes = int(total.seconds/3600)
 	seconds = total.seconds%60
-	return  "%s Days, %s Hours and %s Seconds" % (days, minutes, seconds)
+	return  "%s Dias, %s Horas e %s Segundos" % (days, minutes, seconds)
 
 #this function is to format the instance's logs because the nova cli does not format
 def format_log(log):

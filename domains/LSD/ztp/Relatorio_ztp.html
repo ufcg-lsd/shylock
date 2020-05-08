@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing</title>
+<link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
+<link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header class="nav">
+        <img src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"  class="nav" />
+        
+    </header>
+    <div class="project">
+        <h1 class="help-text">Relatório utilização Cloud LSD - 04/2020-LSD/ztp</h1>
+    </div>
+    <div class="page-header">
+        <h1 class="help-text">Volumes</h1>
+    </div>
+    <table>
+        <tr>  <th>Nome</th> <th>Tamanho</th> </tr>
+		<tr> <td>docker-registry-bkp</td> <td>100GB</td> </tr>
+		<tr> <td>docker-registry</td> <td>50GB</td> </tr>
+
+    </table>
+
+    <div class="page-header">
+        <h1 class="help-text">Instâncias</h1>
+    </div>
+
+    <table>
+        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> </tr>
+		<tr> <td>docker-registry</td> <td>lsd.t1.nano</td> <td>24 Days, 1 Hours and 59 Seconds</td> </tr>
+		<tr> <td>docker-registry</td> <td>lsd.t1.nano</td> <td>0 Days, 0 Hours and 55 Seconds</td> </tr>
+		<tr> <td>demo-controller</td> <td>lsd.t1.small</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>demo-controller-leo</td> <td>lsd.t1.small</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>ztpo-lsd-registry</td> <td>lsd.t1.nano</td> <td>0 Days, 1 Hours and 24 Seconds</td> </tr>
+		<tr> <td>docker-registry</td> <td>lsd.t1.nano</td> <td>0 Days, 8 Hours and 9 Seconds</td> </tr>
+		<tr> <td>tpm-demo</td> <td>lsd.t1.medium</td> <td>21 Days, 1 Hours and 33 Seconds</td> </tr>
+		<tr> <td>vm-anderson</td> <td>lsd.t1.small</td> <td>17 Days, 3 Hours and 32 Seconds</td> </tr>
+		<tr> <td>kafka-test</td> <td>lsd.t1.medium</td> <td>7 Days, 0 Hours and 4 Seconds</td> </tr>
+
+    </table>
+    
+    <div class="page-header">
+        <h1 class="help-text">Flavors</h1>
+    </div>
+
+    <table>
+        <tr>  <th>Nome</th> <th>VCPUS</th> <th>RAM</th> <th>Disco</th> </tr>
+		<tr> <td>lsd.t1.nano</td> <td>1</td> <td>1024MB</td> <td>40GB</td> </tr>
+		<tr> <td>lsd.t1.small</td> <td>2</td> <td>2048MB</td> <td>60GB</td> </tr>
+		<tr> <td>lsd.t1.medium</td> <td>2</td> <td>4096MB</td> <td>80GB</td> </tr>
+
+    </table>
+
+</body>
+
+</html>

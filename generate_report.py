@@ -1,4 +1,4 @@
-#!bin/bin/python3.7
+#!bin/bin/python3.5
 
 from datetime import datetime, timedelta
 import json
@@ -6,6 +6,11 @@ import json
 #reading the date
 date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
 date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
+
+#reading the html template
+html_file = open("templates/report_template.html", "r")
+html = html_file.read()
+html_file.close()
 
 #read the json file
 with open("json_file.json", "r") as json_file:
@@ -40,7 +45,7 @@ def total_time(log_list):
 		
 	on = False
 	init = False
-	
+
 	for line in log_list:
 		if datetime.fromisoformat( line[4]) >= date2:
 			break
@@ -48,14 +53,14 @@ def total_time(log_list):
 		if not init:
 			if last >= date1:
 				if on:
-					total += (last - date1)
+					total += (date1 - last)
 				
 				init = True
 		
 		else:
 			if on:
 				total += (datetime.fromisoformat(line[4]) - last)
-				
+			
 		if line[0] in to_on_states:
 			on = True
 
@@ -66,10 +71,9 @@ def total_time(log_list):
 	
 	if (not init) and on:
 		total += (date2 - date1)
-	
 	elif on:
 		total += (date2 - last)
-	
+
 	return total
 		
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
@@ -86,31 +90,32 @@ for domain_name in data:
 	for project in domain.values():
 		#print(project["Volume"])
 		
-		temporary_report = open("domains/%s/%s/Relatorio_%s.txt" % (domain_name, project["Name"], project["Name"]),  "w")
-		
-		temporary_report.write("Volumes:\n")
-		temporary_report.write("\nName \tSize\n")
+		report = open("domains/%s/%s/Relatorio_%s.html" % (domain_name, project["Name"], project["Name"]),  "w")
+		relatorio = html
+		relatorio = relatorio.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
 
+		volumes = ""
 		for volume in project["Volume"]:
-			temporary_report.write("%s %sGB\n" % (volume["Name"], volume["Size"])) 
-					
-		temporary_report.write("\nInstancias:\n") 
-		temporary_report.write("\nName \t Flavor \t Time\n")
-
-
+			volumes += ("\t\t<tr> <td>%s</td> <td>%sGB</td> </tr>\n" % (volume["Name"], volume["Size"]))
+		
+		relatorio = relatorio.replace("$vol$", volumes)
+			
+		instances = ""
 		for instance in project["Instances"].values():
-			print(instance["ID"])
+			print(instance["ID"],)
 			
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
 			print(time_use)
 
-			temporary_report.write("%s \t%s \t%s\n" % (instance["Name"], instance["Flavor"], time_use ))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use ))
 
-		temporary_report.write("\nFlavors:\n") 
-		temporary_report.write("\nName \tVCPUs \tRAM \tDisk\n")
+		relatorio = relatorio.replace("$inst$", instances)
 
+		flavors = ""
 		for flavor in project["Flavors"].values():
-			temporary_report.write("%s \t%s \t%s \t%sGB\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
+			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
 
-		temporary_report.close()
+		relatorio = relatorio.replace("$flav$", flavors)
+		report.write(relatorio)
+		report.close()

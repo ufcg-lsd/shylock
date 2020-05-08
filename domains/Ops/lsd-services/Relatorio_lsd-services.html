@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing</title>
+<link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
+<link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header class="nav">
+        <img src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"  class="nav" />
+        
+    </header>
+    <div class="project">
+        <h1 class="help-text">Relatório utilização Cloud LSD - 04/2020-Ops/lsd-services</h1>
+    </div>
+    <div class="page-header">
+        <h1 class="help-text">Volumes</h1>
+    </div>
+    <table>
+        <tr>  <th>Nome</th> <th>Tamanho</th> </tr>
+		<tr> <td>docker-volume</td> <td>80GB</td> </tr>
+		<tr> <td>owncloud-data</td> <td>500GB</td> </tr>
+		<tr> <td>gitlab-registry</td> <td>200GB</td> </tr>
+		<tr> <td>gitlab-data</td> <td>300GB</td> </tr>
+		<tr> <td>gitlab-os</td> <td>160GB</td> </tr>
+		<tr> <td>racktables_bd</td> <td>5GB</td> </tr>
+
+    </table>
+
+    <div class="page-header">
+        <h1 class="help-text">Instâncias</h1>
+    </div>
+
+    <table>
+        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> </tr>
+		<tr> <td>test-gitlab</td> <td>ops.s1.gitlab</td> <td>0 Days, 1 Hours and 41 Seconds</td> </tr>
+		<tr> <td>vault</td> <td>ops.s1.small</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>otrs-srv-prod</td> <td>ops.s1.wiki</td> <td>13 Days, 4 Hours and 47 Seconds</td> </tr>
+		<tr> <td>paste-lsd</td> <td>ops.s1.small</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>etherpad</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>windows8.1-Andrey</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>wiki-suporte</td> <td>ops.s1.wiki</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>web-srv-sites</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>unifi-controller</td> <td>ops.s1.small</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>web-srv-02</td> <td>ops.s1.wiki</td> <td>-10 Days, 17 Hours and 47 Seconds</td> </tr>
+		<tr> <td>otrs-srv</td> <td>ops.s1.wiki</td> <td>0 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>srv-giga-rebuild-01</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>racktables</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>oneview3-prod</td> <td>ops.s1.oneview3-prod</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>web-srv-04</td> <td>ops.s1.wiki</td> <td>-10 Days, 17 Hours and 39 Seconds</td> </tr>
+		<tr> <td>test-gitlab</td> <td>ops.s1.gitlab</td> <td>0 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>mattermost</td> <td>ops.s1.large</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>gitlab</td> <td>ops.s1.gitlab</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>owncloud</td> <td>ops.s1.medium</td> <td>30 Days, 0 Hours and 0 Seconds</td> </tr>
+		<tr> <td>test-gitlab</td> <td>ops.s1.gitlab</td> <td>0 Days, 2 Hours and 17 Seconds</td> </tr>
+
+    </table>
+    
+    <div class="page-header">
+        <h1 class="help-text">Flavors</h1>
+    </div>
+
+    <table>
+        <tr>  <th>Nome</th> <th>VCPUS</th> <th>RAM</th> <th>Disco</th> </tr>
+		<tr> <td>ops.s1.small</td> <td>1</td> <td>2048MB</td> <td>40GB</td> </tr>
+		<tr> <td>ops.s1.gitlab</td> <td>4</td> <td>8192MB</td> <td>160GB</td> </tr>
+		<tr> <td>ops.s1.oneview3-prod</td> <td>8</td> <td>16384MB</td> <td>160GB</td> </tr>
+		<tr> <td>ops.s1.medium</td> <td>2</td> <td>4096MB</td> <td>60GB</td> </tr>
+		<tr> <td>ops.s1.wiki</td> <td>2</td> <td>4096MB</td> <td>80GB</td> </tr>
+		<tr> <td>ops.s1.large</td> <td>4</td> <td>8192MB</td> <td>80GB</td> </tr>
+
+    </table>
+
+</body>
+
+</html>

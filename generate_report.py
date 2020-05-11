@@ -7,10 +7,16 @@ import json
 date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
 date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
 
-#reading the html template
-html_file = open("templates/report_template.html", "r")
-html = html_file.read()
-html_file.close()
+#reading the html body template and full template
+html_body = open("templates/body_template.txt", "r").read()
+html_full = open("templates/report_template.html", "r").read()
+
+#reading the sponsors list
+project_sponsors = open("templates/full_sponsors.csv", "r").read().strip().replace(" ", "").split("\n")[1:-1]
+project_sponsors = {line.split(",")[0]:line.split(",")[-2] for line in project_sponsors}
+print(project_sponsors)
+sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
+sponsors["joabsilva@lsd.ufcg.edu.br"] = ""
 
 #read the json file
 with open("json_file.json", "r") as json_file:
@@ -90,15 +96,14 @@ for domain_name in data:
 	for project in domain.values():
 		#print(project["Volume"])
 		
-		report = open("domains/%s/%s/Relatorio_%s.html" % (domain_name, project["Name"], project["Name"]),  "w")
-		relatorio = html
-		relatorio = relatorio.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
+		body = html_body
+		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
 			volumes += ("\t\t<tr> <td>%s</td> <td>%sGB</td> </tr>\n" % (volume["Name"], volume["Size"]))
 		
-		relatorio = relatorio.replace("$vol$", volumes)
+		body = body.replace("$vol$", volumes)
 			
 		instances = ""
 		for instance in project["Instances"].values():
@@ -110,12 +115,21 @@ for domain_name in data:
 
 			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use ))
 
-		relatorio = relatorio.replace("$inst$", instances)
+		body = body.replace("$inst$", instances)
 
 		flavors = ""
 		for flavor in project["Flavors"].values():
 			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
 
-		relatorio = relatorio.replace("$flav$", flavors)
-		report.write(relatorio)
-		report.close()
+		body = body.replace("$flav$", flavors)
+		try:
+
+			sponsors[project_sponsors[project["Name"]]] += body
+		except KeyError:
+			sponsors["joabsilva@lsd.ufcg.edu.br"] += body
+
+		
+print(sponsors.keys())
+for sponsor in sponsors:
+	report = open("reports/%s.html" % sponsor, "w")
+	report.write(html_full.replace("$body$", sponsors[sponsor]))

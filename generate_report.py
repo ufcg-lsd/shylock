@@ -59,7 +59,7 @@ def total_time(log_list):
 		if not init:
 			if last >= date1:
 				if on:
-					total += (date1 - last)
+					total += (last - date1)
 				
 				init = True
 		

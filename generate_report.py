@@ -1,4 +1,4 @@
-#!bin/bin/python3.7
+#!/usr/bin/env python3.7
 
 from datetime import datetime, timedelta
 import json
@@ -13,7 +13,7 @@ html_full = open("templates/report_template.html", "r").read()
 
 #reading the sponsors list
 project_sponsors = open("templates/full_sponsors.csv", "r").read().strip().replace(" ", "").split("\n")[1:-1]
-project_sponsors = {line.split(",")[0]:line.split(",")[-2] for line in project_sponsors}
+project_sponsors = {line.split(",")[0]:line.split(",")[13] for line in project_sponsors}
 print(project_sponsors)
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file

@@ -5,7 +5,7 @@ from subprocess import getoutput as go
 date = input("Year-Month-Day")
 
 go("mkdir reports")
-go("mkdir reports/reports-%s-%s" % (date.split("-")[1], date.split("-")[0]))
+go("mkdir reports/%s-%s" % (date.split("-")[1], date.split("-")[0]))
 
 domains = {}
 

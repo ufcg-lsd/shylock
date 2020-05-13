@@ -140,8 +140,8 @@ for domain_name in data:
 print(sponsors.keys())
 for sponsor in sponsors:
 	if date1.month > 9:
-		report = open("reports/reports-%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
+		report = open("reports/%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 
 	else:
-		report = open("reports/reports-0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
+		report = open("reports/0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 	report.write(html_full.replace("$body$", sponsors[sponsor]))

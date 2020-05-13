@@ -4,7 +4,8 @@ from subprocess import getoutput as go
 #Year-Month-Day
 date = input("Year-Month-Day")
 
-go("mkdir reports-%s-%s" % (date.split("-")[1], date.split("-")[0]))
+go("mkdir reports")
+go("mkdir reports/reports-%s-%s" % (date.split("-")[1], date.split("-")[0]))
 
 domains = {}
 

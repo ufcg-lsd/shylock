@@ -1,4 +1,4 @@
-#!bin/bin/python3.5
+#!bin/bin/python3.7
 
 from datetime import datetime, timedelta
 import json
@@ -16,7 +16,7 @@ project_sponsors = open("templates/full_sponsors.csv", "r").read().strip().repla
 project_sponsors = {line.split(",")[0]:line.split(",")[-2] for line in project_sponsors}
 print(project_sponsors)
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
-sponsors["joabsilva@lsd.ufcg.edu.br"] = ""
+sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
 #read the json file
 with open("json_file.json", "r") as json_file:
@@ -37,18 +37,27 @@ def format_log(log):
 
 #this function is to calculate the total time of instance use
 def total_time(log_list):
+
+	#first we need an accumulator
 	total = timedelta(days = 0)
 
+	#here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
 	to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'suspend', 'unrescue', 'unshelve']
 	to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'error']
 	
+	'''
+	the algorithm here is to go through all the actions taken by the instance and always look back
+	to see if we need to increase the time of using the instance, if the instance was created 
+	before the initial consultation date and is turned on when the initial date is exceeded, we will
+	also need to increase the time from this date until the first action taken within the consulted
+	time interval or until the end date of the consultation
+	'''
 	try:
 		last = datetime.fromisoformat(log_list[0][4])
 	
 	except IndexError:
-		#print("-------------------index error------------------------")
 		return total
-		
+
 	on = False
 	init = False
 
@@ -94,7 +103,6 @@ for domain_name in data:
 	domain = data[domain_name]
 	
 	for project in domain.values():
-		#print(project["Volume"])
 		
 		body = html_body
 		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))

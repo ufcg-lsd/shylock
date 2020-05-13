@@ -1,21 +1,18 @@
 import json
 from subprocess import getoutput as go
 
-go("mkdir domains")
-
 #Year-Month-Day
 date = input("Year-Month-Day")
+
+go("mkdir reports-%s-%s" % (date.split("-")[1], date.split("-")[0]))
 
 domains = {}
 
 for domain in go("openstack domain list -f value -c Name").split("\n"):
 
-	go("mkdir domains/%s" % domain)
 	domains[domain] = {}
 	for project in json.loads(go("openstack  project list --domain %s -f json" % domain)):
 		
-		go("mkdir domains/%s/%s" % (domain, project["Name"]))		
-
 		volume = json.loads(go("openstack volume list --project %s -f json" % project["Name"]))
 
 		#print("openstack volume list --project %s -f json" % project["Name"])

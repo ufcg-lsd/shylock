@@ -16,11 +16,14 @@ html_full = report_template.read()
 report_template.close()
 
 name_to_idx = {
-	#here are the indexes of the sponsors
-	"project_colum" : 0, "sponsor" : 13,
+	#indexes of the fields from the sponsors file
+	"project_colum" : 0,
+	"sponsor" : 13,
 	
-	#here are the indexes of the logs
-	"action" : 0, "date" : 4,  "first_line" : 0
+	#here are the named indexes of the logs
+	"action" : 0, 
+	"date" : 4,  
+	"first_line" : 0
 }
 
 #reading the sponsors list

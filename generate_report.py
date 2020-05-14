@@ -8,11 +8,15 @@ date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
 date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
 
 #reading the html body template and full template
-html_body = open("templates/body_template.txt", "r").read()
-html_full = open("templates/report_template.html", "r").read()
+body_template = open("templates/body_template.txt", "r")
+html_body = body_template.read()
+report_template = open("templates/report_template.html", "r")
+html_full = report_template.read()
 
 #reading the sponsors list
-project_sponsors = open("templates/full_sponsors.csv", "r").read().strip().replace(" ", "").split("\n")[1:-1]
+csv_file = open("templates/full_sponsors.csv", "r")
+project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
+csv_file.close()
 project_sponsors = {line.split(",")[0]:line.split(",")[13] for line in project_sponsors}
 print(project_sponsors)
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
@@ -145,3 +149,4 @@ for sponsor in sponsors:
 	else:
 		report = open("reports/0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 	report.write(html_full.replace("$body$", sponsors[sponsor]))
+	report.close()

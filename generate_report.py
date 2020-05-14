@@ -10,9 +10,9 @@ date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
 #reading the html body template and full template
 body_template = open("templates/body_template.txt", "r")
 html_body = body_template.read()
+body_template.close()
 report_template = open("templates/report_template.html", "r")
 html_full = report_template.read()
-body_template.close()
 report_template.close()
 
 name_to_idx = {

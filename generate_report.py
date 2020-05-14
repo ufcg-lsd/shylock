@@ -15,11 +15,19 @@ html_full = report_template.read()
 body_template.close()
 report_template.close()
 
+name_to_idx = {
+	#here are the indexes of the sponsors
+	"project_colum" : 0, "sponsor" : 13,
+	
+	#here are the indexes of the logs
+	"action" : 0, "date" : 4,  "first_line" : 0
+}
+
 #reading the sponsors list
 csv_file = open("templates/full_sponsors.csv", "r")
 project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
 csv_file.close()
-project_sponsors = {line.split(",")[0]:line.split(",")[13] for line in project_sponsors}
+project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
 print(project_sponsors)
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
@@ -59,7 +67,7 @@ def total_time(log_list):
 	time interval or until the end date of the consultation
 	'''
 	try:
-		last = datetime.fromisoformat(log_list[0][4])
+		last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
 	
 	except IndexError:
 		return total
@@ -68,7 +76,7 @@ def total_time(log_list):
 	init = False
 
 	for line in log_list:
-		if datetime.fromisoformat( line[4]) >= date2:
+		if datetime.fromisoformat( line[name_to_idx['date']]) >= date2:
 			break
 
 		if not init:
@@ -80,15 +88,15 @@ def total_time(log_list):
 		
 		else:
 			if on:
-				total += (datetime.fromisoformat(line[4]) - last)
+				total += (datetime.fromisoformat(name_to_idx['date']) - last)
 			
-		if line[0] in to_on_states:
+		if line[name_to_idx['action']] in to_on_states:
 			on = True
 
-		elif line[0] in to_off_states:
+		elif line[name_to_idx['action']] in to_off_states:
 			on  = False
 
-		last = datetime.fromisoformat(line[4])
+		last = datetime.fromisoformat(line[name_to_idx['date']])
 	
 	if (not init) and on:
 		total += (date2 - date1)

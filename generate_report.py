@@ -12,6 +12,8 @@ body_template = open("templates/body_template.txt", "r")
 html_body = body_template.read()
 report_template = open("templates/report_template.html", "r")
 html_full = report_template.read()
+body_template.close()
+report_template.close()
 
 #reading the sponsors list
 csv_file = open("templates/full_sponsors.csv", "r")

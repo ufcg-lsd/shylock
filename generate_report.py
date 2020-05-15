@@ -8,13 +8,11 @@ date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
 date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
 
 #reading the html body template and full template
-body_template = open("templates/body_template.txt", "r")
-html_body = body_template.read()
-body_template.close()
-report_template = open("templates/report_template.html", "r")
-html_full = report_template.read()
-report_template.close()
-
+with open("templates/body_template.txt") as body_template:
+	html_body = body_template.read()
+with open("templates/report_template.html") as report_template:
+	html_full = report_template.read()
+	
 name_to_idx = {
 	#indexes of the fields from the sponsors file
 	"project_colum" : 0,
@@ -28,10 +26,9 @@ name_to_idx = {
 
 #reading the sponsors list
 csv_file = open("templates/full_sponsors.csv", "r")
-project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
-csv_file.close()
+with open("templates/full_sponsors.csv") as csv_file:
+	project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
 project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
-print(project_sponsors)
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 

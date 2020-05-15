@@ -1,4 +1,4 @@
-#!bin/bin/python3.7
+#!/usr/bin/env python3.7
 
 from datetime import datetime, timedelta
 import json
@@ -8,13 +8,27 @@ date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
 date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
 
 #reading the html body template and full template
-html_body = open("templates/body_template.txt", "r").read()
-html_full = open("templates/report_template.html", "r").read()
+with open("templates/body_template.txt") as body_template:
+	html_body = body_template.read()
+with open("templates/report_template.html") as report_template:
+	html_full = report_template.read()
+	
+name_to_idx = {
+	#indexes of the fields from the sponsors file
+	"project" : 0,
+	"sponsor" : 13,
+	
+	#here are the named indexes of the logs
+	"action" : 0, 
+	"date" : 4,  
+	"first_line" : 0
+}
 
 #reading the sponsors list
-project_sponsors = open("templates/full_sponsors.csv", "r").read().strip().replace(" ", "").split("\n")[1:-1]
-project_sponsors = {line.split(",")[0]:line.split(",")[-2] for line in project_sponsors}
-print(project_sponsors)
+csv_file = open("templates/full_sponsors.csv", "r")
+with open("templates/full_sponsors.csv") as csv_file:
+	project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
+project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
@@ -53,7 +67,7 @@ def total_time(log_list):
 	time interval or until the end date of the consultation
 	'''
 	try:
-		last = datetime.fromisoformat(log_list[0][4])
+		last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
 	
 	except IndexError:
 		return total
@@ -62,7 +76,7 @@ def total_time(log_list):
 	init = False
 
 	for line in log_list:
-		if datetime.fromisoformat( line[4]) >= date2:
+		if datetime.fromisoformat( line[name_to_idx['date']]) >= date2:
 			break
 
 		if not init:
@@ -74,15 +88,15 @@ def total_time(log_list):
 		
 		else:
 			if on:
-				total += (datetime.fromisoformat(line[4]) - last)
+				total += (datetime.fromisoformat(line[name_to_idx['date']]) - last)
 			
-		if line[0] in to_on_states:
+		if line[name_to_idx['action']] in to_on_states:
 			on = True
 
-		elif line[0] in to_off_states:
+		elif line[name_to_idx['action']] in to_off_states:
 			on  = False
 
-		last = datetime.fromisoformat(line[4])
+		last = datetime.fromisoformat(line[name_to_idx['date']])
 	
 	if (not init) and on:
 		total += (date2 - date1)
@@ -145,3 +159,4 @@ for sponsor in sponsors:
 	else:
 		report = open("reports/0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 	report.write(html_full.replace("$body$", sponsors[sponsor]))
+	report.close()

@@ -15,7 +15,7 @@ with open("templates/report_template.html") as report_template:
 	
 name_to_idx = {
 	#indexes of the fields from the sponsors file
-	"project_colum" : 0,
+	"project" : 0,
 	"sponsor" : 13,
 	
 	#here are the named indexes of the logs
@@ -88,7 +88,7 @@ def total_time(log_list):
 		
 		else:
 			if on:
-				total += (datetime.fromisoformat(name_to_idx['date']) - last)
+				total += (datetime.fromisoformat(line[name_to_idx['date']]) - last)
 			
 		if line[name_to_idx['action']] in to_on_states:
 			on = True

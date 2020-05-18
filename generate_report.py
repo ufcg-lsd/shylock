@@ -117,12 +117,16 @@ for domain_name in data:
 	domain = data[domain_name]
 	
 	for project in domain.values():
-		
+		if project["Name"].strip() == "":
+			project["Name"] = "PROJETO SEM NOME"
+
 		body = html_body
 		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
+			if volume["Name"].strip() == "":
+				volume["Name"] = "VOLUME SEM NOME"
 			volumes += ("\t\t<tr> <td>%s</td> <td>%sGB</td> </tr>\n" % (volume["Name"], volume["Size"]))
 		
 		body = body.replace("$vol$", volumes)
@@ -134,6 +138,9 @@ for domain_name in data:
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
 			print(time_use)
+
+			if instance["Name"].strip() == "":
+				instance["Name"] = "INSTANCIA SEM NOME"
 
 			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use ))
 

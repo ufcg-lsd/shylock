@@ -81,6 +81,7 @@ def total_time(log_list):
 		last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
 	
 	except IndexError:
+		print("-------------------------------index error-------------------------------------")
 		return total
 
 	on = False
@@ -150,11 +151,13 @@ for domain_name in data:
 			time_use = days_hours_minutes(time_use)
 			print(get_create_date(instance))
 			print(time_use)
-
+			if get_create_date(instance) == maximum_date:
+				continue
+			
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance) ))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance)))
 
 		body = body.replace("$inst$", instances)
 

@@ -24,6 +24,7 @@ name_to_idx = {
 	"first_line" : 0
 }
 empty_value = "-------"
+maximum_date = datetime(year = 9999, month = 12, day = 31)
 
 #reading the sponsors list
 csv_file = open("templates/full_sponsors.csv", "r")
@@ -33,6 +34,13 @@ project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
+#this function is to get the instance create date
+def get_create_date(instance):
+	try:
+		return  datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
+
+	except IndexError:
+		return maximum_date
 
 
 #read the json file
@@ -135,17 +143,18 @@ for domain_name in data:
 		body = body.replace("$vol$", volumes)
 			
 		instances = ""
-		for instance in project["Instances"].values():
+		for instance in sorted(project["Instances"].values(), key = get_create_date):
 			print(instance["ID"],)
 			
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
+			print(get_create_date(instance))
 			print(time_use)
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use ))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance) ))
 
 		body = body.replace("$inst$", instances)
 

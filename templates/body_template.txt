@@ -14,7 +14,7 @@ $vol$
     </div>
 
     <table>
-        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> </tr>
+        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> <th>Data de criação</th> </tr>
 $inst$
     </table>
     

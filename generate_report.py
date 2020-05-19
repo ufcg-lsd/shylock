@@ -153,11 +153,11 @@ for domain_name in data:
 			print(time_use)
 			if get_create_date(instance) == maximum_date:
 				continue
-			
+
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance)))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance).date()))
 
 		body = body.replace("$inst$", instances)
 

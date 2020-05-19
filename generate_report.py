@@ -23,6 +23,7 @@ name_to_idx = {
 	"date" : 4,  
 	"first_line" : 0
 }
+empty_value = "-------"
 
 #reading the sponsors list
 csv_file = open("templates/full_sponsors.csv", "r")
@@ -31,6 +32,8 @@ with open("templates/full_sponsors.csv") as csv_file:
 project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
+
+
 
 #read the json file
 with open("json_file.json", "r") as json_file:
@@ -118,7 +121,7 @@ for domain_name in data:
 	
 	for project in domain.values():
 		if project["Name"].strip() == "":
-			project["Name"] = "----------"
+			project["Name"] = empty_value
 
 		body = html_body
 		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
@@ -126,7 +129,7 @@ for domain_name in data:
 		volumes = ""
 		for volume in project["Volume"]:
 			if volume["Name"].strip() == "":
-				volume["Name"] = "----------"
+				volume["Name"] = empty_value
 			volumes += ("\t\t<tr> <td>%s</td> <td>%sGB</td> </tr>\n" % (volume["Name"], volume["Size"]))
 		
 		body = body.replace("$vol$", volumes)
@@ -140,7 +143,7 @@ for domain_name in data:
 			print(time_use)
 
 			if instance["Name"].strip() == "":
-				instance["Name"] = "----------"
+				instance["Name"] = empty_value
 
 			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use ))
 

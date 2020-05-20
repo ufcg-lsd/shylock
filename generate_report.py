@@ -34,6 +34,10 @@ project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
+#read the json file
+with open("json_file.json", "r") as json_file:
+	data = json.load(json_file)
+
 #this function is to get the instance create date
 def get_create_date(instance):
 	try:
@@ -42,12 +46,7 @@ def get_create_date(instance):
 	except IndexError:
 		return maximum_date
 
-
-#read the json file
-with open("json_file.json", "r") as json_file:
-	data = json.load(json_file)
-
-#this function is to format the time for output  
+#this function is to format the usage time for output  
 def days_hours_minutes(total):
 	days = total.days
 	minutes = int(total.seconds/3600)
@@ -59,6 +58,10 @@ def format_log(log):
 	
 	#here the result  indices are [Action, Request_ID, Message, Start_Time, Update_Time]
 	return [line.replace("|", " ").split() for line in log.split("\n")[3:-1]]
+
+#this function is to format the date for output
+def date_br_format(date):
+	return "%.2d-%.2d-%d" % (date.day, date.month, date.year)
 
 #this function is to calculate the total time of instance use
 def total_time(log_list):
@@ -157,7 +160,7 @@ for domain_name in data:
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, get_create_date(instance).date()))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, date_br_format(get_create_date(instance).date())))
 
 		body = body.replace("$inst$", instances)
 

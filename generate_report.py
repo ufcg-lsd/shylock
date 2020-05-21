@@ -24,6 +24,12 @@ name_to_idx = {
 	"date" : 4,  
 	"first_line" : 0
 }
+
+#here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
+to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'suspend', 'unrescue', 'unshelve']
+to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'error']
+
+
 empty_value = "-------"
 maximum_date = datetime(year = 9999, month = 12, day = 31)
 
@@ -72,15 +78,23 @@ def format_log(log):
 def date_br_format(date):
 	return "%02d-%02d-%d" % (date.day, date.month, date.year)
 
+#this function is to get the last status of an instance
+def get_status(log_list):
+	status = "Ativa"
+	for line in log_list:
+		if line[name_to_idx['action']] in to_on_states:
+			status = "Ativa"
+		
+		elif line[name_to_idx['action']] in to_off_states:
+			status = "Inativa"
+
+	return status
+
 #this function is to calculate the total time of instance use
 def total_time(log_list):
 
 	#first we need an accumulator
 	total = timedelta(days = 0)
-
-	#here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
-	to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'suspend', 'unrescue', 'unshelve']
-	to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'error']
 	
 	'''
 	the algorithm here is to go through all the actions taken by the instance and always look back
@@ -161,16 +175,21 @@ for domain_name in data:
 		valid_instances = filter(is_valid, project["Instances"].values())
 		for instance in sorted(valid_instances, key = get_create_date):
 			print(instance["ID"],)
+
+			if get_create_date(instance) == maximum_date:
+				continue
 			
-			time_use = total_time( format_log(instance["Log"]))
+			instance_log = format_log(instance["Log"])
+			time_use = total_time(instance_log)
 			time_use = days_hours_minutes(time_use)
+			status = get_status(instance_log)
 			print(get_create_date(instance))
 			print(time_use)
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, date_br_format(get_create_date(instance).date())))
+			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, date_br_format(get_create_date(instance).date()), status))
 
 		body = body.replace("$inst$", instances)
 

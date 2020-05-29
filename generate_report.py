@@ -147,15 +147,14 @@ for domain_name in data:
 		body = body.replace("$vol$", volumes)
 			
 		instances = ""
-		for instance in sorted(project["Instances"].values(), key = get_create_date):
+		valid_instances = filter(lambda instance: get_create_date(instance) < date2, project["Instances"].values())
+		for instance in sorted(valid_instances, key = get_create_date):
 			print(instance["ID"],)
 			
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
 			print(get_create_date(instance))
 			print(time_use)
-			if get_create_date(instance) == maximum_date:
-				continue
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value

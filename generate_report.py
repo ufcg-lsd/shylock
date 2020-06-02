@@ -1,11 +1,12 @@
 #!/usr/bin/env python3.7
 
 from datetime import datetime, timedelta
+from collections import defaultdict
 import json
 
 #reading the date
-date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
-date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
+start_date = datetime.fromisoformat(input("start_date Year-Month-Day"))
+end_date = datetime.fromisoformat(input("end_date Year-Month-Day"))
 
 #reading the html body template and full template
 with open("templates/body_template.txt") as body_template:
@@ -30,7 +31,19 @@ maximum_date = datetime(year = 9999, month = 12, day = 31)
 csv_file = open("templates/full_sponsors.csv", "r")
 with open("templates/full_sponsors.csv") as csv_file:
 	project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
-project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
+
+def line_to_project(line):
+	return line[name_to_idx['project']]
+
+def line_to_sponsor(line):
+	return line[name_to_idx['sponsor']]
+
+def split_by_comma(line):
+	return line.split(',')
+
+project_sponsors = defaultdict(lambda: "joabsilva@lsd.ufcg.edu.br", { line_to_project(line): line_to_sponsor(line) for line in map(split_by_comma, project_sponsors) })
+
+
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
@@ -40,28 +53,24 @@ with open("json_file.json", "r") as json_file:
 
 #this function is to get the instance create date
 def get_create_date(instance):
-	try:
-		return  datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
-
-	except IndexError:
-		return maximum_date
+	return datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
 
 #this function is to format the usage time for output  
 def days_hours_minutes(total):
 	days = total.days
-	minutes = int(total.seconds/3600)
-	seconds = total.seconds%60
-	return  "%s Dias, %s Horas e %s Segundos" % (days, minutes, seconds)
+	hours = int(total.seconds/3600)
+	minutes = int(total.seconds/60)%60
+	return  "%s Dias, %s Horas e %s Segundos" % (days, hours, minutes)
 
 #this function is to format the instance's logs because the nova cli does not format
 def format_log(log):
 	
 	#here the result  indices are [Action, Request_ID, Message, Start_Time, Update_Time]
-	return [line.replace("|", " ").split() for line in log.split("\n")[3:-1]]
+	return [line.replace('|', " ").split() for line in log.split("\n")[3:-1]]
 
 #this function is to format the date for output
 def date_br_format(date):
-	return "%.2d-%.2d-%d" % (date.day, date.month, date.year)
+	return "%02d-%02d-%d" % (date.day, date.month, date.year)
 
 #this function is to calculate the total time of instance use
 def total_time(log_list):
@@ -80,24 +89,20 @@ def total_time(log_list):
 	also need to increase the time from this date until the first action taken within the consulted
 	time interval or until the end date of the consultation
 	'''
-	try:
-		last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
-	
-	except IndexError:
-		print("-------------------------------index error-------------------------------------")
-		return total
+	last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
+
 
 	on = False
 	init = False
 
 	for line in log_list:
-		if datetime.fromisoformat( line[name_to_idx['date']]) >= date2:
+		if datetime.fromisoformat( line[name_to_idx['date']]) >= end_date:
 			break
 
 		if not init:
-			if last >= date1:
+			if last >= start_date:
 				if on:
-					total += (last - date1)
+					total += (last - start_date)
 				
 				init = True
 		
@@ -114,12 +119,18 @@ def total_time(log_list):
 		last = datetime.fromisoformat(line[name_to_idx['date']])
 	
 	if (not init) and on:
-		total += (date2 - date1)
+		total += (end_date - start_date)
 	elif on:
-		total += (date2 - last)
+		total += (end_date - last)
 
 	return total
-		
+
+def is_not_empty(instance):
+	return format_log(instance["Log"]) != []
+
+def is_valid(instance):
+	return is_not_empty(instance) and get_create_date(instance) < end_date
+	
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
 the domains data["<Domain_Name>"], the value of each key is another dictionary, in this
 time the values of keys are dictionarys represeting projects ex. data["<Domain_Name>"]["<Project_Name>"]
@@ -136,7 +147,7 @@ for domain_name in data:
 			project["Name"] = empty_value
 
 		body = html_body
-		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
+		body = body.replace("$tit$", "%02d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
@@ -147,15 +158,14 @@ for domain_name in data:
 		body = body.replace("$vol$", volumes)
 			
 		instances = ""
-		for instance in sorted(project["Instances"].values(), key = get_create_date):
+		valid_instances = filter(is_valid, project["Instances"].values())
+		for instance in sorted(valid_instances, key = get_create_date):
 			print(instance["ID"],)
 			
 			time_use = total_time( format_log(instance["Log"]))
 			time_use = days_hours_minutes(time_use)
 			print(get_create_date(instance))
 			print(time_use)
-			if get_create_date(instance) == maximum_date:
-				continue
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
@@ -169,19 +179,10 @@ for domain_name in data:
 			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
 
 		body = body.replace("$flav$", flavors)
-		try:
+		sponsors[project_sponsors[project["Name"]]] += body
 
-			sponsors[project_sponsors[project["Name"]]] += body
-		except KeyError:
-			sponsors["joabsilva@lsd.ufcg.edu.br"] += body
-
-		
 print(sponsors.keys())
 for sponsor in sponsors:
-	if date1.month > 9:
-		report = open("reports/%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 
-	else:
-		report = open("reports/0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
-	report.write(html_full.replace("$body$", sponsors[sponsor]))
-	report.close()
+	with open("reports/%02d-%d/%s.html" % (start_date.month, start_date.year, sponsor), "w") as report:
+		report.write(html_full.replace("$body$", sponsors[sponsor]))

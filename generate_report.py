@@ -58,9 +58,9 @@ def get_create_date(instance):
 #this function is to format the usage time for output  
 def days_hours_minutes(total):
 	days = total.days
-	minutes = int(total.seconds/3600)
-	seconds = total.seconds%60
-	return  "%s Dias, %s Horas e %s Segundos" % (days, minutes, seconds)
+	hours = int(total.seconds/3600)
+	minutes = int(total.seconds/60)%60
+	return  "%s Dias, %s Horas e %s Segundos" % (days, hours, minutes)
 
 #this function is to format the instance's logs because the nova cli does not format
 def format_log(log):
@@ -125,15 +125,11 @@ def total_time(log_list):
 
 	return total
 
-
-def create_before_end(instance):
-	return get_create_date(instance) < end_date
-
 def is_not_empty(instance):
 	return format_log(instance["Log"]) != []
 
 def is_valid(instance):
-	return is_not_empty(instance) and create_before_end(instance)
+	return is_not_empty(instance) and get_create_date(instance) < end_date
 	
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
 the domains data["<Domain_Name>"], the value of each key is another dictionary, in this

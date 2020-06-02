@@ -70,7 +70,7 @@ def format_log(log):
 
 #this function is to format the date for output
 def date_br_format(date):
-	return "%.2d-%.2d-%d" % (date.day, date.month, date.year)
+	return "%02d-%02d-%d" % (date.day, date.month, date.year)
 
 #this function is to calculate the total time of instance use
 def total_time(log_list):
@@ -147,7 +147,7 @@ for domain_name in data:
 			project["Name"] = empty_value
 
 		body = html_body
-		body = body.replace("$tit$", "%.2d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
+		body = body.replace("$tit$", "%02d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
@@ -184,5 +184,5 @@ for domain_name in data:
 print(sponsors.keys())
 for sponsor in sponsors:
 
-	with open("reports/%.2d-%d/%s.html" % (start_date.month, start_date.year, sponsor), "w") as report:
+	with open("reports/%02d-%d/%s.html" % (start_date.month, start_date.year, sponsor), "w") as report:
 		report.write(html_full.replace("$body$", sponsors[sponsor]))

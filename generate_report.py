@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.7
 
 from datetime import datetime, timedelta
+from collections import defaultdict
 import json
 
 #reading the date
@@ -30,7 +31,19 @@ maximum_date = datetime(year = 9999, month = 12, day = 31)
 csv_file = open("templates/full_sponsors.csv", "r")
 with open("templates/full_sponsors.csv") as csv_file:
 	project_sponsors = csv_file.read().strip().replace(" ", "").split("\n")[1:-1]
-project_sponsors = {line.split(",")[name_to_idx['project']]:line.split(",")[name_to_idx['sponsor']] for line in project_sponsors}
+
+def line_to_project(line):
+	return line[name_to_idx['project']]
+
+def line_to_sponsor(line):
+	return line[name_to_idx['sponsor']]
+
+def split_by_comma(line):
+	return line.split(',')
+
+project_sponsors = defaultdict(lambda: "joabsilva@lsd.ufcg.edu.br", { line_to_project(line): line_to_sponsor(line) for line in map(split_by_comma, project_sponsors) })
+
+
 sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
 sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
 
@@ -40,11 +53,7 @@ with open("json_file.json", "r") as json_file:
 
 #this function is to get the instance create date
 def get_create_date(instance):
-	try:
-		return  datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
-
-	except IndexError:
-		return maximum_date
+	return datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
 
 #this function is to format the usage time for output  
 def days_hours_minutes(total):
@@ -57,7 +66,7 @@ def days_hours_minutes(total):
 def format_log(log):
 	
 	#here the result  indices are [Action, Request_ID, Message, Start_Time, Update_Time]
-	return [line.replace("|", " ").split() for line in log.split("\n")[3:-1]]
+	return [line.replace('|', " ").split() for line in log.split("\n")[3:-1]]
 
 #this function is to format the date for output
 def date_br_format(date):
@@ -80,12 +89,8 @@ def total_time(log_list):
 	also need to increase the time from this date until the first action taken within the consulted
 	time interval or until the end date of the consultation
 	'''
-	try:
-		last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
-	
-	except IndexError:
-		print("-------------------------------index error-------------------------------------")
-		return total
+	last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
+
 
 	on = False
 	init = False
@@ -119,7 +124,17 @@ def total_time(log_list):
 		total += (date2 - last)
 
 	return total
-		
+
+
+def create_before_end(instance):
+	return get_create_date(instance) < date2
+
+def is_not_empty(instance):
+	return format_log(instance["Log"]) != []
+
+def is_valid(instance):
+	return is_not_empty(instance) and create_before_end(instance)
+	
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
 the domains data["<Domain_Name>"], the value of each key is another dictionary, in this
 time the values of keys are dictionarys represeting projects ex. data["<Domain_Name>"]["<Project_Name>"]
@@ -136,7 +151,7 @@ for domain_name in data:
 			project["Name"] = empty_value
 
 		body = html_body
-		body = body.replace("$tit$", "04/2020-%s/%s" % (domain_name, project["Name"]))
+		body = body.replace("$tit$", "%.2d/%d-%s/%s" % (date1.month, date1.year, domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
@@ -147,7 +162,7 @@ for domain_name in data:
 		body = body.replace("$vol$", volumes)
 			
 		instances = ""
-		valid_instances = filter(lambda instance: get_create_date(instance) < date2, project["Instances"].values())
+		valid_instances = filter(is_valid, project["Instances"].values())
 		for instance in sorted(valid_instances, key = get_create_date):
 			print(instance["ID"],)
 			
@@ -168,19 +183,10 @@ for domain_name in data:
 			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
 
 		body = body.replace("$flav$", flavors)
-		try:
+		sponsors[project_sponsors[project["Name"]]] += body
 
-			sponsors[project_sponsors[project["Name"]]] += body
-		except KeyError:
-			sponsors["joabsilva@lsd.ufcg.edu.br"] += body
-
-		
 print(sponsors.keys())
 for sponsor in sponsors:
-	if date1.month > 9:
-		report = open("reports/%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
 
-	else:
-		report = open("reports/0%s-%s/%s.html" % (date1.month, date1.year, sponsor), "w")
-	report.write(html_full.replace("$body$", sponsors[sponsor]))
-	report.close()
+	with open("reports/%.2d-%d/%s.html" % (date1.month, date1.year, sponsor), "w") as report:
+		report.write(html_full.replace("$body$", sponsors[sponsor]))

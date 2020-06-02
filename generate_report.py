@@ -5,8 +5,8 @@ from collections import defaultdict
 import json
 
 #reading the date
-date1 = datetime.fromisoformat(input("date1 Year-Month-Day"))
-date2 = datetime.fromisoformat(input("date2 Year-Month-Day"))
+start_date = datetime.fromisoformat(input("start_date Year-Month-Day"))
+end_date = datetime.fromisoformat(input("end_date Year-Month-Day"))
 
 #reading the html body template and full template
 with open("templates/body_template.txt") as body_template:
@@ -96,13 +96,13 @@ def total_time(log_list):
 	init = False
 
 	for line in log_list:
-		if datetime.fromisoformat( line[name_to_idx['date']]) >= date2:
+		if datetime.fromisoformat( line[name_to_idx['date']]) >= end_date:
 			break
 
 		if not init:
-			if last >= date1:
+			if last >= start_date:
 				if on:
-					total += (last - date1)
+					total += (last - start_date)
 				
 				init = True
 		
@@ -119,15 +119,15 @@ def total_time(log_list):
 		last = datetime.fromisoformat(line[name_to_idx['date']])
 	
 	if (not init) and on:
-		total += (date2 - date1)
+		total += (end_date - start_date)
 	elif on:
-		total += (date2 - last)
+		total += (end_date - last)
 
 	return total
 
 
 def create_before_end(instance):
-	return get_create_date(instance) < date2
+	return get_create_date(instance) < end_date
 
 def is_not_empty(instance):
 	return format_log(instance["Log"]) != []
@@ -151,7 +151,7 @@ for domain_name in data:
 			project["Name"] = empty_value
 
 		body = html_body
-		body = body.replace("$tit$", "%.2d/%d-%s/%s" % (date1.month, date1.year, domain_name, project["Name"]))
+		body = body.replace("$tit$", "%.2d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
 
 		volumes = ""
 		for volume in project["Volume"]:
@@ -188,5 +188,5 @@ for domain_name in data:
 print(sponsors.keys())
 for sponsor in sponsors:
 
-	with open("reports/%.2d-%d/%s.html" % (date1.month, date1.year, sponsor), "w") as report:
+	with open("reports/%.2d-%d/%s.html" % (start_date.month, start_date.year, sponsor), "w") as report:
 		report.write(html_full.replace("$body$", sponsors[sponsor]))

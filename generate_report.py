@@ -59,7 +59,7 @@ with open("json_file.json", "r") as json_file:
 
 #this function is to get the instance create date
 def get_create_date(instance):
-	return datetime.fromisoformat(format_log(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
+	return datetime.fromisoformat(extract_actions(instance["Log"])[name_to_idx['first_line']][name_to_idx['date']])
 
 #this function is to format the usage time for output  
 def days_hours_minutes(total):
@@ -69,7 +69,7 @@ def days_hours_minutes(total):
 	return  "%s Dias, %s Horas e %s Segundos" % (days, hours, minutes)
 
 #this function is to format the instance's logs because the nova cli does not format
-def format_log(log):
+def extract_actions(log):
 	
 	#here the result  indices are [Action, Request_ID, Message, Start_Time, Update_Time]
 	return [line.replace('|', " ").split() for line in log.split("\n")[3:-1]]
@@ -140,7 +140,7 @@ def total_time(log_list):
 	return total
 
 def is_not_empty(instance):
-	return format_log(instance["Log"]) != []
+	return extract_actions(instance["Log"]) != []
 
 def is_valid(instance):
 	return is_not_empty(instance) and get_create_date(instance) < end_date
@@ -179,7 +179,7 @@ for domain_name in data:
 			if get_create_date(instance) == maximum_date:
 				continue
 			
-			instance_log = format_log(instance["Log"])
+			instance_log = extract_actions(instance["Log"])
 			time_use = total_time(instance_log)
 			time_use = days_hours_minutes(time_use)
 			status = get_status(instance_log)

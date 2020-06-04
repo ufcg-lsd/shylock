@@ -187,9 +187,6 @@ for domain_name in data:
 		valid_instances = filter(is_valid, project["Instances"].values())
 		for instance in sorted(valid_instances, key = get_create_date):
 			print(instance["ID"],)
-
-			if get_create_date(instance) == maximum_date:
-				continue
 			
 			instance_log = extract_actions(instance["Log"])
 			time_use = total_time(instance_log)

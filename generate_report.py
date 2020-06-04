@@ -68,7 +68,7 @@ def days_hours_minutes(total):
 	minutes = int(total.seconds/60)%60
 	return  "%s Dias, %s Horas e %s Segundos" % (days, hours, minutes)
 
-#this function is to format the instance's logs because the nova cli does not format
+#this function is to extract actions from the instance's logs that are in the nova cli output format
 def extract_actions(log):
 	
 	#here the result  indices are [Action, Request_ID, Message, Start_Time, Update_Time]

@@ -90,18 +90,6 @@ def get_status(log_list):
 
 	return status
 
-#this function is to get the last status of an instance
-def get_status(log_list):
-	status = "Ativa"
-	for line in log_list:
-		if line[name_to_idx['action']] in to_on_states:
-			status = "Ativa"
-		
-		elif line[name_to_idx['action']] in to_off_states:
-			status = "Inativa"
-
-	return status
-
 #this function is to calculate the total time of instance use
 def total_time(log_list):
 

@@ -103,40 +103,26 @@ def total_time(log_list):
 	also need to increase the time from this date until the first action taken within the consulted
 	time interval or until the end date of the consultation
 	'''
-	last = datetime.fromisoformat(log_list[name_to_idx['first_line']][name_to_idx['date']])
-
-
 	on = False
-	init = False
+	last = start_date
 
 	for line in log_list:
-		if datetime.fromisoformat( line[name_to_idx['date']]) >= end_date:
+		date = datetime.fromisoformat(line[name_to_idx['date']])
+		
+		if date > end_date:
 			break
 
-		if not init:
-			if last >= start_date:
-				if on:
-					total += (last - start_date)
-				
-				init = True
-		
-		else:
+		if date > start_date:
 			if on:
-				total += (datetime.fromisoformat(line[name_to_idx['date']]) - last)
-			
+				total += date - last
+			last = date
+
 		if line[name_to_idx['action']] in to_on_states:
 			on = True
-
 		elif line[name_to_idx['action']] in to_off_states:
-			on  = False
-
-		last = datetime.fromisoformat(line[name_to_idx['date']])
-	
-	if (not init) and on:
-		total += (end_date - start_date)
-	elif on:
-		total += (end_date - last)
-
+			on = False
+	if on:
+		total += end_date - last
 	return total
 
 def is_not_empty(instance):

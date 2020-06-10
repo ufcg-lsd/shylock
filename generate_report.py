@@ -26,8 +26,8 @@ name_to_idx = {
 }
 
 #here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
-to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'suspend', 'unrescue', 'unshelve']
-to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'error']
+to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'unrescue', 'unshelve', 'pause']
+to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'suspend', 'error']
 
 
 empty_value = "-------"
@@ -82,7 +82,9 @@ def date_br_format(date):
 def get_status(log_list):
 	status = "Ativa"
 	for line in log_list:
-		if line[name_to_idx['action']] in to_on_states:
+		if line[name_to_idx['action']] == 'pause':
+			status = "Ativa(Pausada)"
+		elif line[name_to_idx['action']] in to_on_states:
 			status = "Ativa"
 		
 		elif line[name_to_idx['action']] in to_off_states:

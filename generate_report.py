@@ -66,7 +66,7 @@ def days_hours_minutes(total):
 	days = total.days
 	hours = int(total.seconds/3600)
 	minutes = int(total.seconds/60)%60
-	return  "%s Dias, %s Horas e %s Segundos" % (days, hours, minutes)
+	return  "%s Dias, %s Horas e %s Minutos" % (days, hours, minutes)
 
 #this function is to extract actions from the instance's logs that are in the nova cli output format
 def extract_actions(log):
@@ -84,6 +84,7 @@ def get_status(log_list):
 	for line in log_list:
 		if line[name_to_idx['action']] == 'pause':
 			status = "Ativa(Pausada)"
+
 		elif line[name_to_idx['action']] in to_on_states:
 			status = "Ativa"
 		

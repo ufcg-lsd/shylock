@@ -26,7 +26,7 @@ name_to_idx = {
 }
 
 #here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
-to_on_states = ['create', 'rebuild', 'restore', 'start', 'reboot', 'revertResize', 'confirmResize', 'unpause', 'resume', 'unrescue', 'unshelve', 'pause']
+to_on_states = ['create', 'restore', 'start', 'reboot', 'unpause', 'resume', 'unrescue', 'unshelve', 'pause']
 to_off_states = ['softDelete', 'forceDelete', 'delete', 'stop', 'shelve', 'suspend', 'error']
 
 

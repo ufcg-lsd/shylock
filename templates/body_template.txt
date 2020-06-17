@@ -1,12 +1,17 @@
     <div class="project">
         <h1 class="help-text">Relatório utilização Cloud LSD - $tit$</h1>
     </div>
+    <div class="use_per_hour">
+        <p><b>Utilização total de memória       :</b> $mem$ GB * h</p>
+        <p><b>Utilização total de processamento :</b> $vcpus$ vCPU * h </p>
+    </div>
+
     <div class="page-header">
         <h1 class="help-text">Volumes</h1>
     </div>
     <table>
         <tr>  <th>Nome</th> <th>Tamanho</th> </tr>
-$vol$
+         $vol$
     </table>
 
     <div class="page-header">
@@ -15,7 +20,7 @@ $vol$
 
     <table>
         <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> <th>Data de criação</th> <th>Status</th> </tr>
-$inst$
+        $inst$
     </table>
     
     <div class="page-header">
@@ -24,5 +29,5 @@ $inst$
 
     <table>
         <tr>  <th>Nome</th> <th>VCPUS</th> <th>RAM</th> <th>Disco</th> </tr>
-$flav$
+        $flav$
     </table>

@@ -133,7 +133,13 @@ def is_not_empty(instance):
 
 def is_valid(instance):
 	return is_not_empty(instance) and get_create_date(instance) < end_date
-	
+
+def get_instance_memory(project ,instance):
+	return int(project["Flavors"][instance["Flavor"]]["ram"]) // 1024
+
+def get_instance_vcpus(project ,instance):
+	return int(project["Flavors"][instance["Flavor"]]["vcpus"])
+
 '''this code snippet is where we access all subdivisions of the cloud first we accesses
 the domains data["<Domain_Name>"], the value of each key is another dictionary, in this
 time the values of keys are dictionarys represeting projects ex. data["<Domain_Name>"]["<Project_Name>"]
@@ -152,6 +158,9 @@ for domain_name in data:
 		body = html_body
 		body = body.replace("$tit$", "%02d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
 
+		total_mem_usage = 0
+		total_vcpu_usage = 0
+
 		volumes = ""
 		for volume in project["Volume"]:
 			if volume["Name"].strip() == "":
@@ -163,22 +172,32 @@ for domain_name in data:
 		instances = ""
 		valid_instances = filter(is_valid, project["Instances"].values())
 		for instance in sorted(valid_instances, key = get_create_date):
-			print(instance["ID"],)
 			
 			instance_log = extract_actions(instance["Log"])
 			time_use = total_time(instance_log)
+			
+			instance_mem_usage = get_instance_memory(project, instance) * time_use.total_seconds()
+			total_mem_usage += instance_mem_usage
+			instance_vcpu_usage = get_instance_vcpus(project, instance) * time_use.total_seconds()
+			total_vcpu_usage += instance_vcpu_usage
+			
 			time_use = days_hours_minutes(time_use)
 			status = get_status(instance_log)
+			
+			print(instance["ID"],)
 			print(get_create_date(instance))
 			print(time_use)
+			print(instance_mem_usage // 3600, instance_vcpu_usage // 3600)
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
 			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, date_br_format(get_create_date(instance).date()), status))
-
 		body = body.replace("$inst$", instances)
+		body = body.replace("$mem$", str(int(total_mem_usage // 3600)))
+		body = body.replace("$vcpus$", str(int(total_vcpu_usage // 3600)))
 
+		
 		flavors = ""
 		for flavor in project["Flavors"].values():
 			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))

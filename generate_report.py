@@ -82,6 +82,9 @@ def date_br_format(date):
 def get_status(log_list):
 	status = "Ativa"
 	for line in log_list:
+		if datetime.fromisoformat(line[name_to_idx['date']]) > end_date:
+			break
+		
 		if line[name_to_idx['action']] == 'pause':
 			status = "Ativa(Pausada)"
 

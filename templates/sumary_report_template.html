@@ -19,7 +19,7 @@
         <h1>Relatório utilização Cloud LSD - {{date}}</h1>
     </div>
 
-    {% for sponsor in data -%}
+    {% for sponsor in data | sort() -%}
     <div class="page-header">
         <h1>{{sponsor}}</h1>        
     </div>

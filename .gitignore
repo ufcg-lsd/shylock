@@ -1,4 +1,4 @@
 *.swp
 .vscode/*
 reports/*
-json_file.json
+*.json

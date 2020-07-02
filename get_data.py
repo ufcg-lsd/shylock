@@ -1,8 +1,14 @@
-import json
+#!/usr/bin/env python3.7
+
+import json, argparse
 from subprocess import getoutput as go
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--date", help="Enter the start date in format year-month-day")
+args = parser.parse_args()
+
 #Year-Month-Day
-date = input("Year-Month-Day")
+date = args.date
 
 go("mkdir reports")
 go("mkdir reports/%s-%s" % (date.split("-")[1], date.split("-")[0]))

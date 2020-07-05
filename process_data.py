@@ -146,10 +146,11 @@ for domain_name in data:
 	domain = data[domain_name]
 
 	for project in domain.values():
-		sponsor = project_sponsors[project["Name"]]
 
 		if project["Name"].strip() == "":
 			project["Name"] = empty_value
+
+		sponsor = project_sponsors[project["Name"]]
 
 		total_mem_usage = 0
 		total_vcpu_usage = 0
@@ -176,15 +177,13 @@ for domain_name in data:
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-		project["Total_Mem_Usage"] = int(total_mem_usage // 3600)
-		project["Total_vcpu_Usage"] = int(total_vcpu_usage // 3600)
+		project["Total_Mem_Usage"] = total_mem_usage
+		project["Total_Vcpu_Usage"] = total_vcpu_usage 
 
 		project["Domain"] = domain_name
 		
 		sponsors[sponsor][project["Name"]] = project
 		sponsors[sponsor][project["Name"]]["Domain"] = domain_name
-		a = ("Relatório utilização Cloud LSD - %02d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"])) 
-
 
 with open("processed_data.json", "w") as json_file:
 	json_file.write(json.dumps(sponsors))

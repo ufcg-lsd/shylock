@@ -25,11 +25,11 @@
     </div>
 
     <table>
-        <tr><th> Projeto </th> <th> Uso de Memoria </th> <th> Uso de processamento</th> </tr>
+        <tr><th> Projeto </th> <th> Uso de memória </th> <th> Uso de processamento</th> </tr>
         {% for project in data[sponsor].values() | sort(attribute="Domain,Name") -%}
-        <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">{{project["Total_Mem_Usage"]}} GB * h</td> <td style="text-align:right">{{project["Total_vcpu_Usage"]}} vCPU * h</td> </tr>
+        <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">{{"%d" % (project["Total_Mem_Usage"] // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h</td> </tr>
         {% endfor %}
-        <tr><td> Total</td> <td style="text-align:right">{{ data[sponsor].values() | sum(attribute="Total_Mem_Usage")}} GB * h</td> <td style="text-align:right">{{data[sponsor].values() | sum(attribute="Total_vcpu_Usage")}} vCPU * h</td> </tr>
+        <tr><td> Total</td> <td style="text-align:right">{{ "%d" % (data[sponsor].values() | sum(attribute="Total_Mem_Usage") // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % ((data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) // 3600)}} vCPU * h</td> </tr>
     </table>
     {% endfor %}
     

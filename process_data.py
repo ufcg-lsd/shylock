@@ -2,23 +2,22 @@
 
 from datetime import datetime, timedelta
 from collections import defaultdict
-import json
+import json, argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--start_date", help="Enter the start date in format year-month-day")
+parser.add_argument("--end_date", help="Enter the end date in format year-month-day")
+args = parser.parse_args()
 
 #reading the date
-start_date = datetime.fromisoformat(input("start_date Year-Month-Day"))
-end_date = datetime.fromisoformat(input("end_date Year-Month-Day"))
-
-#reading the html body template and full template
-with open("templates/body_template.txt") as body_template:
-	html_body = body_template.read()
-with open("templates/report_template.html") as report_template:
-	html_full = report_template.read()
+start_date = datetime.fromisoformat(args.start_date)
+end_date = datetime.fromisoformat(args.end_date)
 	
 name_to_idx = {
 	#indexes of the fields from the sponsors file
 	"project" : 0,
 	"sponsor" : 13,
-	
+
 	#here are the named indexes of the logs
 	"action" : 0, 
 	"date" : 4,  
@@ -49,9 +48,8 @@ def split_by_comma(line):
 
 project_sponsors = defaultdict(lambda: "joabsilva@lsd.ufcg.edu.br", { line_to_project(line): line_to_sponsor(line) for line in map(split_by_comma, project_sponsors) })
 
-
-sponsors = {sponsor:"" for sponsor in project_sponsors.values()}
-sponsors["joabsilva@lsd.ufcg.edu.br"] = "" #joab is the sponsor for the support services and he is not in the csv file
+sponsors = {sponsor:{} for sponsor in project_sponsors.values()}
+sponsors["joabsilva@lsd.ufcg.edu.br"] = {} #joab is the sponsor for the support services and he is not in the csv file
 
 #read the json file
 with open("json_file.json", "r") as json_file:
@@ -143,39 +141,25 @@ def get_instance_memory(project ,instance):
 def get_instance_vcpus(project ,instance):
 	return int(project["Flavors"][instance["Flavor"]]["vcpus"])
 
-'''this code snippet is where we access all subdivisions of the cloud first we accesses
-the domains data["<Domain_Name>"], the value of each key is another dictionary, in this
-time the values of keys are dictionarys represeting projects ex. data["<Domain_Name>"]["<Project_Name>"]
-and so on as in the file get_data.py.
-example of use:
-	format_instance_log(data["Default"]["admin"]["Instances"]["969630a1-8f3d-4504-b634-bbecc564b8cf"]["Log"])
-'''
 for domain_name in data:
 
 	domain = data[domain_name]
-	
+
 	for project in domain.values():
+
 		if project["Name"].strip() == "":
 			project["Name"] = empty_value
 
-		body = html_body
-		body = body.replace("$tit$", "%02d/%d-%s/%s" % (start_date.month, start_date.year, domain_name, project["Name"]))
+		sponsor = project_sponsors[project["Name"]]
 
 		total_mem_usage = 0
 		total_vcpu_usage = 0
-
-		volumes = ""
-		for volume in project["Volume"]:
-			if volume["Name"].strip() == "":
-				volume["Name"] = empty_value
-			volumes += ("\t\t<tr> <td>%s</td> <td>%sGB</td> </tr>\n" % (volume["Name"], volume["Size"]))
 		
-		body = body.replace("$vol$", volumes)
-			
-		instances = ""
 		valid_instances = filter(is_valid, project["Instances"].values())
-		for instance in sorted(valid_instances, key = get_create_date):
-			
+		project["Instances"] = sorted(valid_instances, key = get_create_date)
+		print(project["Instances"])
+		for instance in project["Instances"]:
+			print(instance)
 			instance_log = extract_actions(instance["Log"])
 			time_use = total_time(instance_log)
 			
@@ -183,33 +167,23 @@ for domain_name in data:
 			total_mem_usage += instance_mem_usage
 			instance_vcpu_usage = get_instance_vcpus(project, instance) * time_use.total_seconds()
 			total_vcpu_usage += instance_vcpu_usage
-			
-			time_use = days_hours_minutes(time_use)
+
 			status = get_status(instance_log)
 			
-			print(instance["ID"],)
-			print(get_create_date(instance))
-			print(time_use)
-			print(instance_mem_usage // 3600, instance_vcpu_usage // 3600)
+			instance["Create_Date"] = date_br_format(get_create_date(instance).date())
+			instance["Time_Use"] = days_hours_minutes(time_use)
+			instance["Status"] = status
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-			instances += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>\n" % (instance["Name"], instance["Flavor"], time_use, date_br_format(get_create_date(instance).date()), status))
-		body = body.replace("$inst$", instances)
-		body = body.replace("$mem$", str(int(total_mem_usage // 3600)))
-		body = body.replace("$vcpus$", str(int(total_vcpu_usage // 3600)))
+		project["Total_Mem_Usage"] = total_mem_usage
+		project["Total_Vcpu_Usage"] = total_vcpu_usage 
 
+		project["Domain"] = domain_name
 		
-		flavors = ""
-		for flavor in project["Flavors"].values():
-			flavors += ("\t\t<tr> <td>%s</td> <td>%s</td> <td>%sMB</td> <td>%sGB</td> </tr>\n" % (flavor["name"], flavor["vcpus"], flavor["ram"], flavor["disk"]))
+		sponsors[sponsor][project["Name"]] = project
+		sponsors[sponsor][project["Name"]]["Domain"] = domain_name
 
-		body = body.replace("$flav$", flavors)
-		sponsors[project_sponsors[project["Name"]]] += body
-
-print(sponsors.keys())
-for sponsor in sponsors:
-
-	with open("reports/%02d-%d/%s.html" % (start_date.month, start_date.year, sponsor), "w") as report:
-		report.write(html_full.replace("$body$", sponsors[sponsor]))
+with open("processed_data.json", "w") as json_file:
+	json_file.write(json.dumps(sponsors))

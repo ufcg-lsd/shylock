@@ -21,7 +21,12 @@ name_to_idx = {
 	#here are the named indexes of the logs
 	"action" : 0, 
 	"date" : 4,  
-	"first_line" : 0
+	"first_line" : 0,
+
+	#here are the named indexes of the cpu usage data
+	"data" : 0, 
+	"instant" : 0,  
+	"period_average" : 1
 }
 
 #here we have all the relevant state changes to know if the instance is active or inactive so we can check it later
@@ -141,6 +146,20 @@ def get_instance_memory(project ,instance):
 def get_instance_vcpus(project ,instance):
 	return int(project["Flavors"][instance["Flavor"]]["vcpus"])
 
+def usage_cpu_average(cpu_usage_list):
+	print(len(cpu_usage_list))
+	total_cpu_usage = 0
+	number_of_instantes = 0
+	if(len(cpu_usage_list) == 0):
+		return 0
+	for period_average in cpu_usage_list[name_to_idx["data"]]["statistics"]:
+		total_cpu_usage += period_average[name_to_idx["period_average"]]
+		number_of_instantes += 1
+	
+	average_cpu = total_cpu_usage / number_of_instantes
+	return average_cpu
+
+abnormal_instances_log = ""
 for domain_name in data:
 
 	domain = data[domain_name]
@@ -152,34 +171,40 @@ for domain_name in data:
 
 		sponsor = project_sponsors[project["Name"]]
 
-		total_mem_usage = 0
-		total_vcpu_usage = 0
+		for abnormal_instance in project["Abnormal_Instances"]:
+			abnormal_instances_log += ("%s %s %s %s\n" % (abnormal_instance["Name"], domain_name, project["Name"], sponsor))
+
+		project_mem_usage = 0
+		project_vcpu_usage = 0
+		project_average_cpu_use = 0
 		
 		valid_instances = filter(is_valid, project["Instances"].values())
 		project["Instances"] = sorted(valid_instances, key = get_create_date)
-		print(project["Instances"])
 		for instance in project["Instances"]:
-			print(instance)
+			
 			instance_log = extract_actions(instance["Log"])
-			time_use = total_time(instance_log)
+			instance_time_use = total_time(instance_log)
 			
-			instance_mem_usage = get_instance_memory(project, instance) * time_use.total_seconds()
-			total_mem_usage += instance_mem_usage
-			instance_vcpu_usage = get_instance_vcpus(project, instance) * time_use.total_seconds()
-			total_vcpu_usage += instance_vcpu_usage
-
+			instance_mem_usage = get_instance_memory(project, instance) * instance_time_use.total_seconds()
+			project_mem_usage += instance_mem_usage
+			instance_vcpu_usage = get_instance_vcpus(project, instance) * instance_time_use.total_seconds()
+			project_vcpu_usage += instance_vcpu_usage
+			instance_average_cpu_use = usage_cpu_average(instance["Cpu_Usage_List"])
+			project_average_cpu_use += instance_average_cpu_use * instance_vcpu_usage
 			status = get_status(instance_log)
-			
+
 			instance["Create_Date"] = date_br_format(get_create_date(instance).date())
-			instance["Time_Use"] = days_hours_minutes(time_use)
+			instance["Time_Use"] = days_hours_minutes(instance_time_use)
 			instance["Status"] = status
+			instance["Usage_Cpu_Average"] = instance_average_cpu_use
 
 			if instance["Name"].strip() == "":
 				instance["Name"] = empty_value
 
-		project["Total_Mem_Usage"] = total_mem_usage
-		project["Total_Vcpu_Usage"] = total_vcpu_usage 
-
+		project["Total_Mem_Usage"] = project_mem_usage
+		project["Total_Vcpu_Usage"] = project_vcpu_usage 
+		project["Usage_Cpu_Average"] = project_average_cpu_use / max(project_vcpu_usage, 1)
+		
 		project["Domain"] = domain_name
 		
 		sponsors[sponsor][project["Name"]] = project
@@ -187,3 +212,6 @@ for domain_name in data:
 
 with open("processed_data.json", "w") as json_file:
 	json_file.write(json.dumps(sponsors))
+
+with open("log.txt", "w") as log_abnormal_instances:
+	log_abnormal_instances.write(json.dumps(abnormal_instances_log))

@@ -24,8 +24,9 @@
     </div>
 
     <div class="use_per_hour">
-        <p><b>Utilização total de memória       :</b> {{"%d" % (project["Total_Mem_Usage"]  // 3600)}} GB * h</p>
-        <p><b>Utilização total de processamento :</b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h </p>
+        <p><b>Uso total de memória          :</b> {{"%d" % (project["Total_Mem_Usage"]  // 3600)}} GB * h</p>
+        <p><b>Uso total de processamento    :</b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h </p>
+        <p><b>Utilização média de CPU       :</b> {{"%.1f" % (project["Usage_Cpu_Average"]  )}}%</p>
     </div>
 
     <div class="page-header">
@@ -36,9 +37,9 @@
         <tr>  <th>Nome</th> <th>Tamanho</th> </tr>
         {% for volume in project["Volume"] -%}
             {% if volume["Name"] == "" -%}
-                <tr>  <td>---------</td> <td>{{volume["Size"]}}GB</td>   </tr>
+                <tr>  <td>---------</td> <td style="text-align:right">{{volume["Size"]}}GB</td>   </tr>
             {% else -%}
-                <tr>  <td>{{volume["Name"]}}</td> <td>{{volume["Size"]}}GB</td>   </tr>
+                <tr>  <td>{{volume["Name"]}}</td> <td style="text-align:right">{{volume["Size"]}}GB</td>   </tr>
             {% endif -%}
         {% endfor %}
     </table>
@@ -48,9 +49,9 @@
     </div>
 
     <table>
-        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> <th>Data de criação</th> <th>Status</th> </tr>
+        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> <th>Data de criação</th> <th>Status</th> <th>Utilização de CPU</th> </tr>
         {% for instance in project["Instances"] -%}
-            <tr>  <td>{{instance["Name"]}}</td> <td>{{instance["Flavor"]}}</td> <td>{{instance["Time_Use"]}}</td> <td>{{instance["Create_Date"]}}</td> <td>{{instance["Status"]}}</td> </tr>
+            <tr>  <td>{{instance["Name"]}}</td> <td>{{instance["Flavor"]}}</td> <td style="text-align:right">{{instance["Time_Use"]}}</td> <td>{{instance["Create_Date"]}}</td> <td>{{instance["Status"]}}</td> <td style="text-align:right">{{ "%.1f%%" % instance["Usage_Cpu_Average"]}}</td></tr>
         {% endfor %}
 
     </table>
@@ -62,7 +63,7 @@
     <table>
         <tr>  <th>Nome</th> <th>VCPUS</th> <th>RAM</th> <th>Disco</th> </tr>
         {% for flavor in project["Flavors"].values() -%}
-            <tr>  <td>{{flavor["name"]}}</td> <td>{{flavor["vcpus"]}}</td> <td>{{flavor["ram"]}}MB</td> <td>{{flavor["disk"]}}GB</td> </tr>
+            <tr>  <td>{{flavor["name"]}}</td> <td style="text-align:right">{{flavor["vcpus"]}}</td> <td style="text-align:right">{{flavor["ram"]}}MB</td> <td style="text-align:right">{{flavor["disk"]}}GB</td> </tr>
         {% endfor %}
     </table>    
     {% endfor %}

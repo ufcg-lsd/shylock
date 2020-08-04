@@ -25,11 +25,20 @@
     </div>
 
     <table>
-        <tr><th> Projeto </th> <th> Uso de memória </th> <th> Uso de processamento</th> </tr>
+        <tr><th> Projeto </th> <th> Uso de memória </th> <th> Uso de processamento</th> <th> Utilização média de CPU</th></tr>
+        {% set usage_cpu_average = [] %}
         {% for project in data[sponsor].values() | sort(attribute="Domain,Name") -%}
-        <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">{{"%d" % (project["Total_Mem_Usage"] // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h</td> </tr>
+            {% if project["Total_Vcpu_Usage"] -%}
+            <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">{{"%d" % (project["Total_Mem_Usage"] // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h</td> <td style="text-align:right">{{"%.1f" % (project["Usage_Cpu_Average"]) }}%</td> </tr>
+            {% if usage_cpu_average.append(project["Usage_Cpu_Average"] * project["Total_Vcpu_Usage"]) %} {% endif %}
+            
+
+            {% else -%}
+            <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">---------------</td> <td style="text-align:right">-------------</td> <td style="text-align:right">--------</td> </tr>
+            {% endif -%}
+
         {% endfor %}
-        <tr><td> Total</td> <td style="text-align:right">{{ "%d" % (data[sponsor].values() | sum(attribute="Total_Mem_Usage") // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % ((data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) // 3600)}} vCPU * h</td> </tr>
+        <tr><td> Total</td> <td style="text-align:right">{{ "%d" % (data[sponsor].values() | sum(attribute="Total_Mem_Usage") // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % ((data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) // 3600)}} vCPU * h</td> <td style="text-align:right">{{"%.1f" % ( (usage_cpu_average | sum)  / (data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")))  }}%</td> </tr>
     </table>
     {% endfor %}
     

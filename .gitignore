@@ -2,3 +2,4 @@
 .vscode/*
 reports/*
 *.json
+log.txt

@@ -3,7 +3,7 @@
 import jinja2, json, argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--option", help="Select your report type(summary or default or both separeted by ,)")
+parser.add_argument("--option", help="Select your report type(summary, utilization_summary or default separeted by ,)")
 parser.add_argument("--date", help="Enter the start date")
 args = parser.parse_args()
 option = args.option.split(",")
@@ -20,7 +20,7 @@ if "summary" in option:
         html_file.write(report)
 
 if "default" in option:
-    with open("templates/default_report_template.html") as template:
+    with open("templates/report_template.html") as template:
         template = template.read()
     
     for sponsor in processed_data:
@@ -29,4 +29,12 @@ if "default" in option:
     
         with open("reports/%s.html" % (sponsor), "w") as html_file:
             html_file.write(report)
-            
+
+if "utilization_summary" in option:
+    with open("templates/utilization_summary_report_template.html") as template:
+        template = template.read()
+    report = jinja2.Template(template).render(data = processed_data, date = args.date)
+    
+    with open("reports/utilization_summary_report.html", "w") as html_file:
+        html_file.write(report)
+    

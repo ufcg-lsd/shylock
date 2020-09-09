@@ -19,6 +19,19 @@
         <h1>Relatório utilização Cloud LSD - {{date}}</h1>
     </div>
 
+    {% set total_mem_usage   = [] %}
+    {% set total_vcpu_usage = [] %}
+    {% for sponsor in data %}
+        {% if total_mem_usage.append(data[sponsor].values()  | sum(attribute="Total_Mem_Usage")) %}  {% endif %}
+        {% if total_vcpu_usage.append(data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) %} {% endif %}
+
+    {% endfor %}
+
+    <div class="use_per_hour">
+        <p><b>Uso total de memória          :</b> {{"%d" % (total_mem_usage  | sum // 3600)}} GB * h</p>
+        <p><b>Uso total de processamento    :</b> {{"%d" % (total_vcpu_usage | sum // 3600)}} vCPU * h </p>
+    </div>
+
     {% for sponsor in data | sort() -%}
     <div class="page-header">
         <h1>{{sponsor}}</h1>        

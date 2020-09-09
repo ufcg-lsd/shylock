@@ -3,3 +3,4 @@
 reports/*
 *.json
 log.txt
+*.csv

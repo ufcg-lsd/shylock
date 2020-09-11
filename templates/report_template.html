@@ -24,9 +24,9 @@
     </div>
 
     <div class="use_per_hour">
-        <p><b>Uso total de memória          :</b> {{"%d" % (project["Total_Mem_Usage"]  // 3600)}} GB * h</p>
-        <p><b>Uso total de processamento    :</b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h </p>
-        <p><b>Utilização média de CPU       :</b> {{"%.1f" % (project["Usage_Cpu_Average"]  )}}%</p>
+        <p><b>Uso total de memória :</b> {{"%d" % (project["Total_Mem_Usage"]  // 3600)}} GB * h</p>
+        <p><b>Uso total de processamento :</b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h </p>
+        <p><b>Utilização média de CPU :</b> {{"%.1f" % (project["Usage_Cpu_Average"])}}%</p>
     </div>
 
     <div class="page-header">

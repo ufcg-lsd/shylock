@@ -2,6 +2,11 @@
 import json, argparse
 from subprocess import getoutput as go
 
+class Scraper:
+
+	def __init__(self):
+		pass
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--start_date", help="Enter the start date in format year-month-day")
 parser.add_argument("--end_date", help="Enter the end date in format year-month-day")

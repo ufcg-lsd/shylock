@@ -4,6 +4,10 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 import json, argparse
 
+class Processor:
+	def __init__(self):
+		pass
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--start_date", help="Enter the start date in format year-month-day")
 parser.add_argument("--end_date", help="Enter the end date in format year-month-day")

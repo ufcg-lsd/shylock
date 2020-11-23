@@ -1,74 +1,101 @@
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Billing</title>
-<link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
-<link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Billing </title>
+    <link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
+    <link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <header class="nav">
-        <img src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"  class="nav" />
-        
+        <img src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg" class="nav" />
     </header>
-    
 
     {% for project in data.values() %}
+        <div class="project">
+            <h1> Relatório utilização Cloud LSD - {{date}}-{{project["Domain"]}}/{{project["Name"]}} </h1>
+        </div>
 
-    <div class="project">
-        <h1>Relatório utilização Cloud LSD - {{date}}-{{project["Domain"]}}/{{project["Name"]}}</h1>
-    </div>
+        <div class="use_per_hour">
+            <p><b> Uso total de memória: </b> {{"%d" % (project["Total_Mem_Usage"] // 3600)}}GB * h </p>
+            <p><b> Uso total de processamento: </b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}}vCPU * h </p>
+            <p><b> Utilização média de CPU: </b> {{"%.1f" % (project["Usage_Cpu_Average"])}}% </p>
+        </div>
 
-    <div class="use_per_hour">
-        <p><b>Uso total de memória          :</b> {{"%d" % (project["Total_Mem_Usage"]  // 3600)}} GB * h</p>
-        <p><b>Uso total de processamento    :</b> {{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h </p>
-        <p><b>Utilização média de CPU       :</b> {{"%.1f" % (project["Usage_Cpu_Average"]  )}}%</p>
-    </div>
+        <div class="page-header">
+            <h1 class="help-text"> Volumes</h1>
+        </div>
 
-    <div class="page-header">
-        <h1 class="help-text">Volumes</h1>
-    </div>
+        <table>
+            <tr>
+                <th> Nome </th>
+                <th> Tamanho </th>
+            </tr>
+            {% for volume in project["Volume"] -%}
+                {% if volume["Name"] == "" -%}
+                    <tr>
+                        <td>---------</td>
+                        <td style="text-align:right"> {{volume["Size"]}}GB </td>
+                    </tr>
+                {% else -%}
+                    <tr>
+                        <td> {{volume["Name"]}} </td>
+                        <td style="text-align:right"> {{volume["Size"]}}GB </td>
+                    </tr>
+                {% endif -%}
+            {% endfor %}
+        </table>
 
-    <table>
-        <tr>  <th>Nome</th> <th>Tamanho</th> </tr>
-        {% for volume in project["Volume"] -%}
-            {% if volume["Name"] == "" -%}
-                <tr>  <td>---------</td> <td style="text-align:right">{{volume["Size"]}}GB</td>   </tr>
-            {% else -%}
-                <tr>  <td>{{volume["Name"]}}</td> <td style="text-align:right">{{volume["Size"]}}GB</td>   </tr>
-            {% endif -%}
-        {% endfor %}
-    </table>
+        <div class="page-header">
+            <h1 class="help-text"> Instâncias </h1>
+        </div>
 
-    <div class="page-header">
-        <h1 class="help-text">Instâncias</h1>
-    </div>
+        <table>
+            <tr>
+                <th> Nome </th>
+                <th> Flavor </th>
+                <th> Tempo de uso </th>
+                <th> Data de criação </th>
+                <th> Status </th>
+                <th> Utilização de CPU </th>
+            </tr>
+            {% for instance in project["Instances"] -%}
+                <tr> 
+                    <td> {{instance["Name"]}} </td>
+                    <td> {{instance["Flavor"]}} </td>
+                    <td style="text-align:right"> {{instance["Time_Use"]}} </td>
+                    <td> {{instance["Create_Date"]}} </td>
+                    <td> {{instance["Status"]}} </td>
+                    <td style="text-align:right"> {{ "%.1f%%" % instance["Usage_Cpu_Average"]}} </td>
+                </tr>
+            {% endfor %}
+        </table>
 
-    <table>
-        <tr>  <th>Nome</th> <th>Flavor</th> <th>Tempo de uso</th> <th>Data de criação</th> <th>Status</th> <th>Utilização de CPU</th> </tr>
-        {% for instance in project["Instances"] -%}
-            <tr>  <td>{{instance["Name"]}}</td> <td>{{instance["Flavor"]}}</td> <td style="text-align:right">{{instance["Time_Use"]}}</td> <td>{{instance["Create_Date"]}}</td> <td>{{instance["Status"]}}</td> <td style="text-align:right">{{ "%.1f%%" % instance["Usage_Cpu_Average"]}}</td></tr>
-        {% endfor %}
+        <div class="page-header">
+            <h1 class="help-text"> Flavors </h1>
+        </div>
 
-    </table>
-
-    <div class="page-header">
-        <h1 class="help-text">Flavors</h1>
-    </div>
-
-    <table>
-        <tr>  <th>Nome</th> <th>VCPUS</th> <th>RAM</th> <th>Disco</th> </tr>
-        {% for flavor in project["Flavors"].values() -%}
-            <tr>  <td>{{flavor["name"]}}</td> <td style="text-align:right">{{flavor["vcpus"]}}</td> <td style="text-align:right">{{flavor["ram"]}}MB</td> <td style="text-align:right">{{flavor["disk"]}}GB</td> </tr>
-        {% endfor %}
-    </table>    
+        <table>
+            <tr>
+                <th> Nome </th>
+                <th> VCPUS </th>
+                <th> RAM </th>
+                <th> Disco </th>
+            </tr>
+            {% for flavor in project["Flavors"].values() -%}
+                <tr>
+                    <td> {{flavor["name"]}} </td>
+                    <td style="text-align:right"> {{flavor["vcpus"]}} </td>
+                    <td style="text-align:right"> {{flavor["ram"]}}MB </td>
+                    <td style="text-align:right"> {{flavor["disk"]}}GB </td>
+                </tr>
+            {% endfor %}
+        </table>
     {% endfor %}
-    
 
 </body>
-
 </html>

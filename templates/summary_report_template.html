@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Billing</title>
-<link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
-<link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing</title>
+    <link rel="shortcut icon" href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico" />
+    <link href="https://danielx285.github.io/bilhetagem-lsd-style/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -19,29 +19,62 @@
         <h1>Relatório utilização Cloud LSD - {{date}}</h1>
     </div>
 
+    {% set total_mem_usage = [] %}
+    {% set total_vcpu_usage = [] %}
+    {% for sponsor in data %}
+        {% if total_mem_usage.append(data[sponsor].values() | sum(attribute="Total_Mem_Usage")) %}  {% endif %}
+        {% if total_vcpu_usage.append(data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) %} {% endif %}
+
+    {% endfor %}
+
+    <div class="use_per_hour">
+        <p><b>Uso total de memória :</b> {{"%d" % (total_mem_usage | sum // 3600)}} GB * h</p>
+        <p><b>Uso total de processamento :</b> {{"%d" % (total_vcpu_usage | sum // 3600)}} vCPU * h </p>
+    </div>
+
     {% for sponsor in data | sort() -%}
     <div class="page-header">
         <h1>{{sponsor}}</h1>        
     </div>
 
     <table>
-        <tr><th> Projeto </th> <th> Uso de memória </th> <th> Uso de processamento</th> <th> Utilização média de CPU</th></tr>
+        <tr>
+            <th> Projeto </th>
+            <th> Uso de memória </th>
+            <th> Uso de processamento</th>
+            <th> Utilização média de CPU</th>
+        </tr>
         {% set usage_cpu_average = [] %}
         {% for project in data[sponsor].values() | sort(attribute="Domain,Name") -%}
             {% if project["Total_Vcpu_Usage"] -%}
-            <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">{{"%d" % (project["Total_Mem_Usage"] // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h</td> <td style="text-align:right">{{"%.1f" % (project["Usage_Cpu_Average"]) }}%</td> </tr>
-            {% if usage_cpu_average.append(project["Usage_Cpu_Average"] * project["Total_Vcpu_Usage"]) %} {% endif %}
+                <tr>
+                    <td>{{project["Domain"]}}/{{project["Name"]}} </td>
+                    <td style="text-align:right">{{"%d" % (project["Total_Mem_Usage"] // 3600)}} GB * h</td>
+                    <td style="text-align:right">{{"%d" % (project["Total_Vcpu_Usage"] // 3600)}} vCPU * h</td>
+                    <td style="text-align:right">{{"%.1f" % (project["Usage_Cpu_Average"]) }}%</td>
+                </tr>
+                {% if usage_cpu_average.append(project["Usage_Cpu_Average"] * project["Total_Vcpu_Usage"]) %}
+                {% endif %}
             
-
             {% else -%}
-            <tr><td>{{project["Domain"]}}/{{project["Name"]}} </td> <td style="text-align:right">---------------</td> <td style="text-align:right">-------------</td> <td style="text-align:right">--------</td> </tr>
+                <tr>
+                    <td>{{project["Domain"]}}/{{project["Name"]}}</td>
+                    <td style="text-align:right">---------------</td>
+                    <td style="text-align:right">-------------</td>
+                    <td style="text-align:right">--------</td>
+                </tr>
+
             {% endif -%}
 
         {% endfor %}
-        <tr><td> Total</td> <td style="text-align:right">{{ "%d" % (data[sponsor].values() | sum(attribute="Total_Mem_Usage") // 3600)}} GB * h</td> <td style="text-align:right">{{"%d" % ((data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) // 3600)}} vCPU * h</td> <td style="text-align:right">{{"%.1f" % ( (usage_cpu_average | sum)  / (data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")))  }}%</td> </tr>
+        <tr>
+            <td> Total</td>
+            <td style="text-align:right">{{ "%d" % (data[sponsor].values() | sum(attribute="Total_Mem_Usage") // 3600)}} GB * h</td>
+            <td style="text-align:right">{{"%d" % ((data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")) // 3600)}} vCPU * h</td>
+            <td style="text-align:right">{{"%.1f" % ( (usage_cpu_average | sum)  / (data[sponsor].values() | sum(attribute="Total_Vcpu_Usage")))  }}%</td>
+        </tr>
     </table>
     {% endfor %}
     
 </body>
-
 </html>

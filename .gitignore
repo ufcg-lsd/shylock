@@ -3,3 +3,6 @@
 reports/*
 *.json
 log.txt
+
+credenciais.sh
+__pycache__/

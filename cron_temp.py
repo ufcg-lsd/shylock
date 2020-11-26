@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.7
+
 from datetime import datetime, timedelta
 from subprocess import getoutput as go
 

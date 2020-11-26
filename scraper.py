@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.7
 import json
 from subprocess import getoutput as go
 
@@ -7,13 +6,17 @@ class Scraper:
 		pass				
 		
 	def scrape(self, start_date="", end_date=""):
-		go("mkdir reports")
-		go("mkdir reports/%s-%s" % (start_date.split("-")[1], start_date.split("-")[0]))
+		print("starting scraper")
+
+		go("mkdir -p reports/%s-%s" % (start_date.split("-")[1], start_date.split("-")[0]))
 		
 		domains = {}
 		instances_number = 0
+		
+		domain_query = "openstack domain list -f value -c Name"
+		print(domain_query)
 
-		for domain in go("openstack domain list -f value -c Name").split("\n"):
+		for domain in go(domain_query).split("\n"):
 			domains[domain] = {}
 			project_query = "openstack  project list --domain %s -f json" % domain
 			print(project_query)

@@ -22,7 +22,13 @@ def main():
   # #Year-Month-Day
   start_date = args.start_date
   end_date = args.end_date
-  option = args.option.split(",")
+  option = None
+
+  if not args.option:
+    option = "default"
+    print("using option default")
+  else: 
+    option = args.option
 
   scraper.scrape(start_date, end_date)
   processor.process(start_date, end_date)

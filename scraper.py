@@ -34,12 +34,18 @@ class Scraper:
 				for instance in json.loads(go("openstack server list --project-domain %s --project %s -f json" % (domain, project["Name"]))):
 					project["Instances"][instance["ID"]] =  instance
 					project["Instances"][instance["ID"]]["Log"]  = go("nova instance-action-list %s" % instance["ID"])
-					bash_instance_name = instance["Name"].replace(" ", "\ ").replace("(", "\(").replace(")", "\)")
+					bash_instance_name = instance["Name"].replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("\\", "")
+					
 					monasca_query = "monasca metric-statistics cpu.utilization_norm_perc --dimensions resource_id=%s,hostname=%s AVG %s --endtime %s --period 900 -j" % (instance["ID"], bash_instance_name, start_date, end_date)
 					print(monasca_query)
-					project["Instances"][instance["ID"]]["Cpu_Usage_List"] = json.loads(go(monasca_query))
+					if "&" in bash_instance_name:
+						project["Instances"][instance["ID"]]["Cpu_Usage_List"] = []
+					else:
+						project["Instances"][instance["ID"]]["Cpu_Usage_List"] = json.loads(go(monasca_query))
+
 					flavor_query = "openstack flavor show %s -f json" % instance["Flavor"]
 					print(flavor_query)
+					
 					if instance["Flavor"].strip() == "":
 						project["Abnormal_Instances"].append(instance)
 						del project["Instances"][instance["ID"]]
@@ -51,12 +57,18 @@ class Scraper:
 				for deleted_instance in json.loads(go("openstack server list --project-domain %s --project %s --changes-since %s --deleted -f json" % (domain, project["Name"], start_date))):
 					project["Instances"][deleted_instance["ID"]] = deleted_instance
 					project["Instances"][deleted_instance["ID"]]["Log"] = go("nova instance-action-list %s" % deleted_instance["ID"])
-					bash_instance_name = deleted_instance["Name"].replace(" ", "\ ").replace("(", "\(").replace(")", "\)")
+					bash_instance_name = deleted_instance["Name"].replace(" ", "\ ").replace("(", "\(").replace(")", "\)").replace("\\", " ")
+
 					monasca_query = "monasca metric-statistics cpu.utilization_norm_perc --dimensions resource_id=%s,hostname=%s  AVG %s --endtime %s --period 900 -j" % (deleted_instance["ID"], bash_instance_name,start_date, end_date)
-					print(monasca_query)
-					project["Instances"][deleted_instance["ID"]]["Cpu_Usage_List"] = json.loads(go(monasca_query))	
+					print(monasca_query)					
+					if "&" in bash_instance_name:
+						project["Instances"][deleted_instance["ID"]]["Cpu_Usage_List"] = []
+					else:
+						project["Instances"][deleted_instance["ID"]]["Cpu_Usage_List"] = json.loads(go(monasca_query))
+
 					flavor_query = "openstack flavor show %s -f json" % deleted_instance["Flavor"]
 					print(flavor_query)
+					
 					if deleted_instance["Flavor"].strip() == "":
 						project["Abnormal_Instances"].append(deleted_instance)
 						del project["Instances"][deleted_instance["ID"]]

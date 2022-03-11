@@ -1,7 +1,21 @@
-*.swp
-.vscode/*
-reports/*
-*.json
-log.txt
-*.csv
-templates/.csv*
+# Files
+*.pyc
+.env
+shylock/conf.yaml
+.DS_Store
+celerybeat-schedule
+
+# dirs
+.vscode/
+static/
+influxdb-data/
+postgres-data/
+reports-data/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Remove all migrations numereded and keep just init
+**/migrations/[0-9]*.py
+!*/migrations/__init__.py

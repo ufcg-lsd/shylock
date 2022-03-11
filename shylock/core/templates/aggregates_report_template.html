@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billing</title>
+    <link
+      rel="shortcut icon"
+      href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico"
+    />
+    <link
+      href="https://danielx285.github.io/bilhetagem-lsd-style/style.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      th, tr, td {
+        font-size: 14px !important;
+        padding-right: 15px !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="nav">
+      <img
+        src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"
+        class="nav"
+      />
+    </header>
+
+    <div style="max-width: 650px; margin: 10px auto; border: 1px solid #fff">
+      {% for name, aggregate in context.items %}
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h3>Aggregate: {{ name }}</h3>
+      </div>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Computes/Hosts</h4>
+      </div>
+
+      <table style="margin: 0px; width: 100%;">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>VMs</th>
+            <th>vCPU</th>
+            <th>RAM (GB)</th>
+            <th>RAM Eff (GB)</th>
+            <th>Disk (GB)</th>
+          </tr>
+          {% for compute in aggregate.computes %}
+          <tr>
+            <td>{{ compute.name }}</td>
+            <td>{{ compute.running_vms }}</td>
+            <td>{{ compute.vcpus_used }}/{{ compute.vcpus_total }} ({{ compute.vcpus_perc }}%)</td>
+            <td>{{ compute.ram_used }}/{{ compute.ram_total }} ({{ compute.ram_perc }}%)</td>
+            <td>{{ compute.ram_eff_used }}/{{ compute.ram_eff_total }} ({{ compute.ram_eff_perc }}%)</td>
+            <td>{{ compute.disk_used }}/{{ compute.disk_total }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="100%"><hr /></td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>{{ aggregate.aggregate_summary.vms_used }}</td>
+            <td>{{ aggregate.aggregate_summary.vcpus_used }}/{{ aggregate.aggregate_summary.vcpus_reserved }} ({{ aggregate.aggregate_summary.vcpus_perc }}%)</td>
+            <td>{{ aggregate.aggregate_summary.ram_used }}/{{ aggregate.aggregate_summary.ram_reserved }} ({{ aggregate.aggregate_summary.ram_perc }}%)</td>
+            <td>{{ aggregate.aggregate_summary.ram_eff_used }}/{{ aggregate.aggregate_summary.ram_eff_reserved }} ({{ aggregate.aggregate_summary.ram_eff_perc }}%)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Flavors</h4>
+      </div>
+
+      <table style="margin: 0; width: 100%;">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>VMs</th>
+            <th>vCPU</th>
+            <th>RAM (GB)</th>
+            <th>Disk (GB)</th>
+            <th>Free/Total</th>
+          </tr>
+          {% for flavor in aggregate.flavors %}
+          <tr>
+            <td>{{ flavor.name }}</td>
+            <td>{{ flavor.running_vms }}</td>
+            <td>{{ flavor.vcpu }}</td>
+            <td>{{ flavor.ram }}</td>
+            <td>{{ flavor.disk }}</td>
+            <td>{{ flavor.flavors_available }}/{{ flavor.flavors_total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <br />
+      <br />
+
+      {% endfor %}
+
+    </div>
+  </body>
+</html>

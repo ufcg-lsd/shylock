@@ -12,6 +12,8 @@ from keystone.models import *
 from monasca.tasks import influx_query, monasca
 from nova.models import *
 
+from core.conf import conf_file
+
 # Defines all possible states of an instance, grouped if is On/Off
 to_on_states = [
     'create',
@@ -57,7 +59,7 @@ def aggregate_report():
                 continue
             compute_detail = {}
             compute_detail['name'] = hypervisor.hypervisor_hostname.replace(
-                '.lsd.ufcg.edu.br', '')
+                conf_file['billing']['hostname_domain'], '')
             compute_detail['running_vms'] = hypervisor.running_vms
             compute_detail['vcpus_total'] = hypervisor.vcpus
             compute_detail['vcpus_used'] = hypervisor.vcpus_used
@@ -345,8 +347,6 @@ def sponsors_report(begin_date: str, end_date: str):
                         60))
 
                 # build status through actions
-                # print(server.name)
-                # print(server.actions.values())
                 server_status_action = server.actions.values()
                 if server_status_action:
                     server_status_action = server_status_action[0]

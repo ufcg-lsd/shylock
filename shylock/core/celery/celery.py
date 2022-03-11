@@ -92,7 +92,7 @@ app.conf.beat_schedule = {
     "generate_aggregates_report": {
         "task": "core.tasks.generate_aggregates_report",
         "schedule": crontab(
-            minute=18,
+            minute=0,
             hour=crontab_daily_hour_replaced),
         "args": [conf_file['billing']['operators']['send_email'], ],
     },

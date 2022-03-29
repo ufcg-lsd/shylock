@@ -155,11 +155,10 @@ def save_flavors() -> None:
             if 'aggregate_instance_extra_specs' in key:
                 aggregate_name = flavor_properties[key]
 
-        # django filter is case-sensitive. aggregate name could be retrieve in
-        # lower case but in aggregate could have name in upper case. to fix this,
-        # we make a search with contains and check all aggregates name in lower
-        # case
-        aggregates = Aggregates.objects.filter(name__contains=aggregate_name)
+        # filter using the icontains is non-case-sensitive.
+        # the lower() guarantee the non-case-sensitive for
+        # match the aggregate name
+        aggregates = Aggregates.objects.filter(name__icontains=aggregate_name)
         aggregate_obj = None
         for aggregate in aggregates:
             if aggregate.name.lower() == aggregate_name.lower():

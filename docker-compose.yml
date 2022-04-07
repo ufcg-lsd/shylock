@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+  redis:
+    image: redis:alpine
+    container_name: redis
+  influxdb:
+    image: influxdb:2.0.8
+    container_name: influxdb
+    volumes:
+      - ./influxdb-data:/var/lib/influxdb2
+    ports:
+      - 8086:8086
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
+  celery-beat:
+    build: .
+    container_name: celery-beat
+    command: celery -A core beat --loglevel=debug
+    volumes:
+      - ./reports-data:/usr/src/shylock/media
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+    depends_on:
+      - redis
+      - influxdb
+      - postgres
+  celery-worker:
+    build: .
+    container_name: celery-worker
+    command: celery -A core worker --pool=prefork --max-tasks-per-child=10 -l info -n worker1@%h
+    volumes:
+      - ./reports-data:/usr/src/shylock/media
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - KEYSTONE_URL=${KEYSTONE_URL}
+      - KEYSTONE_USER=${KEYSTONE_USER}
+      - KEYSTONE_PASSWORD=${KEYSTONE_PASSWORD}
+      - KEYSTONE_PROJECT_DOMAIN_ID=${KEYSTONE_PROJECT_DOMAIN_ID}
+      - KEYSTONE_USER_DOMAIN_ID=${KEYSTONE_USER_DOMAIN_ID}
+      - KEYSTONE_PROJECT_NAME=${KEYSTONE_PROJECT_NAME}
+      - MONASCA_API_VERSION=${MONASCA_API_VERSION}
+      - MONASCA_ENDPOINT=${MONASCA_ENDPOINT}
+      - MONASCA_INTERFACE=${MONASCA_INTERFACE}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - INFLUX_URL=${INFLUX_URL}
+      - INFLUX_USER=${INFLUX_USER}
+      - INFLUX_PASSWORD=${INFLUX_PASSWORD}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_ORG=${INFLUX_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
+      - EMAIL_FROM_EMAIL=${EMAIL_FROM_EMAIL}
+    depends_on:
+      - redis
+      - influxdb
+      - postgres

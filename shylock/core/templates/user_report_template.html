@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billing</title>
+    <link
+      rel="shortcut icon"
+      href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico"
+    />
+    <link
+      href="https://danielx285.github.io/bilhetagem-lsd-style/style.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: #f1f1f1;
+      }
+      th, tr, td {
+        font-size: 14px !important;
+        padding-right: 15px !important;
+      }
+      p {
+        font-size: 14px !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="nav">
+      <img
+        src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"
+        class="nav"
+      />
+    </header>
+
+    {% for report in context %}
+    <div style="width: 650px; margin: 20px auto; border: 1px solid #fff; border-radius:5px; background: #fff; padding: 10px;">
+      <div>
+        <h3>Relatório utilização Cloud LSD</h3>
+      </div>
+      
+      <div>
+        <div class="use_per_hour" style="padding: 0; margin: 10px 0; border: 0;">
+          <p style="margin: 0;"><b>Mês referência:</b> {{ report.header.month }}</p>
+          <p style="margin: 0;"><b>Domínio:</b> {{ report.header.domain }}</p>
+          <p style="margin: 0;"><b>Projeto:</b> {{ report.header.project }}</p>
+          <p style="margin: 0;"><b>Uso total de memória:</b> {{ report.header.total_used_mem }} GB * h</p>
+          <p style="margin: 0;"><b>Uso total de processamento:</b> {{ report.header.total_used_vcpu }} vCPU * h</p>
+          <p style="margin: 0;"><b>Utilização média de CPU:</b> {{ report.header.total_cpu_avg }}%</p>
+          
+        </div>
+      </div>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Alocação</h4>
+      </div>
+
+      <table style="margin: 0">
+        <tbody>
+          <tr>
+            <th>Nome</th>
+            <th>Usado</th>
+            <th>Reservado</th>
+            <th>% em uso</th>
+          </tr>
+          {% for resource in report.body.resources %}
+          <tr>
+            <td>{{ resource.name }}</td>
+            <td>{{ resource.used }}</td>
+            <td>{{ resource.reserved }}</td>
+            <td>{{ resource.perc_used | floatformat:2 }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Instâncias</h4>
+      </div>
+
+      <table style="margin: 0px">
+        <tbody>
+          <tr>
+            <th>Nome</th>
+            <th>Flavor</th>
+            <th>Horas</th>
+            <th>Status</th>
+            <th>CPU Média</th>
+          </tr>
+          {% for server in report.body.servers %}
+          <tr>
+            <td>{{ server.name }}</td>
+            <td>{{ server.flavor }}</td>
+            <td>{{ server.hours_used }}h</td>
+            <td>{{ server.status }}</td>
+            <td>{{ server.cpu_avg | floatformat:2 }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Volumes</h4>
+      </div>
+
+      <table style="margin: 0">
+        <tbody>
+          <tr>
+            <th>Nome</th>
+            <th>Tamanho (GB)</th>
+          </tr>
+          {% for volume in report.body.volumes %}
+          <tr>
+            <td>{{ volume.name }}</td>
+            <td style="text-align: right">{{ volume.size }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h4 style="color: #444">Flavors</h4>
+      </div>
+
+      <table style="margin: 0">
+        <tbody>
+          <tr>
+            <th>Nome</th>
+            <th>VCPUS</th>
+            <th>RAM (GB)</th>
+            <th>Disco (GB)</th>
+          </tr>
+          {% for flavor in report.body.flavors %}
+          <tr>
+            <td>{{ flavor.name }}</td>
+            <td style="text-align: right">{{ flavor.vcpus }}</td>
+            <td style="text-align: right">{{ flavor.mem_gb }}</td>
+            <td style="text-align: right">{{ flavor.disk_size }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <br />
+      <br />
+    </div>
+    {% endfor %}
+  </body>
+</html>

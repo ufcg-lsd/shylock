@@ -1,0 +1,34 @@
+billing:
+  timezone: "America/Recife"
+  hostname_domain: .hostname.com
+  operators:
+    mail: admin@email.com
+    email_subject: Report with aggregates from the LSD cloud
+    crontab_daily_hour: 9
+    send_email: True
+  sponsors:
+    email_subject: Report of usage from the LSD cloud
+    crontab_month_day: 1
+    send_email: False
+
+openstack:
+  collect_period: 10
+
+monasca:
+  collect_period: 5
+  statistics:
+    - name: [
+        vm.cpu.utilization_norm_perc,
+        vm.mem.free_perc,
+      ]
+      type: avg
+      dimension: resource_id
+      period: 60
+    - name: [
+        cpu.percent,
+        mem.usable_perc,
+        mem.free_mb,
+      ]
+      type: avg
+      dimension: hostname
+      period: 60

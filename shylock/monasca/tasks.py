@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils.timezone import now
 from monascaclient import client as monasca_client
 from nova.models import Hypervisors, Servers
+from pytz import timezone
 
 monasca = monasca_client.Client(
     api_version=config("MONASCA_API_VERSION"),
@@ -56,7 +57,8 @@ def schedule_save_statistics() -> None:
         resource_name = statistic_definition['dimension']
 
         if resource_name == "resource_id":
-            resource_objects = Servers.objects.all().values()
+            resource_objects = Servers.objects.exclude(
+                status="DELETED").values()
         elif resource_name == "hostname":
             resource_objects = Hypervisors.objects.all().values()
 
@@ -83,7 +85,19 @@ def save_statistics(statistics_dict, resource_name, resource):
             resource_name=resource_name,
             resource_id=str(resource['id'])
         )
-        if not date_influx:
+        # force to go backwar even when already exists data on InfluxDB
+        backward_force = conf_file['monasca'].get('backward_force', False)
+        if backward_force:
+            # build begin date when user wants force retrieve backward data
+            begin_date = datetime.datetime.strptime(
+                conf_file['monasca']['backward_date'], '%d/%m/%Y')
+            begin_date = begin_date.astimezone(timezone('UTC'))
+            backward_days = (now() - begin_date).days
+            start_date = datetime.datetime(
+                now().year, now().month, now().day, 0, 0, 0)
+            start_date = start_date - datetime.timedelta(days=backward_days)
+        elif not date_influx:
+            # default value is 1 day
             start_date = now() - datetime.timedelta(days=1)
         else:
             start_date = date_influx[-1]['_time']
@@ -97,15 +111,70 @@ def save_statistics(statistics_dict, resource_name, resource):
         end_time = now().isoformat(' ', 'seconds')
         period = statistics_dict['period']
 
-        statistics = monasca.metrics.list_statistics(
-            name=statistic_name,
-            dimensions=dimensions,
-            statistics=metric_type,
-            start_time=start_time,
-            end_time=end_time,
-            period=period,
-            merge_metrics=True
-        )
+        if backward_force:
+            # the monasca limits the number os statistics
+            # we strike the endpoint N times from begin of backward date
+            # until the difference between from last statistic and current
+            # date is less than 1 day
+
+            # the buffer with statistics from beginning until end time
+            statistics_buffer = []
+            # when the loop will stop
+            condition = end_time
+            max_curr = 0
+            # number of times we gonna hit the endpoint before get out
+            max_retries = conf_file['monasca']['backward_max_retries']
+            while condition:
+                # get out from main loop to avoid deadlock
+                if max_curr == max_retries:
+                    break
+                # request inside a loop to can retry when API fails
+                while max_curr != max_retries:
+                    try:
+                        statistics = monasca.metrics.list_statistics(
+                            name=statistic_name,
+                            dimensions=dimensions,
+                            statistics=metric_type,
+                            start_time=start_time,
+                            end_time=end_time,
+                            period=period,
+                            merge_metrics=True
+                        )
+                        break
+                    except Exception as error:
+                        max_curr += 1
+                        print(error)
+                        continue
+                # main condition to stop the requests on endpoint
+                condition = (now() - datetime.datetime.strptime(
+                    statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ').astimezone(timezone('UTC'))).days > 0
+                # merge the statistics with the buffer
+                statistics_buffer += statistics[0]['statistics']
+                # validate if the new start_time is different from before
+                # this avoid deadlock when retrieve statistics from a DELETED
+                # server, where he cant satisfy the main condition for get out
+                new_start_time = datetime.datetime.strptime(
+                    statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ')
+                if new_start_time == start_time:
+                    break
+                # replace the start_time always when retrieve new statistics
+                start_time = new_start_time
+        else:
+            statistics = monasca.metrics.list_statistics(
+                name=statistic_name,
+                dimensions=dimensions,
+                statistics=metric_type,
+                start_time=start_time,
+                end_time=end_time,
+                period=period,
+                merge_metrics=True
+            )
+            statistics_buffer = statistics[0]['statistics']
+
+        # replace current statistics to the buffered
+        # this works when backward_force are enabled, otherwise
+        # the operation is idempotent
+        statistics[0]['statistics'] = statistics_buffer
 
         if not len(statistics):
             print('Not Found')

@@ -57,8 +57,12 @@ def schedule_save_statistics() -> None:
         resource_name = statistic_definition['dimension']
 
         if resource_name == "resource_id":
-            resource_objects = Servers.objects.exclude(
-                status="DELETED").values()
+            backward_force = conf_file['monasca'].get('backward_force', False)
+            if backward_force:
+                resource_objects = Servers.objects.all().values()
+            else:
+                resource_objects = Servers.objects.exclude(
+                    status="DELETED").values()
         elif resource_name == "hostname":
             resource_objects = Hypervisors.objects.all().values()
 

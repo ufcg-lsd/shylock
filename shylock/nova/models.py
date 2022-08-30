@@ -83,7 +83,8 @@ class Servers(models.Model):
     tenant_id = ForeignKey(
         Projects,
         on_delete=models.CASCADE,
-        related_name='servers'
+        related_name='servers',
+        null=True
     )
     user_id = models.CharField(max_length=100)
     image_id = models.UUIDField(null=True)
@@ -92,7 +93,8 @@ class Servers(models.Model):
     flavor = ForeignKey(
         'Flavors',
         on_delete=models.CASCADE,
-        related_name='servers'
+        related_name='servers',
+        null=True
     )
 
 

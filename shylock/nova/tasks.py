@@ -163,7 +163,6 @@ def save_flavors() -> None:
         for aggregate in aggregates:
             if aggregate.name.lower() == aggregate_name.lower():
                 aggregate_obj = aggregate
-                break
 
         flavor_obj.aggregate = aggregate_obj
         flavor_obj.save()
@@ -175,6 +174,7 @@ def save_servers() -> None:
 
     # retrieve all servers from all tenants
     servers = nova.servers.list(search_opts={'all_tenants': 1})
+    servers = servers + nova.servers.list(search_opts={'deleted': 1})
     for server in servers:
         server = server.to_dict()
 
@@ -237,6 +237,7 @@ def save_instance_actions() -> None:
 
     # retrieve all servers from all tenants
     servers = nova.servers.list(search_opts={'all_tenants': 1})
+    servers = servers + nova.servers.list(search_opts={'deleted': 1})
     for server in servers:
         actions = nova.instance_action.list(server)
 

@@ -116,7 +116,8 @@ def aggregate_report():
             flavor_detail['vcpu'] = flavor.vcpus
             flavor_detail['ram'] = flavor.ram / 1024
             flavor_detail['disk'] = flavor.disk
-            flavor_detail['running_vms'] = flavor.servers.all().count()
+            flavor_detail['running_vms'] = flavor.servers.exclude(
+                status="DELETED").count()
 
             # checks how many servers could be created from this flavor
             flavors_used = 0

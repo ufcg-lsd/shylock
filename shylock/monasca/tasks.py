@@ -150,15 +150,25 @@ def save_statistics(statistics_dict, resource_name, resource):
                         print(error)
                         continue
                 # main condition to stop the requests on endpoint
-                condition = (now() - datetime.datetime.strptime(
-                    statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ').astimezone(timezone('UTC'))).days > 0
+                if statistics:
+                    condition = (
+                        (start_time +
+                         datetime.timedelta(
+                             days=7)) -
+                        start_time).days > 0
+                else:
+                    condition = (now() - datetime.datetime.strptime(
+                        statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ').astimezone(timezone('UTC'))).days > 0
                 # merge the statistics with the buffer
                 statistics_buffer += statistics[0]['statistics']
                 # validate if the new start_time is different from before
                 # this avoid deadlock when retrieve statistics from a DELETED
                 # server, where he cant satisfy the main condition for get out
-                new_start_time = datetime.datetime.strptime(
-                    statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ')
+                if statistics:
+                    new_start_time = datetime.datetime.strptime(
+                        statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ')
+                else:
+                    new_start_time = (now() + datetime.timedelta(days=7))
                 if new_start_time == start_time:
                     break
                 # replace the start_time always when retrieve new statistics

@@ -1,34 +1,62 @@
 billing:
+  # região que ser convertido o sistema de datas (internamente sempre será UTC)
   timezone: "America/Recife"
+  # o hostname de cada compute é dado pelo <nome>.hostname.com
+  # a variável hostname_domain é responsável por remover o .hostname.com
+  # e preservar apenas o nome original do compute, caso contrário, nos relatórios
+  # seria impresso o seu nome completo como compute.hostname.com
   hostname_domain: .hostname.com
+  # informações a respeito de como será enviado o relatório dos agregagtes
   operators:
+    # email dos operadores onde será enviado o relatório
     mail: admin@email.com
+    # assunto default quando o email for disparado
     email_subject: Report with aggregates from the LSD cloud
-    crontab_daily_hour: 9
+    # que horas será enviado o relatório, de acordo com a timezone
+    crontab_daily_hour: 16
+    # se habilita o envio de email para os operadores
     send_email: True
   sponsors:
+    # assunto default quando o email for disparado
     email_subject: Report of usage from the LSD cloud
+    # qual dia do mês será enviado o relatório, de acordo com a timezone
     crontab_month_day: 1
+    # se habilita o envio de email para os sponsors
     send_email: False
 
 openstack:
+  # período de coleta dos recursos no openstack
   collect_period: 10
 
 monasca:
-  collect_period: 5
+  # periodicidade que o scheduler vai disparar uma ação para coletar
+  # recursos no Monasca
+  collect_period: 10
+  # se gostaria fazer uma busca retroativa das métricas, ou seja, buscar métricas
+  # mais antigas que 1 dia
+  backward_force: False
+  # a partir de qual data gostaría que fosse feito a busca retroativa
+  backward_date: 01/01/2022
+  # caso der erro na coleta retroativa da métrica, quantos retries será
+  # feito antes de abordar a task
+  backward_max_retries: 10
+  # configuração de quais métricas serão consultadas no Monasca
   statistics:
-    - name: [
-        vm.cpu.utilization_norm_perc,
-        vm.mem.free_perc,
-      ]
+    # lista de métricas referente a VMs
+    - name: [vm.cpu.utilization_norm_perc, vm.mem.free_perc]
+      # tipo de coleta que será realizado no Monasca
       type: avg
+      # nome do atributo único responsável por identificar uma VM
       dimension: resource_id
+      # grão, em segundos, que o Monasca vai agregar as métricas de acordo
+      # com o type especificado
       period: 60
-    - name: [
-        cpu.percent,
-        mem.usable_perc,
-        mem.free_mb,
-      ]
+    # lista de métricas referente aos computes
+    - name: [cpu.percent, mem.usable_perc, mem.free_mb]
+      # tipo de coleta que será realizado no Monasca
       type: avg
+      # nome do atributo único responsável por identificar um compute
       dimension: hostname
+      # grão, em segundos, que o Monasca vai agregar as métricas de acordo
+      # com o type especificado
       period: 60

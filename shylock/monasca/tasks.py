@@ -18,7 +18,7 @@ monasca = monasca_client.Client(
 
 
 def influx_query(measurement, resource_name, resource_id,
-                 begin_date=None, end_date=None):
+                 begin_date=None, end_date=None, aggregate_day=False):
     """Wrapper to query points on InfluxDB."""
 
     bucket_name = config("INFLUX_BUCKET")
@@ -35,6 +35,8 @@ def influx_query(measurement, resource_name, resource_id,
     filter_resource = (
         ' |> filter(fn:(r) => r.%s == "%s")' %
         (resource_name, resource_id))
+    if aggregate_day:
+        filter_resource += '|> aggregateWindow(every: 1d, fn: mean, createEmpty: false) |> yield(name: "mean")'
 
     query = from_bucket + date_range + filter_measurement + filter_resource
     # query points

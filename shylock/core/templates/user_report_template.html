@@ -56,7 +56,7 @@
           <p style="margin: 0;"><b>Uso total de memória:</b> {{ report.header.total_used_mem }} GB * h</p>
           <p style="margin: 0;"><b>Uso total de processamento:</b> {{ report.header.total_used_vcpu }} vCPU * h</p>
           <p style="margin: 0;"><b>Utilização média de CPU:</b> {{ report.header.total_cpu_avg }}%</p>
-          
+          <p style="margin: 0;"><b>Utilização média de RAM:</b> {{ report.header.total_mem_avg }}%</p>
         </div>
       </div>
 
@@ -95,6 +95,7 @@
             <th>Horas</th>
             <th>Status</th>
             <th>CPU Média</th>
+            <th>RAM Média</th>
           </tr>
           {% for server in report.body.servers %}
           <tr>
@@ -102,7 +103,8 @@
             <td>{{ server.flavor }}</td>
             <td>{{ server.hours_used }}h</td>
             <td>{{ server.status }}</td>
-            <td>{{ server.cpu_avg | floatformat:2 }}%</td>
+            <td>{{ server.cpu_avg }}{% if server.cpu_avg != '-' %}%{% endif %}</td>
+            <td>{{ server.mem_avg }}{% if server.mem_avg != '-' %}%{% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>

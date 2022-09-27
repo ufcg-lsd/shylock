@@ -7,7 +7,7 @@ from novaclient import client as nova_client
 from nova.models import *
 
 nova = nova_client.Client(
-    version='2.1',
+    version='2.21',
     session=settings.OPENSTACK_SESSION,
     endpoint_type='public',
 )
@@ -246,6 +246,7 @@ def save_instance_actions() -> None:
 
             try:
                 action_obj = InstanceActions.objects.get(
+                    instance__id=server.id,
                     request_id=action['request_id'])
             except InstanceActions.DoesNotExist:
                 action_obj = InstanceActions()

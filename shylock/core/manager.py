@@ -217,7 +217,7 @@ def sponsors_report(begin_date: str, end_date: str):
     for sponsor in sponsors:
         if sponsor.email not in context.keys():
             context[sponsor.email] = []
-        projects = sponsor.projects.all()
+        projects = sponsor.projects.filter(enabled=True)
         for project in projects:
             print(project)
             # create an dict with project content
@@ -225,6 +225,7 @@ def sponsors_report(begin_date: str, end_date: str):
             details['header'] = {}
             details['header']['month'] = "%s/%s" % (month, year)
             details['header']['total_cpu_avg'] = 0
+            details['header']['total_mem_avg'] = 0
             details['header']['total_used_vcpu'] = 0
             details['header']['total_used_mem'] = 0
             details['header']['domain'] = project.domain_id.name
@@ -346,6 +347,9 @@ def sponsors_report(begin_date: str, end_date: str):
                             end_datetime).total_seconds() /
                         60 /
                         60))
+                # skip this billing because exist bug on our openstack
+                if resource_detail["hours_used"] == 0:
+                    continue
 
                 # build status through actions
                 server_status_action = server.actions.values()
@@ -368,7 +372,8 @@ def sponsors_report(begin_date: str, end_date: str):
                     resource_name=resource_name,
                     resource_id=resource_id,
                     begin_date=begin_date,
-                    end_date=end_date)
+                    end_date=end_date,
+                    aggregate_day=True)
                 if cpu_records:
                     cpu_avg = 0
                     for cpu in cpu_records:
@@ -376,14 +381,37 @@ def sponsors_report(begin_date: str, end_date: str):
                     resource_detail["cpu_avg"] = round(
                         cpu_avg / len(cpu_records), 2)
                 else:
-                    resource_detail["cpu_avg"] = 0
+                    resource_detail["cpu_avg"] = "-"
+
+                # memory
+                measurement = "vm.mem.free_perc"
+                resource_name = "resource_id"
+                resource_id = server.id
+                mem_records = influx_query(
+                    measurement=measurement,
+                    resource_name=resource_name,
+                    resource_id=resource_id,
+                    begin_date=begin_date,
+                    end_date=end_date,
+                    aggregate_day=True)
+                if mem_records:
+                    mem_avg = 0
+                    for mem in mem_records:
+                        mem_avg += mem['_value']
+                    resource_detail["mem_avg"] = round(
+                        100 - (mem_avg / len(mem_records)), 2)
+                else:
+                    resource_detail["mem_avg"] = "-"
                 details['body']['servers'].append(resource_detail)
 
             # volumes used
             details['body']['volumes'] = []
             for volume in cinder_volumes:
                 resource_detail = {}
-                resource_detail['name'] = volume.name
+                if volume.name != "":
+                    resource_detail['name'] = volume.name
+                else:
+                    resource_detail['name'] = volume.id
                 resource_detail['size'] = volume.size
                 details['body']['volumes'].append(resource_detail)
 
@@ -412,9 +440,21 @@ def sponsors_report(begin_date: str, end_date: str):
                             flavor['mem_gb']
 
                 # sum all percentage of vcpu used by server
-                details['header']['total_cpu_avg'] += server['cpu_avg']
+                if server['cpu_avg'] == "-":
+                    details['header']['total_cpu_avg'] += 0
+                else:
+                    details['header']['total_cpu_avg'] += server['cpu_avg']
+                # sum all percentage of mem used by server
+                if server['mem_avg'] == "-":
+                    details['header']['total_mem_avg'] += 0
+                else:
+                    details['header']['total_mem_avg'] += server['mem_avg']
+            # cpu
             details['header']['total_cpu_avg'] = _perc_validate_zero_division(
                 details['header']['total_cpu_avg'] / 100, len(details['body']['servers']), round_result=True)
+            # mem
+            details['header']['total_mem_avg'] = _perc_validate_zero_division(
+                details['header']['total_mem_avg'] / 100, len(details['body']['servers']), round_result=True)
 
             context[sponsor.email].append(details)
 

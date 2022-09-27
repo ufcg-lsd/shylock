@@ -42,13 +42,15 @@ def _generate_date_range_last_month():
 
 
 @shared_task
-def generate_sponsors_report(send_email: bool = None):
+def generate_sponsors_report(
+        send_email: bool = None, begin_date=None, end_date=None):
     """Generate sponsors reports, save on disk and could send email.
 
     :param send_email: if true, generate report and send to sponsor by email.
     """
 
-    begin_date, end_date = _generate_date_range_last_month()
+    if not begin_date and not end_date:
+        begin_date, end_date = _generate_date_range_last_month()
 
     # Retrieve the reports and write the templates.
     context = sponsors_report(begin_date=begin_date, end_date=end_date)
@@ -56,6 +58,9 @@ def generate_sponsors_report(send_email: bool = None):
         context, 'user_report_template.html', 'sponsor')
 
     for report_bytes in aggregate_bytes:
+        # name of sponsor
+        print(report_bytes['id'])
+
         today = datetime.date.today()
         filename = "sponsors/%s_%s_%s_%s.html" % (
             today.year, today.month, today.day, report_bytes['id'])
@@ -69,9 +74,10 @@ def generate_sponsors_report(send_email: bool = None):
                 html_report=content.decode(),
                 subject=conf_file['billing']['sponsors']['email_subject'],
                 source_email=config("EMAIL_FROM_EMAIL"),
-                target_email=conf_file['billing']['operators']['mail'])
+                target_email=report_bytes['id'])
+            # target_email=conf_file['billing']['operators']['mail']) # operators
             # TODO must change the target email to sponsor.
-            # This is a secure lock, in code, to guarantee that emails 
+            # This is a secure lock, in code, to guarantee that emails
             # are not be sended by sponsors as mistake.
 
 

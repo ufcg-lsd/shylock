@@ -11,7 +11,8 @@ billing:
     # email dos operadores onde será enviado o relatório
     mail: admin@email.com
     # assunto default quando o email for disparado
-    email_subject: Report with aggregates from the LSD cloud
+    email_subject_summary: Report with capacity planning from the LSD cloud
+    email_subject_aggregates: Report with aggregates from the LSD cloud
     # que horas será enviado o relatório, de acordo com a timezone
     crontab_daily_hour: 16
     # se habilita o envio de email para os operadores

@@ -5,6 +5,7 @@ import math
 from cinder.models import *
 from django.core.files.storage import default_storage
 from django.db.models import Count, Sum
+from django.db.models.expressions import Value
 from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -176,6 +177,241 @@ def aggregate_report():
             aggregate_summary["ram_used"], aggregate_summary["ram_reserved"])
         aggregate_summary["ram_eff_perc"] = _perc_validate_zero_division(
             aggregate_summary["ram_eff_used"], aggregate_summary["ram_eff_reserved"])
+
+    return context
+
+
+def _summary_capacity_report():
+    """Process the cloud capacity."""
+
+    # used
+    used_vcpus = Servers.objects.exclude(
+        status="DELETED").aggregate(
+        sum=Sum('flavor__vcpus'))['sum']
+    used_ram = Servers.objects.exclude(
+        status="DELETED").aggregate(
+        sum=Sum('flavor__ram'))['sum'] / 1024
+    used_fips = ProjectQuotas.objects.aggregate(
+        sum=Sum('floatingip_used'))['sum']
+    used_volumes_size = Volumes.objects.aggregate(sum=Sum('size'))['sum']
+
+    # quota
+    quota_vcpus = ProjectQuotas.objects.aggregate(sum=Sum('cores'))['sum']
+    quota_ram = ProjectQuotas.objects.aggregate(sum=Sum('ram'))['sum'] / 1024
+    quota_fips = ProjectQuotas.objects.aggregate(
+        sum=Sum('floatingip_limit'))['sum']
+    quota_volumes_size = ProjectQuotas.objects.aggregate(sum=Sum('gigabytes'))[
+        'sum']
+
+    # capacity
+    capacity_vcpus = Hypervisors.objects.aggregate(sum=Sum('vcpus'))['sum'] * 4
+    capacity_ram = Hypervisors.objects.aggregate(
+        sum=Sum('memory_mb'))['sum'] / 1024
+    capacity_fips = "-"
+    capacity_volumes_size = "-"
+
+    # real_capacity
+    real_capacity_vcpus = Hypervisors.objects.aggregate(sum=Sum('vcpus'))['sum']
+    real_capacity_ram = Hypervisors.objects.aggregate(sum=Sum('memory_mb'))[
+        'sum'] / 1024
+    real_capacity_fips = "-"
+    real_capacity_volumes_size = "-"
+
+    capacity = {
+        "used": {
+            "vcpus": f"{used_vcpus} ({used_vcpus/capacity_vcpus*100:.2f}%)",
+            "ram": f"{used_ram:.0f} ({used_ram/capacity_ram*100:.2f}%)",
+            "fips": f"{used_fips} (?)",
+            "volumes_size": f"{used_volumes_size} (?)",
+        },
+        "quota": {
+            "vcpus": f"{quota_vcpus} ({quota_vcpus/capacity_vcpus*100:.2f}%)",
+            "ram": f"{quota_ram:.0f} ({quota_ram/capacity_ram*100:.2f}%)",
+            "fips": f"{quota_fips} (?)",
+            "volumes_size": f"{quota_volumes_size} (?)",
+        },
+        "capacity": {
+            "vcpus": f"{capacity_vcpus}",
+            "ram": f"{capacity_ram:.0f}",
+            "fips": f"{capacity_fips}",
+            "volumes_size": f"{capacity_volumes_size}",
+        },
+        "real_capacity": {
+            "vcpus": f"{real_capacity_vcpus}",
+            "ram": f"{real_capacity_ram:.0f}",
+            "fips": f"{real_capacity_fips}",
+            "volumes_size": f"{real_capacity_volumes_size}",
+        }
+    }
+
+    return capacity
+
+
+def _summary_sponsors_report():
+    """Process all sponsors usage."""
+
+    end_date = timezone.now()
+    begin_date = end_date - datetime.timedelta(days=30)
+    sponsors = sponsors_report(begin_date.isoformat(), end_date.isoformat())
+
+    summary = {}
+
+    for sponsor in sponsors:
+        if sponsor not in summary.keys():
+            summary[sponsor] = {
+                "projects": [],
+                "total": {
+                    "vcpu_hours": 0,
+                    "ram_hours": 0,
+                    "vms": 0,
+                    "vcpus": 0,
+                    "ram": 0,
+                    "disk": 0,
+                    "fips": 0,
+                    "lbs": 0,
+                    "cpu_avg": 0,
+                    "mem_avg": 0,
+                }
+            }
+
+        for project in sponsors[sponsor]:
+            details = {}
+            details["name"] = project['header']['project']
+            details["vcpu_hours"] = project['header']['total_used_vcpu']
+            details["ram_hours"] = project['header']['total_used_mem']
+            details["cpu_avg"] = project['header']['total_cpu_avg']
+            details["mem_avg"] = project['header']['total_mem_avg']
+            for resource in project['body']['resources']:
+                if resource['name'] == "Instâncias":
+                    details["vms"] = resource['used']
+                elif resource['name'] == "vCPU":
+                    details["vcpus"] = resource['used']
+                elif resource['name'] == "RAM (GB)":
+                    details["ram"] = resource['used']
+                elif resource['name'] == "Armazenamento (GB)":
+                    # sum volumes with the root disk from servers
+                    details["disk"] = resource['used'] + Projects.objects.get(
+                        name=project['header']['project']).servers.aggregate(
+                        sum=Coalesce(Sum("flavor__disk"), Value(0)))['sum']
+                elif resource['name'] == "IPs Flutuante":
+                    details["fips"] = resource['used']
+                elif resource['name'] == "Load Balancers":
+                    details["lbs"] = resource['used']
+
+            summary[sponsor]['projects'].append(details)
+
+        for project in summary[sponsor]['projects']:
+            summary[sponsor]['total']["vcpu_hours"] += project["vcpu_hours"]
+            summary[sponsor]['total']["ram_hours"] += project["ram_hours"]
+            summary[sponsor]['total']["vms"] += project["vms"]
+            summary[sponsor]['total']["vcpus"] += project["vcpus"]
+            summary[sponsor]['total']["ram"] += project["ram"]
+            summary[sponsor]['total']["disk"] += project["disk"]
+            summary[sponsor]['total']["fips"] += project["fips"]
+            summary[sponsor]['total']["lbs"] += project["lbs"]
+            summary[sponsor]['total']["cpu_avg"] += project["cpu_avg"] * \
+                project["vms"]
+            summary[sponsor]['total']["mem_avg"] += project["mem_avg"] * \
+                project["vms"]
+
+        # avoid division by zero
+        n_vms = summary[sponsor]['total']["vms"] if summary[sponsor]['total']["vms"] else 1
+
+        summary[sponsor]['total']["cpu_avg"] = round(
+            summary[sponsor]['total']["cpu_avg"] / n_vms, 2)
+        summary[sponsor]['total']["mem_avg"] = round(
+            summary[sponsor]['total']["mem_avg"] / n_vms, 2)
+
+    return summary
+
+
+def summary_report():
+    """Generate a report with total of resources in used and reserved for
+    each aggregate.
+
+    context = {
+        "capacity": {
+            "used": {
+                "vcpus": "200 (30%)",
+                "ram": "500 (50%)",
+                "fips": "200 (30%)",
+                "volumes_size": "200 (30%)",
+            },
+            "quota": {
+                "vcpus": "200 (30%)",
+                "ram": "500 (50%)",
+                "fips": "200 (30%)",
+                "volumes_size": "200 (30%)",
+            },
+            "capacity": {
+                "vcpus": "200 (30%)",
+                "ram": "500 (50%)",
+                "fips": "200 (30%)",
+                "volumes_size": "200 (30%)",
+            },
+            "real_capacity": {
+                "vcpus": "200 (30%)",
+                "ram": "500 (50%)",
+                "fips": "200 (30%)",
+                "volumes_size": "200 (30%)",
+            }
+        },
+        "ceph": [
+            {
+                "pool": "name",
+                "available": "2.7 TiB",
+                "used": "6.93 TiB",
+                "total": "9.66 TiB",
+                "raw": "13.94 TiB",
+            },
+            {
+                "pool": "name",
+                "available": "2.7 TiB",
+                "used": "6.93 TiB",
+                "total": "9.66 TiB",
+                "raw": "13.94 TiB",
+            }
+        ],
+        "sponsors": [
+            {
+                "name": "sponsor@mail.com",
+                "projects": [
+                    {
+                        "name": "project_name",
+                        "vcpu_hours": 10000,
+                        "ram_hours": 10000,
+                        "vms": 10000,
+                        "vcpus": 10000,
+                        "ram": 10000,
+                        "disk": 10000,
+                        "fips": 10000,
+                        "lbs": 10000,
+                        "cpu_perc": 28.59,
+                        "ram_perc": 14.50,
+                    }
+                ],
+                "total": {
+                    "vcpu_hours": 10000,
+                    "ram_hours": 10000,
+                    "vms": 10000,
+                    "vcpus": 10000,
+                    "ram": 10000,
+                    "disk": 10000,
+                    "fips": 10000,
+                    "lbs": 10000,
+                    "cpu_perc": 28.59,
+                    "ram_perc": 14.50,
+                }
+            }
+        ]
+    }
+    """
+
+    context = {
+        "capacity": _summary_capacity_report(),
+        "ceph": {},
+        "sponsors": _summary_sponsors_report(),
+    }
 
     return context
 
@@ -522,6 +758,14 @@ def write_report(context: str, template_name: str, report_type: str):
         # Add the context key on dict, where Jinja will iterate to write
         new_context = {'context': context}
         tmp_report = {"type": report_type, "id": "aggregates"}
+        tmp_report["report"] = io.BytesIO()
+        content = render_to_string(template_name, new_context)
+        tmp_report["report"].write(content.encode())
+        reports.append(tmp_report)
+    elif report_type == "summary":
+        # Add the context key on dict, where Jinja will iterate to write
+        new_context = {'context': context}
+        tmp_report = {"type": report_type, "id": "summary"}
         tmp_report["report"] = io.BytesIO()
         content = render_to_string(template_name, new_context)
         tmp_report["report"].write(content.encode())

@@ -96,6 +96,13 @@ app.conf.beat_schedule = {
             hour=crontab_daily_hour_replaced),
         "args": [conf_file['billing']['operators']['send_email'], ],
     },
+    "generate_summary_report": {
+        "task": "core.tasks.generate_summary_report",
+        "schedule": crontab(
+            minute=0,
+            hour=crontab_daily_hour_replaced),
+        "args": [conf_file['billing']['operators']['send_email'], ],
+    },
     "generate_sponsors_report": {
         "task": "core.tasks.generate_sponsors_report",
         "schedule": crontab(

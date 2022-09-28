@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud Usage</title>
+    <link
+      rel="shortcut icon"
+      href="https://danielx285.github.io/bilhetagem-lsd-style/icone_lsd.ico"
+    />
+    <link
+      href="https://danielx285.github.io/bilhetagem-lsd-style/style.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      th, tr, td {
+        font-size: 14px !important;
+        padding-right: 15px !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="nav">
+      <img
+        src="https://danielx285.github.io/bilhetagem-lsd-style/lsd.svg"
+        class="nav"
+      />
+    </header>
+
+    <div style="max-width: 800px; margin: 10px auto; border: 1px solid #fff">
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h5>Relatório capacity planning</h5>
+      </div>
+      <!-- ceph: uso/capacidade da pool-->
+        <table style="margin: 0px; width: 100%;">
+          <thead>
+            <tr>
+              <th>Recursos</th>
+              <th>vCPU</th>
+              <th>RAM GB</th>
+              <th>FIPs</th>
+              <th>Volumes GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-weight:bold">Alocado</span></td>
+              <td>{{ context.capacity.used.vcpus }}</td>
+              <td>{{ context.capacity.used.ram }}</td>
+              <td>{{ context.capacity.used.fips }}</td>
+              <td>{{ context.capacity.used.volumes_size }}</td>
+            </tr>
+            <tr>
+              <td><span style="font-weight:bold">Cota total</span></td>
+              <td>{{ context.capacity.quota.vcpus }}</td>
+              <td>{{ context.capacity.quota.ram }}</td>
+              <td>{{ context.capacity.quota.fips }}</td>
+              <td>{{ context.capacity.quota.volumes_size }}</td>
+            </tr>
+            <tr>
+              <td><span style="font-weight:bold">Capacidade</span></td>
+              <td>{{ context.capacity.capacity.vcpus }}</td>
+              <td>{{ context.capacity.capacity.ram }}</td>
+              <td>{{ context.capacity.capacity.fips }}</td>
+              <td>{{ context.capacity.capacity.volumes_size }}</td>
+            </tr>
+            <tr>
+              <td><span style="font-weight:bold">Capacidade Real</span></td>
+              <td>{{ context.capacity.real_capacity.vcpus }}</td>
+              <td>{{ context.capacity.real_capacity.ram }}</td>
+              <td>{{ context.capacity.real_capacity.fips }}</td>
+              <td>{{ context.capacity.real_capacity.volumes_size }}</td>
+            </tr>
+          </tbody>
+          </table>
+
+<!--
+<div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h5>Relatório pool Ceph</h5>
+      </div>
+
+<table style="margin: 0px; width: 100%;">
+          <thead>
+            <tr>
+              <th>Pool</th>
+              <th>Disponível</th>
+              <th>Usado</th>
+              <th>Total</th>
+              <th>Raw</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>nova_cloud5</td>
+              <td>200 (20%)</td>
+              <td>400 (50%)</td>
+              <td>54 (100%)</td>
+              <td>5000</td>
+            </tr>
+            <tr>
+              <td>cinder_cloud5</td>
+              <td>200 (10%)</td>
+              <td>400 (50%)</td>
+              <td>54 (100%)</td>
+              <td>5000</td>
+            </tr>
+            <tr>
+              <td>glance_cloud5</td>
+              <td>200 (400%)</td>
+              <td>400</td>
+              <td>54</td>
+              <td>5000</td>
+            </tr>
+            <tr>
+              <td>swift_cloud5</td>
+              <td>200</td>
+              <td>400</td>
+              <td>54</td>
+              <td>5000</td>
+            </tr>
+          </tbody>
+          </table>
+
+<hr>
+-->
+</br>
+
+
+<div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h5>Uso de recursos por sponsor</h5>
+        <p style="font-size: 14px;">
+          <strong>obs:</strong> a quantidade de uso de CPU e RAM por hora, assim como seus respectivos usos médios, é referente a média dos últimos 30 dias.</br>
+          <strong>obs:</strong> a média total para CPU e RAM é a ponderada entre o uso em % e o número de VMs.</br>
+          <strong>obs:</strong> o uso em disco engloba tanto o tamanho das vms quanto os volumes do projeto.
+        </p>
+      </div>
+
+    {% for sponsor, value in context.sponsors.items %}
+
+      <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
+        <h6>{{ sponsor }}</h6>
+      </div>
+
+      <table style="margin: 0px; width: 100%;">
+        <tbody>
+          <tr>
+            <th>Domínio/Projeto</th>
+            <th>vCPU /h</th>
+            <th>RAM GB/h</th>
+            <th>VMs</th>
+            <th>vCPU</th>
+            <th>RAM</th>
+            <th>Disco</th>
+            <th>FIPs</th>
+            <th>LBs</th>
+            <th>CPU%</th>
+            <th>RAM%</th>
+          </tr>
+          
+          {% for project in value.projects %}
+          <tr>
+            <td>{{ project.name }}</td>
+            <td>{{ project.vcpu_hours }}</td>
+            <td>{{ project.ram_hours }}</td>
+            <td>{{ project.vms }}</td>
+            <td>{{ project.vcpus }}</td>
+            <td>{{ project.ram }}</td>
+            <td>{{ project.disk }}</td>
+            <td>{{ project.fips }}</td>
+            <td>{{ project.lbs }}</td>
+            <td>{{ project.cpu_avg }}</td>
+            <td>{{ project.mem_avg }}</td>
+          </tr>
+          {% endfor %}
+          
+          <tr>
+            <td colspan="100%"><hr /></td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>{{ value.total.vcpu_hours }}</td>
+            <td>{{ value.total.ram_hours }}</td>
+            <td>{{ value.total.vms }}</td>
+            <td>{{ value.total.vcpus }}</td>
+            <td>{{ value.total.ram }}</td>
+            <td>{{ value.total.disk }}</td>
+            <td>{{ value.total.fips }}</td>
+            <td>{{ value.total.lbs }}</td>
+            <td>{{ value.total.cpu_avg }}</td>
+            <td>{{ value.total.mem_avg }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </br>
+
+    {% endfor %}
+
+    </div>
+  </body>
+</html>

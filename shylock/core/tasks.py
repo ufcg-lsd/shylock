@@ -7,7 +7,8 @@ from pytz import timezone
 from celery import shared_task
 from core.conf import conf_file
 from core.manager import (aggregate_report, persists_reports,
-                          send_report_by_email, sponsors_report, write_report)
+                          send_report_by_email, sponsors_report,
+                          summary_report, write_report)
 
 
 def _generate_date_range_last_month():
@@ -104,6 +105,34 @@ def generate_aggregates_report(send_email: bool = None):
             content = report_bytes['report'].read()
             send_report_by_email(
                 html_report=content.decode(),
-                subject=conf_file['billing']['operators']['email_subject'],
+                subject=conf_file['billing']['operators']['email_subject_aggregates'],
+                source_email=config("EMAIL_FROM_EMAIL"),
+                target_email=conf_file['billing']['operators']['mail'])
+
+
+@shared_task
+def generate_summary_report(send_email: bool = None):
+    """Generate aggregate report, save on disk and could send by email.
+
+    :param send_email: if true, generate report and send to operators by email.
+    """
+
+    context = summary_report()
+    aggregate_bytes = write_report(
+        context, 'summary_usage_template.html', 'aggregate')
+    today = datetime.datetime.now()
+
+    for report_bytes in aggregate_bytes:
+        filename = "summaries/%s_%s_%s_summary.html" % (
+            today.year, today.month, today.day)
+        report_bytes['report'].seek(0)
+        persists_reports(filename, report_bytes['report'])
+
+        if send_email:
+            report_bytes['report'].seek(0)
+            content = report_bytes['report'].read()
+            send_report_by_email(
+                html_report=content.decode(),
+                subject=conf_file['billing']['operators']['email_subject_summary'],
                 source_email=config("EMAIL_FROM_EMAIL"),
                 target_email=conf_file['billing']['operators']['mail'])

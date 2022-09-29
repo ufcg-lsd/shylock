@@ -11,6 +11,7 @@ static/
 influxdb-data/
 postgres-data/
 reports-data/
+shylock/media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

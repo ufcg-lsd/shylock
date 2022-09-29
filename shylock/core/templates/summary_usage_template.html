@@ -36,7 +36,7 @@
       />
     </header>
 
-    <div style="max-width: 800px; margin: 10px auto; border: 1px solid #fff">
+    <div style="max-width: 1000px; margin: 10px auto; border: 1px solid #fff">
       <div style="margin: 25px 0 10px 0; border-bottom: 1px solid #ddd">
         <h5>Relatório capacity planning</h5>
       </div>
@@ -140,7 +140,8 @@
         <p style="font-size: 14px;">
           <strong>obs:</strong> a quantidade de uso de CPU e RAM por hora, assim como seus respectivos usos médios, é referente a média dos últimos 30 dias.</br>
           <strong>obs:</strong> a média total para CPU e RAM é a ponderada entre o uso em % e o número de VMs.</br>
-          <strong>obs:</strong> o uso em disco engloba tanto o tamanho das vms quanto os volumes do projeto.
+          <strong>obs:</strong> o uso em disco engloba tanto o tamanho das vms quanto os volumes do projeto.</br>
+          <strong>obs:</strong> o percentual de uso em disco engloba apenas a quantidade de volumes em relação a cota total.
         </p>
       </div>
 
@@ -154,8 +155,8 @@
         <tbody>
           <tr>
             <th>Domínio/Projeto</th>
-            <th>vCPU /h</th>
-            <th>RAM GB/h</th>
+            <th>vCPU*h</th>
+            <th>RAM GB*h</th>
             <th>VMs</th>
             <th>vCPU</th>
             <th>RAM</th>
@@ -171,12 +172,12 @@
             <td>{{ project.name }}</td>
             <td>{{ project.vcpu_hours }}</td>
             <td>{{ project.ram_hours }}</td>
-            <td>{{ project.vms }}</td>
-            <td>{{ project.vcpus }}</td>
-            <td>{{ project.ram }}</td>
-            <td>{{ project.disk }}</td>
-            <td>{{ project.fips }}</td>
-            <td>{{ project.lbs }}</td>
+            <td>{{ project.vms }} ({{ project.vms_used_perc }}%)</td>
+            <td>{{ project.vcpus }} ({{ project.vcpus_used_perc }}%)</td>
+            <td>{{ project.ram }} ({{ project.ram_used_perc }}%)</td>
+            <td>{{ project.disk }} ({{ project.disk_used_perc }}%)</td>
+            <td>{{ project.fips }} ({{ project.fips_used_perc }}%)</td>
+            <td>{{ project.lbs }} ({{ project.lbs_used_perc }}%)</td>
             <td>{{ project.cpu_avg }}</td>
             <td>{{ project.mem_avg }}</td>
           </tr>

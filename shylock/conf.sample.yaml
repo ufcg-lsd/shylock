@@ -41,6 +41,9 @@ monasca:
   # caso der erro na coleta retroativa da métrica, quantos retries será
   # feito antes de abordar a task
   backward_max_retries: 10
+  # se deve ser coletado dados do Ceph. caso True, ele vai pegar automaticamente dados
+  # Available, Used, Total e Raw de todas as pool.
+  collect_ceph_pools: True
   # configuração de quais métricas serão consultadas no Monasca
   statistics:
     # lista de métricas referente a VMs

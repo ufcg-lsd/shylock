@@ -10,7 +10,7 @@ from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 from django.utils import timezone
 from keystone.models import *
-from monasca.tasks import influx_query, monasca
+from monasca.tasks import influx_query, influx_query_tagvalues
 from nova.models import *
 
 from core.conf import conf_file
@@ -247,6 +247,49 @@ def _summary_capacity_report():
     return capacity
 
 
+def human_readable_size(size, decimal_places=3):
+    """Return human storage size."""
+
+    for unit in ['B','KiB','MiB','GiB','TiB']:
+        if size < 1024.0:
+            break
+        size /= 1024.0
+    return f"{size:.{decimal_places}f} {unit}"
+
+def _summary_ceph_report():
+    ceph_report = []
+
+    pools = influx_query_tagvalues('pool')
+
+    measurementes_values = [
+          'ceph.pool.max_avail_bytes',
+          'ceph.pool.used_bytes',
+          'ceph.pool.total_bytes',
+          'ceph.pool.used_raw_bytes',
+        ]
+
+    for pool in pools:
+        pool_detail = {'name': pool}
+        for measurement in measurementes_values:
+            measurement_value = influx_query(
+                measurement=measurement,
+                resource_name='pool',
+                resource_id=pool,
+                begin_date='-3h',
+            )
+
+            # rename measurement name
+            measurement = measurement.split('.')[-1]
+            if (measurement_value):
+                pool_detail[measurement] = human_readable_size(measurement_value[0]['_value'],2)
+            else:
+                pool_detail[measurement] = "-"
+
+        ceph_report.append(pool_detail)
+
+    return ceph_report
+
+
 def _summary_sponsors_report():
     """Process all sponsors usage."""
 
@@ -415,7 +458,7 @@ def summary_report():
 
     context = {
         "capacity": _summary_capacity_report(),
-        "ceph": {},
+        "ceph": _summary_ceph_report(),
         "sponsors": _summary_sponsors_report(),
     }
 
@@ -457,11 +500,11 @@ def sponsors_report(begin_date: str, end_date: str):
 
     sponsors = Sponsors.objects.all()
     for sponsor in sponsors:
+        print(sponsor.email)
         if sponsor.email not in context.keys():
             context[sponsor.email] = []
         projects = sponsor.projects.filter(enabled=True)
         for project in projects:
-            print(project)
             # create an dict with project content
             details = {}
             details['header'] = {}

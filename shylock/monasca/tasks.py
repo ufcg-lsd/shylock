@@ -51,12 +51,18 @@ def influx_query(measurement, resource_name, resource_id,
     return result
 
 
+def influx_query_tagvalues(tag):
+    query = f'import "influxdata/influxdb/schema" schema.tagValues(bucket: "{config("INFLUX_BUCKET")}", tag: "{tag}")'
+    return [k.get_value() for k in settings.INFLUX_CLIENT.query_api().query(query)[0].records]
+
+
 @shared_task
 def schedule_save_statistics() -> None:
     """Collect all metrics declared in yaml configuration file."""
 
     for statistic_definition in conf_file['monasca']['statistics']:
         resource_name = statistic_definition['dimension']
+        resource_objects = []
 
         if resource_name == "resource_id":
             backward_force = conf_file['monasca'].get('backward_force', False)
@@ -65,8 +71,14 @@ def schedule_save_statistics() -> None:
             else:
                 resource_objects = Servers.objects.exclude(
                     status="DELETED").values()
-        elif resource_name == "hostname":
+        if resource_name == "hostname":
             resource_objects = Hypervisors.objects.all().values()
+        if resource_name == 'pool':
+            pool_names = monasca.metrics.list_dimension_values(
+                dimension_name='pool')
+            for pool in pool_names:
+                pool['id'] = pool['dimension_value']
+            resource_objects = pool_names
 
         for resource in resource_objects:
             save_statistics.delay(statistic_definition, resource_name, resource)
@@ -153,16 +165,29 @@ def save_statistics(statistics_dict, resource_name, resource):
                         continue
                 # main condition to stop the requests on endpoint
                 if statistics:
+                    if isinstance(start_time, str):
+                        start_time = datetime.datetime.strptime(
+                            start_time, '%Y-%m-%d %H:%M:%S').astimezone(timezone('UTC'))
                     condition = (
                         (start_time +
                          datetime.timedelta(
                              days=7)) -
                         start_time).days > 0
                 else:
-                    condition = (now() - datetime.datetime.strptime(
-                        statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ').astimezone(timezone('UTC'))).days > 0
+                    if not statistics:
+                        if isinstance(start_time, str):
+                            start_time = datetime.datetime.strptime(
+                                start_time, '%Y-%m-%d %H:%M:%S').astimezone(timezone('UTC'))
+                        condition = (
+                            now() - (start_time + datetime.timedelta(days=7))).days > 0
+                    else:
+                        condition = (now() - datetime.datetime.strptime(
+                            statistics[0]['statistics'][-1][0], '%Y-%m-%dT%H:%M:%SZ').astimezone(timezone('UTC'))).days > 0
                 # merge the statistics with the buffer
-                statistics_buffer += statistics[0]['statistics']
+                if not len(statistics):
+                    statistics_buffer = []
+                else:
+                    statistics_buffer += statistics[0]['statistics']
                 # validate if the new start_time is different from before
                 # this avoid deadlock when retrieve statistics from a DELETED
                 # server, where he cant satisfy the main condition for get out
@@ -185,7 +210,16 @@ def save_statistics(statistics_dict, resource_name, resource):
                 period=period,
                 merge_metrics=True
             )
-            statistics_buffer = statistics[0]['statistics']
+            # mock statistics when metrics are not returned by monasca
+            if not len(statistics):
+                statistics_buffer = []
+            else:
+                statistics_buffer = statistics[0]['statistics']
+
+        # mock statistics when metrics are not returned by monasca
+        if not statistics_buffer:
+            statistics = [{'statistics': []}]
+            statistics[0]['statistics'] = []
 
         # replace current statistics to the buffered
         # this works when backward_force are enabled, otherwise

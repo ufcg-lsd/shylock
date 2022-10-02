@@ -327,19 +327,25 @@ def _summary_sponsors_report():
             for resource in project['body']['resources']:
                 if resource['name'] == "Instâncias":
                     details["vms"] = resource['used']
+                    details["vms_used_perc"] = resource['perc_used']
                 elif resource['name'] == "vCPU":
                     details["vcpus"] = resource['used']
+                    details["vcpus_used_perc"] = resource['perc_used']
                 elif resource['name'] == "RAM (GB)":
                     details["ram"] = resource['used']
+                    details["ram_used_perc"] = resource['perc_used']
                 elif resource['name'] == "Armazenamento (GB)":
                     # sum volumes with the root disk from servers
                     details["disk"] = resource['used'] + Projects.objects.get(
                         name=project['header']['project']).servers.aggregate(
                         sum=Coalesce(Sum("flavor__disk"), Value(0)))['sum']
+                    details["disk_used_perc"] = resource['perc_used']
                 elif resource['name'] == "IPs Flutuante":
                     details["fips"] = resource['used']
+                    details["fips_used_perc"] = resource['perc_used']
                 elif resource['name'] == "Load Balancers":
                     details["lbs"] = resource['used']
+                    details["lbs_used_perc"] = resource['perc_used']
 
             summary[sponsor]['projects'].append(details)
 

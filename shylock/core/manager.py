@@ -622,7 +622,12 @@ def sponsors_report(begin_date: str, end_date: str):
 
                 resource_detail = {}
                 resource_detail["name"] = server.name
-                resource_detail["flavor"] = server.flavor.name
+
+                if server.flavor == None:
+                    resource_detail["flavor"] = "-"
+                else:
+                    resource_detail["flavor"] = server.flavor.name
+
                 # calculate hours used
                 resource_detail["hours_used"] = int(
                     math.ceil(
@@ -703,7 +708,7 @@ def sponsors_report(begin_date: str, end_date: str):
             # flavors used
             flavors_list = []
             for server in nova_servers:
-                if server.flavor not in flavors_list:
+                if server.flavor not in flavors_list and server.flavor != None:
                     flavors_list.append(server.flavor)
             flavors_list = sorted(flavors_list, key=lambda x: x.vcpus)
             details['body']['flavors'] = []

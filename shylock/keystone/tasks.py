@@ -43,6 +43,12 @@ def save_projects_and_sponsors() -> None:
 
     # retrieve all sponsors and projects
     projects = keystone.projects.list()
+
+    # create a list with id of all projects on OpenStack
+    active_projects = [project.id for project in projects]
+    # delete all projects that are on the Shylock database, but not on OpenStack
+    Projects.objects.exclude(id__in=active_projects).delete()
+
     for project in projects:
         project = project.to_dict()
 
